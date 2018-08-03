@@ -18,15 +18,18 @@ Contains Dockerfiles and example docker swarm configuration to setup AET.
   where `<manager-ip>` is the IP of your docker-machine (usually `192.168.99.100`).
   Run `docker node ls` to list all nodes in the swarm (you should see only one node at the moment).
 
-1. Start aet stack running `docker stack deploy -c aet-swarm.yml aet`.
-2. Wait until Karaf start and resolve all dependencies, you should see the information:
+1. Download [`aet-swarm.yml`](https://github.com/Skejven/aet-docker/blob/master/aet-swarm.yml) and save it in `AET` directory.
+2. From `AET` directory run `docker stack deploy -c aet-swarm.yml aet`.
+3. Wait until Karaf start and resolve all dependencies (it may take about 1-2 minutes).
+When it is ready, you should see the information in the [Karaf console](https://github.com/Skejven/aet-docker#available-consoles):
   > Bundle information: 205 bundles in total - all 205 bundles active
 
 ## Building
 ### Prerequisites
 - Docker installed on your host.
 
-1. Build all images using `build.sh`.
+1. Clone this repository
+2. Build all images using `build.sh`.
 You should see following images:
 ```
     skejven/aet_report
@@ -66,7 +69,9 @@ docker service create \
 ## Runing AET Suite
 To run AET Suite simply define `endpointDomain` to AET Karaf ip with `8181` port, e.g.:
 > ` mvn aet:run -DendpointDomain=http://<docker-machine-ip>:8181`
+
 or
+
 > `./aet.sh http://<docker-machine-ip>:8181`
 
 
