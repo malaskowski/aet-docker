@@ -1,0 +1,23 @@
+# Custom file that may be added for additional maven build properties.
+# For properties-maven-plugin configuration.
+# Add this file or override maven property for it's location.
+/maven.properties
+
+# IntelliJ idea specific files
+.idea
+*.iml
+
+# Eclipse specific files
+.settings
+.project
+.classpath
+
+target
+test-output
+
+.metadata
+~*
+~*.*
+atlassian-ide-plugin.xml
+.DS_Store
+**/generated/

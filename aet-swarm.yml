@@ -1,0 +1,106 @@
+#
+# AET
+#
+# Copyright (C) 2013 Cognifide Limited
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# To execute this docker-swarm yml file use `docker stack deploy -c aet-swarm.yml aet`
+
+version: '3'
+
+networks:
+  private:
+    driver: overlay
+
+volumes:
+  mongo-data:
+
+services:
+  hub:
+    image: selenium/hub:3.13.0-argon
+    ports:
+      - "4444:4444"
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - private
+
+  chrome:
+    image: selenium/node-chrome:3.13.0-argon
+    volumes:
+      - /dev/shm:/dev/shm # Mitigates the Chromium issue described at https://code.google.com/p/chromium/issues/detail?id=519952
+    depends_on:
+      - hub
+    environment:
+      - HUB_HOST=hub
+      - HUB_PORT=4444
+      - NODE_MAX_INSTANCES=2
+      - NODE_MAX_SESSION=2
+    entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME -port 5556" /opt/bin/entry_point.sh'
+    deploy:
+      replicas: 3
+    networks:
+      - private
+
+  mongo:
+    image: mongo:3.2
+    command: mongod --enableMajorityReadConcern
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - private
+
+  activemq:
+    image: skejven/aet_activemq:0.1-alfa
+    ports:
+      - "8161:8161"
+    networks:
+      - private
+
+  browsermob:
+   image: skejven/aet_browsermob:0.1-alfa
+   networks:
+     - private
+
+  karaf:
+    image: skejven/aet_karaf:0.1-alfa
+    depends_on:
+      - hub
+      - activemq
+    ports:
+      - "8181:8181"
+    networks:
+      - private
+
+  report:
+    image: skejven/aet_report:0.1-alfa
+    ports:
+      - "80:80"
+    networks:
+      - private
