@@ -39,7 +39,7 @@ RUN curl -fSL -o /tmp/browsermob-proxy.zip ${DOWNLOAD_URL} \
 
 ENV BMP_PORT="8080" \
     BMP_ADDRESS="0.0.0.0" \
-    BMP_PROXY_PORT_RANGE="8081-8581" \
+    BMP_PROXY_PORT_RANGE="8281-8681" \
     BMP_PROXY_TTL="0"
 
 CMD /browsermob-proxy/bin/browsermob-proxy -address ${BMP_ADDRESS} -port ${BMP_PORT} -proxyPortRange ${BMP_PROXY_PORT_RANGE} -ttl ${BMP_PROXY_TTL}

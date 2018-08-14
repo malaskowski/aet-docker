@@ -29,7 +29,7 @@ volumes:
 
 services:
   hub:
-    image: selenium/hub:3.13.0-argon
+    image: selenium/hub:3.14.0-arsenic
     ports:
       - "4444:4444"
     deploy:
@@ -41,7 +41,7 @@ services:
       - private
 
   chrome:
-    image: selenium/node-chrome:3.13.0-argon
+    image: selenium/node-chrome:3.14.0-arsenic
     volumes:
       - /dev/shm:/dev/shm # Mitigates the Chromium issue described at https://code.google.com/p/chromium/issues/detail?id=519952
     depends_on:
@@ -77,29 +77,34 @@ services:
       - private
 
   activemq:
-    image: skejven/aet_activemq:0.1-alfa
+    image: skejven/aet_activemq:0.1.0
     ports:
       - "8161:8161"
     networks:
       - private
 
   browsermob:
-   image: skejven/aet_browsermob:0.1-alfa
+   image: skejven/aet_browsermob:0.1.0
+   ports:
+    - "8080:8080"
+    - "8281-8681:8281-8681"
    networks:
      - private
 
   karaf:
-    image: skejven/aet_karaf:0.1-alfa
+    image: skejven/aet_karaf:0.1.0
     depends_on:
       - hub
       - activemq
     ports:
       - "8181:8181"
+    environment:
+      - REPORT_DOMAIN=http://report-host # e.g. http://192.168.99.100
     networks:
       - private
 
   report:
-    image: skejven/aet_report:0.1-alfa
+    image: skejven/aet_report:0.1.0
     ports:
       - "80:80"
     networks:

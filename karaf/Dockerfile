@@ -25,6 +25,7 @@ ENV KARAF_UID 8181
 ENV JAVA_MAX_MEM 512m
 ENV KARAF_EXEC exec
 ENV KARAF_VERSION=4.2.0
+ENV REPORT_DOMAIN http://localhost
 
 COPY download.sh /tmp/download.sh
 

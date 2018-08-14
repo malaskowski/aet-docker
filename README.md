@@ -19,10 +19,16 @@ Contains Dockerfiles and example docker swarm configuration to setup AET.
   Run `docker node ls` to list all nodes in the swarm (you should see only one node at the moment).
 
 1. Download [`aet-swarm.yml`](https://github.com/Skejven/aet-docker/blob/master/aet-swarm.yml) and save it in `AET` directory.
-2. From `AET` directory run `docker stack deploy -c aet-swarm.yml aet`.
-3. Wait until Karaf start and resolve all dependencies (it may take about 1-2 minutes).
+2. Check the IP of your docker instance (e.g. `docker-machine ip`) and update `REPORT_DOMAIN` in `karaf` service to this ip address.
+Alternatively if you have proxy configured and domain enabled, you may set domain configured, set the domain value in `REPORT_DOMAIN`.
+3. From `AET` directory run `docker stack deploy -c aet-swarm.yml aet`.
+4. Wait until Karaf start and resolve all dependencies (it may take about 1-2 minutes).
 When it is ready, you should see the information in the [Karaf console](https://github.com/Skejven/aet-docker#available-consoles):
   > Bundle information: 205 bundles in total - all 205 bundles active
+
+## Upgrading
+1. Update [`aet-swarm.yml`](https://github.com/Skejven/aet-docker/blob/master/aet-swarm.yml) to the latest version
+2. Run `docker stack deploy -c aet-swarm.yml aet`
 
 ## Building
 ### Prerequisites
