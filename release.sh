@@ -18,7 +18,7 @@
 # You need to `docker login` before running this script
 #!/usr/bin/env bash
 
-AET_DOCKER_VERSION=0.1.0
+AET_DOCKER_VERSION=0.2.0
 
 docker tag skejven/aet_activemq:$AET_DOCKER_VERSION skejven/aet_activemq:$AET_DOCKER_VERSION
 docker tag skejven/aet_browsermob:$AET_DOCKER_VERSION skejven/aet_browsermob:$AET_DOCKER_VERSION
