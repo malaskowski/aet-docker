@@ -72,6 +72,16 @@ docker service create \
 
 - Visualiser console: `http://<docker-machine-ip>:8090`
 
+## Configuration
+### External MongoDB
+You may run AET with external MongoDB instance (not running on Docker). Use Karaf ENV `MONGODB_URI` to setup mongodb uri at the cluster run time.
+
+### Reports app url customization
+Use Karaf ENV `REPORT_DOMAIN` to set custom IP/domain address where AET report is available
+
+## Debugging
+To debug bundles on Karaf set environment vairable `KARAF_DEBUG=true` and expose port `5005` on karaf service.
+
 ## Runing AET Suite
 To run AET Suite simply define `endpointDomain` to AET Karaf ip with `8181` port, e.g.:
 > ` mvn aet:run -DendpointDomain=http://<docker-machine-ip>:8181`
