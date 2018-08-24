@@ -1,3 +1,5 @@
+# 0.3.0
+
 # 0.2.0
 - latest AET from `master` (with Chrome support and new OSGi configurations)
 - added Karaf image `ENV` variable `MONGODB_URI` that enables to set `mongoURI` at the cluster manager level (e.g. to external MongoDB instance)

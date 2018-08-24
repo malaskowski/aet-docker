@@ -17,7 +17,7 @@
 #
 #!/usr/bin/env bash
 
-AET_DOCKER_VERSION=0.2.0
+AET_DOCKER_VERSION=0.3.0
 
 docker build -t skejven/aet_activemq:$AET_DOCKER_VERSION activemq/
 docker build -t skejven/aet_browsermob:$AET_DOCKER_VERSION browsermob/

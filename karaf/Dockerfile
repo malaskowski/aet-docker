@@ -51,4 +51,7 @@ EXPOSE 1099 8101 8181 44444
 
 USER ${KARAF_USER}
 
+HEALTHCHECK --interval=1m --timeout=10s --start-period=150s \
+  CMD curl -v --silent http://karaf:karaf@localhost:8181/system/console/bundles 2>&1 | grep -Fq "204 bundles in total - all 204 bundles active" || exit 1
+
 CMD ["/opt/karaf/bin/karaf", "run"]
