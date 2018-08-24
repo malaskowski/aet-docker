@@ -1,4 +1,4 @@
-# 0.3.0
+# Unreleased
 - karaf container `HEALTHCHECK`
 
 # 0.2.0
