@@ -1,4 +1,5 @@
 # 0.3.0
+- karaf container `HEALTHCHECK`
 
 # 0.2.0
 - latest AET from `master` (with Chrome support and new OSGi configurations)

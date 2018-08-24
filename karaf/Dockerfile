@@ -26,6 +26,8 @@ ENV JAVA_MAX_MEM 512m
 ENV KARAF_EXEC exec
 ENV KARAF_VERSION=4.2.0
 
+ARG HEALTHCHECK_PHRASE="204 bundles in total - all 204 bundles active"
+
 COPY download.sh /tmp/download.sh
 
 RUN addgroup -S -g ${KARAF_UID} ${KARAF_USER}; \
@@ -51,7 +53,7 @@ EXPOSE 1099 8101 8181 44444
 
 USER ${KARAF_USER}
 
-HEALTHCHECK --interval=1m --timeout=10s --start-period=150s \
-  CMD curl -v --silent http://karaf:karaf@localhost:8181/system/console/bundles 2>&1 | grep -Fq "204 bundles in total - all 204 bundles active" || exit 1
+HEALTHCHECK --interval=1m --timeout=10s --start-period=120s \
+  CMD curl -v --silent http://karaf:karaf@localhost:8181/system/console/bundles 2>&1 | grep -Fq ${HEALTHCHECK_PHRASE} || exit 1
 
 CMD ["/opt/karaf/bin/karaf", "run"]
