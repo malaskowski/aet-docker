@@ -77,14 +77,14 @@ services:
       - private
 
   activemq:
-    image: skejven/aet_activemq:0.3.0
+    image: skejven/aet_activemq:0.2.0
     ports:
       - "8161:8161"
     networks:
       - private
 
   browsermob:
-   image: skejven/aet_browsermob:0.3.0
+   image: skejven/aet_browsermob:0.2.0
    ports:
     - "8080:8080"
     - "8281-8681:8281-8681"
@@ -92,7 +92,7 @@ services:
      - private
 
   karaf:
-    image: skejven/aet_karaf:0.3.0
+    image: skejven/aet_karaf:0.2.0
     depends_on:
       - hub
       - activemq

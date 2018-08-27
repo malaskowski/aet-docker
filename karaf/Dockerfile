@@ -20,7 +20,6 @@ FROM openjdk:8-alpine as build
 MAINTAINER Maciej Laskowski <maciej.laskowski@cognifide.com>
 
 # Set the env params
-ENV KARAF_USER karaf
 ENV KARAF_UID 8181
 ENV JAVA_MAX_MEM 512m
 ENV KARAF_EXEC exec
@@ -40,7 +39,7 @@ RUN apk add --update bash tar jq curl && rm -rf /var/cache/apk/* \
     && chown -R ${KARAF_USER}.${KARAF_USER} /opt/karaf \
     && echo org.ops4j.pax.url.mvn.defaultRepositories = file:///opt/maven/repository@id=local.app@snapshots  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg
 
-# Copy and unzip AET artifacts
+# Copy and unzip AET features
 COPY features.zip /tmp/
 RUN unzip -o /tmp/features.zip -d /opt/karaf/deploy && rm /tmp/features.zip
 
@@ -65,7 +64,7 @@ RUN apk add --update bash curl tar && rm -rf /var/cache/apk/*
 
 COPY --from=build /opt/karaf /opt/karaf
 
-# Copy and unzip AET artifacts
+# Copy and unzip AET bundles
 COPY bundles.zip /tmp/
 RUN unzip -o /tmp/bundles.zip -d /opt/karaf/deploy && rm /tmp/bundles.zip
 
