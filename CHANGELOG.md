@@ -1,5 +1,6 @@
 # Unreleased
-- karaf container `HEALTHCHECK`
+- Karaf base image with resolved bundles from features file
+- Karaf container `HEALTHCHECK`
 
 # 0.2.0
 - latest AET from `master` (with Chrome support and new OSGi configurations)
