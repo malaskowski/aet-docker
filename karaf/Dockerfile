@@ -20,6 +20,7 @@ FROM openjdk:8-alpine as build
 MAINTAINER Maciej Laskowski <maciej.laskowski@cognifide.com>
 
 # Set the env params
+ENV KARAF_USER karaf
 ENV KARAF_UID 8181
 ENV JAVA_MAX_MEM 512m
 ENV KARAF_EXEC exec
