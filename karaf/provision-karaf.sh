@@ -39,6 +39,7 @@ do
     echo "Karaf loading finished after $sec seconds";
     get_bundles_status
     /opt/karaf/bin/karaf stop
+    echo "Status: $(/opt/karaf/bin/karaf status)"
     exit 0;
   else
     status_code=$(get_status_code)

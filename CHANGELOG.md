@@ -1,6 +1,13 @@
 # Unreleased
 - Karaf base image with resolved bundles from features file
-- Karaf container `HEALTHCHECK`
+- Karaf container `HEALTHCHECK` (in swarm config)
+    - Original `HEALTHCHECK` from the Karaf's Dockerfile was moved to swarm config because of some odd behaviour (container never was `healthy` when multi-stage build was applied)
+    ```
+    ARG HEALTHCHECK_PHRASE="204 bundles in total - all 204 bundles active"
+    HEALTHCHECK --interval=1m --timeout=10s --start-period=120s \
+       CMD curl -v --silent http://karaf:karaf@localhost:8181/system/console/bundles 2>&1 | grep -Fq ${HEALTHCHECK_PHRASE} || exit 1
+    ```
+- version of compose-file upgraded from `3` to `3.6` (for the healthcheck `start_period` option), notice it requires Docker Engine `18.02.0+`
 
 # 0.2.0
 - latest AET from `master` (with Chrome support and new OSGi configurations)
