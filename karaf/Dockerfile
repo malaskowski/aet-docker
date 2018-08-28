@@ -20,16 +20,17 @@ FROM openjdk:8-alpine as build
 MAINTAINER Maciej Laskowski <maciej.laskowski@cognifide.com>
 
 # Set the env params
-ENV KARAF_USER karaf
-ENV KARAF_UID 8181
-ENV JAVA_MAX_MEM 512m
+#ENV KARAF_USER karaf
+#ENV KARAF_UID 8181
+ENV JAVA_MAX_MEM 1024m
+ENV JAVA_MIN_MEM 256m
 ENV KARAF_EXEC exec
 ENV KARAF_VERSION=4.2.0
 
 COPY download.sh /tmp/download.sh
 
-RUN addgroup -S -g ${KARAF_UID} ${KARAF_USER}; \
-    adduser -S -u ${KARAF_UID} -g ${KARAF_USER} ${KARAF_USER}
+#RUN addgroup -S -g ${KARAF_UID} ${KARAF_USER}; \
+#    adduser -S -u ${KARAF_UID} -g ${KARAF_USER} ${KARAF_USER}
 
 RUN apk add --update bash tar jq curl && rm -rf /var/cache/apk/* \
     && chmod a+x /tmp/download.sh && sync && /tmp/download.sh && rm /tmp/download.sh \
@@ -37,7 +38,7 @@ RUN apk add --update bash tar jq curl && rm -rf /var/cache/apk/* \
     && tar --strip-components=1 -C /opt/karaf -xzf /tmp/apache-karaf.tar.gz \
     && rm /tmp/apache-karaf.tar.gz \
     && mkdir -p /opt/karaf/data /opt/karaf/data/log \
-    && chown -R ${KARAF_USER}.${KARAF_USER} /opt/karaf \
+#    && chown -R ${KARAF_USER}.${KARAF_USER} /opt/karaf \
     && echo org.ops4j.pax.url.mvn.defaultRepositories = file:///opt/maven/repository@id=local.app@snapshots  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg
 
 # Copy and unzip AET features
@@ -55,15 +56,22 @@ FROM openjdk:8-alpine as final
 # Set the env params
 ENV KARAF_USER karaf
 ENV KARAF_UID 8181
-ENV JAVA_MAX_MEM 512m
+ENV JAVA_MAX_MEM 1024m
+ENV JAVA_MIN_MEM 256m
 ENV KARAF_EXEC exec
 ENV KARAF_VERSION=4.2.0
 
 ARG HEALTHCHECK_PHRASE="204 bundles in total - all 204 bundles active"
 
+RUN addgroup -S -g ${KARAF_UID} ${KARAF_USER}; \
+    adduser -S -u ${KARAF_UID} -g ${KARAF_USER} ${KARAF_USER}
+
 RUN apk add --update bash curl tar && rm -rf /var/cache/apk/*
 
 COPY --from=build /opt/karaf /opt/karaf
+
+RUN chown -R ${KARAF_USER}.${KARAF_USER} /opt/karaf \
+    && echo org.ops4j.pax.url.mvn.defaultRepositories = file:///opt/maven/repository@id=local.app@snapshots  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg
 
 # Copy and unzip AET bundles
 COPY bundles.zip /tmp/
