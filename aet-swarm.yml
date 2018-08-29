@@ -18,7 +18,7 @@
 #
 # To execute this docker-swarm yml file use `docker stack deploy -c aet-swarm.yml aet`
 
-version: '3'
+version: '3.6'
 
 networks:
   private:
@@ -93,6 +93,12 @@ services:
 
   karaf:
     image: skejven/aet_karaf:0.2.0
+    healthcheck:
+      test: curl -v --silent http://karaf:karaf@localhost:8181/system/console/bundles 2>&1 | grep -Fq "204 bundles in total - all 204 bundles active" || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 120s
     depends_on:
       - hub
       - activemq
