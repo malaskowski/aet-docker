@@ -23,12 +23,16 @@ MAINTAINER Maciej Laskowski <maciej.laskowski@cognifide.com>
 ENV JAVA_MAX_MEM 1024m
 ENV JAVA_MIN_MEM 256m
 ENV KARAF_EXEC exec
-ENV KARAF_VERSION=4.2.0
 
-COPY download.sh /tmp/download.sh
+# Set the build params
+ARG KARAF_VERSION="4.2.0"
+ARG KARAF_DOWNLOAD_SHA512="431ca85af2cc230ffb6ab996cb12034a940e21ac4d03ac04936a4ab5e902c7a4e767f06ad32796d250a30ce090aa1b39d927d84955400803e3ee4e3f5116fea4"
+ARG DOWNLOAD_URL="http://archive.apache.org/dist/karaf/${KARAF_VERSION}/apache-karaf-${KARAF_VERSION}.tar.gz"
 
-RUN apk add --update bash tar jq curl && rm -rf /var/cache/apk/* \
-    && chmod a+x /tmp/download.sh && sync && /tmp/download.sh && rm /tmp/download.sh \
+RUN apk add --update bash tar jq curl && rm -rf /var/cache/apk/*
+
+RUN curl -fSL -o /tmp/apache-karaf.tar.gz ${DOWNLOAD_URL} \
+    && echo "${KARAF_DOWNLOAD_SHA512}  /tmp/apache-karaf.tar.gz" | sha512sum -c - \
     && mkdir -p /opt/karaf \
     && tar --strip-components=1 -C /opt/karaf -xzf /tmp/apache-karaf.tar.gz \
     && rm /tmp/apache-karaf.tar.gz \
@@ -53,7 +57,6 @@ ENV KARAF_UID 8181
 ENV JAVA_MAX_MEM 1024m
 ENV JAVA_MIN_MEM 256m
 ENV KARAF_EXEC exec
-ENV KARAF_VERSION=4.2.0
 
 RUN addgroup -S -g ${KARAF_UID} ${KARAF_USER}; \
     adduser -S -u ${KARAF_UID} -g ${KARAF_USER} ${KARAF_USER}
