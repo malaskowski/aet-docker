@@ -27,7 +27,7 @@ When it is ready, you should see the information in the [Karaf console](https://
   > Bundle information: 205 bundles in total - all 205 bundles active
 
 ## Upgrading
-1. Update [`aet-swarm.yml`](https://github.com/Skejven/aet-docker/blob/master/aet-swarm.yml) to the latest version
+1. Update `aet-swarm.yml` file to the latest version (you will find it in the [latest release](https://github.com/Skejven/aet-docker/releases/latest)).
 2. Run `docker stack deploy -c aet-swarm.yml aet`
 
 ## Building
