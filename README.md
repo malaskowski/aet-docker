@@ -96,6 +96,9 @@ Use Karaf ENV `REPORT_DOMAIN` to set custom IP/domain address where AET report i
 ## Debugging
 To debug bundles on Karaf set environment vairable `KARAF_DEBUG=true` and expose port `5005` on karaf service.
 
+## Logs
+You may preview AET logs with `docker service logs aet_karaf -f`.
+
 ## Runing AET Suite
 To run AET Suite simply define `endpointDomain` to AET Karaf ip with `8181` port, e.g.:
 > ` mvn aet:run -DendpointDomain=http://<docker-machine-ip>:8181`
