@@ -1,6 +1,9 @@
 # Unreleased
+
+# 0.4.0
 - Swarm file removed from the repository, it will be available only in the release artifact
 - full AET log now is available with `docker service logs aet_karaf -f` (from Karaf internal, runner, worker and cleaner)
+- AET version upgraded to [`3.0.1-rc01`](https://github.com/Cognifide/aet/releases/tag/3.0.0-rc01)
 
 # 0.3.0
 - latest AET from `master` (with Chrome support, new OSGi configurations, suite history support and advanced screenshot comparison)

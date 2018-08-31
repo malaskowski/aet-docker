@@ -101,11 +101,11 @@ You may preview AET logs with `docker service logs aet_karaf -f`.
 
 ## Runing AET Suite
 To run AET Suite simply define `endpointDomain` to AET Karaf ip with `8181` port, e.g.:
+> `./aet.sh http://<docker-machine-ip>:8181`
+or
 > ` mvn aet:run -DendpointDomain=http://<docker-machine-ip>:8181`
 
-or
-
-> `./aet.sh http://<docker-machine-ip>:8181`
+Read more about running AET suite [here](https://github.com/Cognifide/aet/wiki/RunningSuite).
 
 
 ## ToDo:
