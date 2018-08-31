@@ -18,13 +18,18 @@ Contains Dockerfiles and example docker swarm configuration to setup AET.
   where `<manager-ip>` is the IP of your docker-machine (usually `192.168.99.100`).
   Run `docker node ls` to list all nodes in the swarm (you should see only one node at the moment).
 
-1. Download [`aet-swarm.yml`](https://github.com/Skejven/aet-docker/blob/master/aet-swarm.yml) and save it in `AET` directory.
+1. Download `aet-swarm.yml` file from the [release](https://github.com/Skejven/aet-docker/releases)
+ you want to use and save it in `aet` directory.
 2. Check the IP of your docker instance (e.g. `docker-machine ip`) and update `REPORT_DOMAIN` in `karaf` service to this ip address.
 Alternatively if you have proxy configured and domain enabled, you may set domain configured, set the domain value in `REPORT_DOMAIN`.
-3. From `AET` directory run `docker stack deploy -c aet-swarm.yml aet`.
+3. From `aet` directory run `docker stack deploy -c aet-swarm.yml aet`.
 4. Wait until Karaf start and resolve all dependencies (it may take about 1-2 minutes).
 When it is ready, you should see the information in the [Karaf console](https://github.com/Skejven/aet-docker#available-consoles):
-  > Bundle information: 205 bundles in total - all 205 bundles active
+  > Bundle information: 204 bundles in total - all 204 bundles active
+You may also check the status of Karaf by executing `docker ps --format "table {{.Image}}\t{{.Status}}" --filter expose=8181/tcp`
+When you see status `healthy` it means Karaf is running correctly
+> IMAGE                     STATUS
+> skejven/aet_karaf:0.4.0   Up 20 minutes (healthy)
 
 ## Upgrading
 1. Update `aet-swarm.yml` file to the latest version (you will find it in the [latest release](https://github.com/Skejven/aet-docker/releases/latest)).

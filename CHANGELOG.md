@@ -1,4 +1,5 @@
 # Unreleased
+- Swarm file removed from the repository, it will be available only in the release artifact
 
 # 0.3.0
 - latest AET from `master` (with Chrome support, new OSGi configurations, suite history support and advanced screenshot comparison)
