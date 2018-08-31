@@ -26,8 +26,13 @@ Alternatively if you have proxy configured and domain enabled, you may set domai
 4. Wait until Karaf start and resolve all dependencies (it may take about 1-2 minutes).
 When it is ready, you should see the information in the [Karaf console](https://github.com/Skejven/aet-docker#available-consoles):
   > Bundle information: 204 bundles in total - all 204 bundles active
-You may also check the status of Karaf by executing `docker ps --format "table {{.Image}}\t{{.Status}}" --filter expose=8181/tcp`
+You may also check the status of Karaf by executing
+```bash
+docker ps --format "table {{.Image}}\t{{.Status}}" --filter expose=8181/tcp
+```
+
 When you see status `healthy` it means Karaf is running correctly
+
 > IMAGE                     STATUS
 > skejven/aet_karaf:0.4.0   Up 20 minutes (healthy)
 
