@@ -15,31 +15,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-FROM alpine:3.8 as build
-LABEL maintainer="Maciej Laskowski <skejven@gmail.com>"
 
-# make sure system is up-to-date and install apache2
-RUN apk add -U unzip
-
-# deploy AET reports app
-COPY report.zip /tmp/
-RUN unzip -o /tmp/report.zip -d /tmp/report
-
-#################################################################################
-
-FROM httpd:2.4 as final
+FROM ubuntu:16.04
 LABEL maintainer="Maciej Laskowski <skejven@gmail.com>"
 
 # Set the env params
-ENV VHOSTS_ENV=docker
+ENV APACHE_RUN_USER www-data
+ENV APACHE_RUN_GROUP www-data
+ENV APACHE_LOG_DIR /var/log/apache2
 
-## Cleanup image htdocs
-RUN rm /usr/local/apache2/htdocs/index.html
+# make sure system is up-to-date and install apache2
+RUN apt-get update && apt-get install -y apache2 unzip && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-## Copy configs
-COPY ./httpd /usr/local/apache2
+# configure apache
+RUN rm -rf /etc/apache2/sites-available/*
+COPY aet.conf /etc/apache2/sites-available/aet.conf
+RUN ln -s /etc/apache2/sites-available/aet.conf /etc/apache2/sites-enabled/aet.conf
+RUN a2enmod headers && a2enmod proxy && a2enmod proxy_http
 
-## Copy AET report files
-COPY --from=build /tmp/report /usr/local/apache2/htdocs
+# deploy AET reports app
+RUN rm -rf /var/www/html/*
+COPY report.zip /tmp/
+RUN unzip -o /tmp/report.zip -d /var/www/html && rm /tmp/report.zip
 
-VOLUME /usr/local/apache2/logs
+EXPOSE 80
+
+CMD ["apachectl", "-D", "FOREGROUND"]
