@@ -50,6 +50,7 @@ RUN chmod a+x /tmp/provision-karaf.sh && sync && /tmp/provision-karaf.sh
 #################################################################################
 
 FROM openjdk:8-alpine as final
+LABEL maintainer="Maciej Laskowski <skejven@gmail.com>"
 
 # Set the env params
 ENV KARAF_USER karaf
