@@ -17,7 +17,7 @@
 #
 
 FROM openjdk:8-alpine as build
-MAINTAINER Maciej Laskowski <maciej.laskowski@cognifide.com>
+LABEL maintainer="Maciej Laskowski <skejven@gmail.com>"
 
 # Set the env params
 ENV JAVA_MAX_MEM 1024m

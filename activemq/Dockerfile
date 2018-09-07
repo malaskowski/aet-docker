@@ -17,7 +17,7 @@
 #
 
 FROM openjdk:8-alpine
-MAINTAINER Maciej Laskowski <maciej.laskowski@cognifide.com>
+LABEL maintainer="Maciej Laskowski <skejven@gmail.com>"
 
 # Set the build params
 ARG VERSION=5.15.2

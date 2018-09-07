@@ -17,7 +17,7 @@
 #
 
 FROM ubuntu:16.04
-MAINTAINER Maciej Laskowski <maciej.laskowski@cognifide.com>
+LABEL maintainer="Maciej Laskowski <skejven@gmail.com>"
 
 # Set the env params
 ENV APACHE_RUN_USER www-data
