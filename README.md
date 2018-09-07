@@ -49,7 +49,7 @@ When you see status `healthy` it means Karaf is running correctly
 - Docker installed on your host.
 
 1. Clone this repository
-2. Build all images using `build.sh`.
+2. Build all images using `build.sh local-snapshot`.
 You should see following images:
 ```
     skejven/aet_report
@@ -57,6 +57,9 @@ You should see following images:
     skejven/aet_browsermob
     skejven/aet_activemq
 ```
+
+`local-snapshot` param is the version you want to set for your docker images.
+Use it later when starting containers.
 
 ## What's inside
 Example AET stack runs:
