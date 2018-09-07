@@ -1,6 +1,7 @@
 # Unreleased
 # Fixed maintainer label
 # More generic build and release scripts (with `version` arg)
+# Report from `httpd:2.4` official image
 
 # 0.4.0
 - Swarm file removed from the repository, it will be available only in the release artifact
