@@ -33,10 +33,16 @@ COPY aet.conf /etc/apache2/sites-available/aet.conf
 RUN ln -s /etc/apache2/sites-available/aet.conf /etc/apache2/sites-enabled/aet.conf
 RUN a2enmod headers && a2enmod proxy && a2enmod proxy_http
 
-# deploy AET reports app
 RUN rm -rf /var/www/html/*
+
+# deploy AET reports app
 COPY report.zip /tmp/
 RUN unzip -o /tmp/report.zip -d /var/www/html && rm /tmp/report.zip
+
+
+# deploy AET suite generator
+COPY suite-generator-beta.zip /tmp
+RUN unzip -o /tmp/suite-generator-beta.zip -d /var/www/html/suite-generator && rm /tmp/suite-generator-beta.zip
 
 EXPOSE 80
 

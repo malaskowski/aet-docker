@@ -69,11 +69,14 @@ Example AET stack runs:
 - Browsermob container
 - Apache Karaf container with AET core installed (Runner, Workers, Web-API versions 2.1.7-SNAPSHOT with Chrome support)
 - Apache Server container with AET Report
+- [AET suite generator](https://github.com/m-suchorski/suite-generator/tree/feature/suite)
 
 ### Available consoles:
 - Selenium grid console: `http://<docker-machine-ip>:4444/grid/console`
 - ActiveMQ console: `http://<docker-machine-ip>:8161/admin/queues.jsp` (credentials: `admin/admin`)
 - Karaf console: `http://<docker-machine-ip>:8181/system/console/bundles` (credentials: `karaf/karaf`)
+- Suite generator: `http://<docker-machine-ip>/suite-generator`
+- AET Report: `http://<docker-machine-ip>/report.html?params...`
 
 #### Example visualiser
 If you want to see what's deployed on your instance, you may use `dockersamples/visualizer` by running:
