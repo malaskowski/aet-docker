@@ -1,7 +1,12 @@
 # Unreleased
 
-# 0.5.0
-- AET Version upgraded to [`3.0.1`](https://github.com/Cognifide/aet/releases/tag/3.0.1)
+# 0.6.0
+- AET Version upgraded to the official [`3.0.0`](https://github.com/Cognifide/aet/releases/tag/3.0.0) release
+- [Best practices for setting up AET instance with docker](https://github.com/Skejven/aet-docker#best-practices-when-setting-up-aet-instance) added.
+- Added [minimum requirements](https://github.com/Skejven/aet-docker#minimum-requirements) section.
+
+~~# 0.5.0 - please don't use this version~~
+~~- AET Version upgraded to [`3.0.1`](https://github.com/Cognifide/aet/releases/tag/3.0.1)~~
 
 # 0.4.1
 - Fixed maintainer label

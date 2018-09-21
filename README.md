@@ -18,6 +18,16 @@ Contains Dockerfiles and example docker swarm configuration to setup AET.
   where `<manager-ip>` is the IP of your docker-machine (usually `192.168.99.100`).
   Run `docker node ls` to list all nodes in the swarm (you should see only one node at the moment).
 
+### Minimum requirements
+When you run full AET system with Docker (including karaf, selenium grit hub and nodes with browsers, mongo, activemq, browsermob) it
+is recommended to enable at least:
+
+- `2 vCPU`
+- `8 GB of memory`
+
+to make your instance act stably. If you plan to run some heavier tests (e.g. multiple suites concurrently) or want to get results faster (more concurrently checked pages)
+adjust your docker cluster appropriately.
+
 1. Download `aet-swarm.yml` file from the [release](https://github.com/Skejven/aet-docker/releases)
  you want to use and save it in `aet` directory.
 2. Check the IP of your docker instance (e.g. `docker-machine ip`) and update `REPORT_DOMAIN` in `karaf` service to this ip address.
@@ -44,22 +54,10 @@ When you see status `healthy` it means Karaf is running correctly
 1. Update `aet-swarm.yml` file to the latest version (you will find it in the [latest release](https://github.com/Skejven/aet-docker/releases/latest)).
 2. Run `docker stack deploy -c aet-swarm.yml aet`
 
-## Building
-### Prerequisites
-- Docker installed on your host.
-
-1. Clone this repository
-2. Build all images using `build.sh local-snapshot`.
-You should see following images:
-```
-    skejven/aet_report
-    skejven/aet_karaf
-    skejven/aet_browsermob
-    skejven/aet_activemq
-```
-
-`local-snapshot` param is the version you want to set for your docker images.
-Use it later when starting containers.
+## Best practice when setting up AET instance
+1. Control changes of `aet-swarm.yml` over time! Use version control system (e.g. [GIT](https://git-scm.com/)) to keep tracking changes of your customized `aet-swarm.yml`.
+2. If you value your data - reports results and history of running suites, remember about **backing up MongoDB volume**. If you use external MongoDB, also back up its `/data/db` regularly!
+3. Provide at least [minimum requirements](https://github.com/Skejven/aet-docker#minimum-requirements) machine for your docker cluster.
 
 ## What's inside
 Example AET stack runs:
@@ -113,6 +111,22 @@ or
 
 Read more about running AET suite [here](https://github.com/Cognifide/aet/wiki/RunningSuite).
 
+## Building
+### Prerequisites
+- Docker installed on your host.
+
+1. Clone this repository
+2. Build all images using `build.sh local-snapshot`.
+You should see following images:
+```
+    skejven/aet_report
+    skejven/aet_karaf
+    skejven/aet_browsermob
+    skejven/aet_activemq
+```
+
+`local-snapshot` param is the version you want to set for your docker images.
+Use it later when starting containers.
 
 ## ToDo:
 - integration-pages docker
