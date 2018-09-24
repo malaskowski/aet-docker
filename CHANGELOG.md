@@ -1,5 +1,8 @@
 # Unreleased
 
+# 0.6.1
+- Fixed problem with Karaf configuration files permission denied
+
 # 0.6.0
 - AET Version upgraded to the official [`3.0.0`](https://github.com/Cognifide/aet/releases/tag/3.0.0) release
 - [Best practices for setting up AET instance with docker](https://github.com/Skejven/aet-docker#best-practices-when-setting-up-aet-instance) added.

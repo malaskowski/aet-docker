@@ -66,14 +66,14 @@ RUN apk add --update bash curl tar && rm -rf /var/cache/apk/*
 
 COPY --from=build /opt/karaf /opt/karaf
 
-RUN chown -R ${KARAF_USER}.${KARAF_USER} /opt/karaf \
-    && echo org.ops4j.pax.url.mvn.defaultRepositories = file:///opt/maven/repository@id=local.app@snapshots  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg
-
 # Copy and unzip AET bundles
 COPY bundles.zip /tmp/
 RUN unzip -o /tmp/bundles.zip -d /opt/karaf/deploy && rm /tmp/bundles.zip
 
 COPY configs/ /opt/karaf/etc
+
+RUN chown -R ${KARAF_USER}.${KARAF_USER} /opt/karaf \
+    && echo org.ops4j.pax.url.mvn.defaultRepositories = file:///opt/maven/repository@id=local.app@snapshots  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg
 
 EXPOSE 1099 8101 8181 44444
 
