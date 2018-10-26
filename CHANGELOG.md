@@ -1,5 +1,8 @@
 # Unreleased
 
+# 0.7.0
+- AET Version upgraded to [`3.1.0`](https://github.com/Cognifide/aet/releases/tag/3.1.0) release
+
 # 0.6.1
 - Fixed problem with Karaf configuration files permission denied
 
