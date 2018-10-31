@@ -1,4 +1,5 @@
 # Unreleased
+- [PR-4](https://github.com/Skejven/aet-docker/pull/4) - fixed incorrect format of ChromeWebDriverFactory config
 
 # 0.7.0
 - AET Version upgraded to [`3.1.0`](https://github.com/Cognifide/aet/releases/tag/3.1.0) release
