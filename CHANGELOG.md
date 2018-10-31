@@ -1,4 +1,6 @@
 # Unreleased
+
+# 0.7.1
 - [PR-4](https://github.com/Skejven/aet-docker/pull/4) - fixed incorrect format of ChromeWebDriverFactory config
 
 # 0.7.0
