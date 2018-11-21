@@ -1,5 +1,8 @@
 # Unreleased
 
+# 0.8.0-beta
+- Unreleased version of AET with [re-run](https://github.com/Cognifide/aet/pull/412) feature.
+
 # 0.7.1
 - [PR-4](https://github.com/Skejven/aet-docker/pull/4) - fixed incorrect format of ChromeWebDriverFactory config
 
