@@ -85,10 +85,10 @@ Read more about running AET suite [here](https://github.com/Cognifide/aet/wiki/R
 2. Run `docker stack deploy -c aet-swarm.yml aet`
 
 ### Available consoles:
-- Selenium grid console:  [`http://localhost:4444/grid/console`]
-- ActiveMQ console: [`http://localhost:8161/admin/queues.jsp`] (credentials: `admin/admin`)
-- Karaf console: [`http://localhost:8181/system/console/bundles`] (credentials: `karaf/karaf`)
-- Suite generator: [`http://localhost/suite-generator`]
+- Selenium grid console:  http://localhost:4444/grid/console
+- ActiveMQ console: http://localhost:8161/admin/queues.jsp (credentials: `admin/admin`)
+- Karaf console: http://localhost:8181/system/console/bundles (credentials: `karaf/karaf`)
+- Suite generator: http://localhost/suite-generator
 - AET Report: `http://localhost/report.html?params...`
 > Note, that if you are using *Docker Tools* there will be your docker-machine ip instead of `localhost`
 
