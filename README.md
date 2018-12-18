@@ -85,10 +85,6 @@ or
 
 Read more about running AET suite [here](https://github.com/Cognifide/aet/wiki/RunningSuite).
 
-### Updating local AET instance using docker swarm
-1. Update `aet-swarm.yml` and/or configuration files in the `AET_ROOT`.
-2. From the `AET_ROOT` run `docker stack deploy -c aet-swarm.yml aet`.
-
 ## Best practice when setting up AET instance
 1. Control changes in `aet-swarm.yml` and config files over time! Use version control system (e.g. [GIT](https://git-scm.com/)) to keep tracking changes of `AET_ROOT` contents.
 2. If you value your data - reports results and history of running suites, remember about **backing up MongoDB volume**. If you use external MongoDB, also back up its `/data/db` regularly!
