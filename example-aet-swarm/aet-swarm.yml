@@ -1,0 +1,155 @@
+#
+# AET
+#
+# Copyright (C) 2013 Cognifide Limited
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# To execute this docker-swarm yml file use `docker stack deploy -c aet-swarm.yml aet`
+
+version: '3.6'
+
+networks:
+  private:
+    driver: overlay
+
+volumes:
+  mongo-data:
+
+configs:
+  cleaner_cfg_0.8.0-rc1:
+    file: ./configs/com.cognifide.aet.cleaner.CleanerScheduler-main.cfg
+  proxy_cfg_0.8.0-rc1:
+    file: ./configs/com.cognifide.aet.proxy.RestProxyManager.cfg
+  jms_cfg_0.8.0-rc1:
+    file: ./configs/com.cognifide.aet.queues.DefaultJmsConnection.cfg
+  messages_cfg_0.8.0-rc1:
+    file: ./configs/com.cognifide.aet.runner.MessagesManager.cfg
+  runner_cfg_0.8.0-rc1:
+    file: ./configs/com.cognifide.aet.runner.RunnerConfiguration.cfg
+  webDriver_cfg_0.8.0-rc1:
+    file: ./configs/com.cognifide.aet.worker.drivers.chrome.ChromeWebDriverFactory.cfg
+  worker_cfg_0.8.0-rc1:
+    file: ./configs/com.cognifide.aet.worker.listeners.WorkersListenersService.cfg
+  report_cfg_0.8.0-rc1:
+    file: ./configs/com.cognifide.aet.rest.helpers.ReportConfigurationManager.cfg
+  mongodb_cfg_0.8.0-rc1:
+    file: ./configs/com.cognifide.aet.vs.mongodb.MongoDBClient.cfg
+
+services:
+  hub:
+    image: selenium/hub:3.14.0-arsenic
+    ports:
+      - "4444:4444"
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - private
+
+  chrome:
+    image: selenium/node-chrome:3.14.0-arsenic
+    volumes:
+      - /dev/shm:/dev/shm # Mitigates the Chromium issue described at https://code.google.com/p/chromium/issues/detail?id=519952
+    depends_on:
+      - hub
+    environment:
+      - HUB_HOST=hub
+      - HUB_PORT=4444
+      - NODE_MAX_SESSION=2
+    entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME -port 5556" /opt/bin/entry_point.sh'
+    deploy:
+      replicas: 3
+    networks:
+      - private
+
+  mongo:
+    image: mongo:3.2
+    command: mongod --enableMajorityReadConcern
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - private
+
+  activemq:
+    image: skejven/aet_activemq:0.8.0-rc1
+    ports:
+      - "8161:8161"
+    networks:
+      - private
+
+  browsermob:
+   image: skejven/aet_browsermob:0.8.0-rc1
+   ports:
+    - "8080:8080"
+    - "8281-8681:8281-8681"
+   networks:
+     - private
+
+  karaf:
+    image: skejven/aet_karaf:0.8.0-rc1
+    healthcheck:
+      test: curl -v --silent http://karaf:karaf@localhost:8181/system/console/bundles 2>&1 | grep -Fq "204 bundles in total - all 204 bundles active" || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      - hub
+      - activemq
+    configs:
+      - source: cleaner_cfg_0.8.0-rc1
+        target: /configs/com.cognifide.aet.cleaner.CleanerScheduler-main.cfg
+      - source: proxy_cfg_0.8.0-rc1
+        target: /configs/com.cognifide.aet.proxy.RestProxyManager.cfg
+      - source: jms_cfg_0.8.0-rc1
+        target: /configs/com.cognifide.aet.queues.DefaultJmsConnection.cfg
+      - source: messages_cfg_0.8.0-rc1
+        target: /configs/com.cognifide.aet.runner.MessagesManager.cfg
+      - source: runner_cfg_0.8.0-rc1
+        target: /configs/com.cognifide.aet.runner.RunnerConfiguration.cfg
+      - source: webDriver_cfg_0.8.0-rc1
+        target: /configs/com.cognifide.aet.worker.drivers.chrome.ChromeWebDriverFactory.cfg
+      - source: worker_cfg_0.8.0-rc1
+        target: /configs/com.cognifide.aet.worker.listeners.WorkersListenersService.cfg
+      - source: report_cfg_0.8.0-rc1
+        target: /configs/com.cognifide.aet.rest.helpers.ReportConfigurationManager.cfg
+      - source: mongodb_cfg_0.8.0-rc1
+        target: /configs/com.cognifide.aet.vs.mongodb.MongoDBClient.cfg
+    ports:
+      - "8181:8181"
+#      - "5005:5005" # uncomment to be able to connect Karaf in debug mode
+#      - KARAF_DEBUG=true # uncomment to start Karaf in debug mode
+    networks:
+      - private
+
+  report:
+    image: skejven/aet_report:0.8.0-rc1
+    ports:
+      - "80:80"
+    networks:
+      - private
