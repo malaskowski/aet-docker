@@ -1,4 +1,6 @@
 # Unreleased
+
+# 0.8.0-rc1
 - AET OSGi configs managed by Docker Configs in the stack file
 - `example-aet-swarm` module with example cluster setup and configs
 - Unreleased version of AET with [re-run](https://github.com/Cognifide/aet/pull/412) feature.
