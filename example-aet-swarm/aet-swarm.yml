@@ -144,6 +144,7 @@ services:
     ports:
       - "8181:8181"
 #      - "5005:5005" # uncomment to be able to connect Karaf in debug mode
+    environment:
 #      - KARAF_DEBUG=true # uncomment to start Karaf in debug mode
     networks:
       - private
