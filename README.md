@@ -59,11 +59,6 @@ You may check it by invoking:
 aet-swarm.yml
 configs
 ```
-Now you should change `aet-swarm.yml` `volumes` section for the `karaf` service to:
-```yaml
-    volumes:
-      - /osgi-configs/configs:/configs # when using docker-machine, use mounted folder
-```
 ***
 
 ### Running example instance
@@ -85,6 +80,12 @@ Contents of the `AET_ROOT` directory should look like:
 │   ├── com.cognifide.aet.worker.drivers.chrome.ChromeWebDriverFactory.cfg
 │   └── com.cognifide.aet.worker.listeners.WorkersListenersService.cfg
 ```
+  - If you are using docker-machine (otherwise ignore this point)
+   you should change `aet-swarm.yml` `volumes` section for the `karaf` service to:
+    ```yaml
+        volumes:
+          - /osgi-configs/configs:/configs # when using docker-machine, use mounted folder
+    ```
 3. From the `AET_ROOT` run `docker stack deploy -c aet-swarm.yml aet`.
 4. Wait about 1-2 minutes until Karaf start finishes.
 

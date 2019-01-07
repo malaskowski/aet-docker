@@ -2,7 +2,7 @@
 
 # 0.8.0
 - AET Version upgraded to [`3.2.0`](https://github.com/Cognifide/aet/releases/tag/3.2.0) release
-- AET OSGi configs managed by Docker Configs in the stack file
+- AET OSGi configs managed by mounted config volume in the stack file
 - `example-aet-swarm` module with example cluster setup and configs
 
 # 0.7.1
