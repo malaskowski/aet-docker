@@ -27,26 +27,6 @@ networks:
 volumes:
   mongo-data:
 
-configs:
-  cleaner_cfg_0.8.0:
-    file: ./configs/com.cognifide.aet.cleaner.CleanerScheduler-main.cfg
-  proxy_cfg_0.8.0:
-    file: ./configs/com.cognifide.aet.proxy.RestProxyManager.cfg
-  jms_cfg_0.8.0:
-    file: ./configs/com.cognifide.aet.queues.DefaultJmsConnection.cfg
-  messages_cfg_0.8.0:
-    file: ./configs/com.cognifide.aet.runner.MessagesManager.cfg
-  runner_cfg_0.8.0:
-    file: ./configs/com.cognifide.aet.runner.RunnerConfiguration.cfg
-  webDriver_cfg_0.8.0:
-    file: ./configs/com.cognifide.aet.worker.drivers.chrome.ChromeWebDriverFactory.cfg
-  worker_cfg_0.8.0:
-    file: ./configs/com.cognifide.aet.worker.listeners.WorkersListenersService.cfg
-  report_cfg_0.8.0:
-    file: ./configs/com.cognifide.aet.rest.helpers.ReportConfigurationManager.cfg
-  mongodb_cfg_0.8.0:
-    file: ./configs/com.cognifide.aet.vs.mongodb.MongoDBClient.cfg
-
 services:
   hub:
     image: selenium/hub:3.14.0-arsenic
@@ -122,25 +102,9 @@ services:
     depends_on:
       - hub
       - activemq
-    configs:
-      - source: cleaner_cfg_0.8.0
-        target: /configs/com.cognifide.aet.cleaner.CleanerScheduler-main.cfg
-      - source: proxy_cfg_0.8.0
-        target: /configs/com.cognifide.aet.proxy.RestProxyManager.cfg
-      - source: jms_cfg_0.8.0
-        target: /configs/com.cognifide.aet.queues.DefaultJmsConnection.cfg
-      - source: messages_cfg_0.8.0
-        target: /configs/com.cognifide.aet.runner.MessagesManager.cfg
-      - source: runner_cfg_0.8.0
-        target: /configs/com.cognifide.aet.runner.RunnerConfiguration.cfg
-      - source: webDriver_cfg_0.8.0
-        target: /configs/com.cognifide.aet.worker.drivers.chrome.ChromeWebDriverFactory.cfg
-      - source: worker_cfg_0.8.0
-        target: /configs/com.cognifide.aet.worker.listeners.WorkersListenersService.cfg
-      - source: report_cfg_0.8.0
-        target: /configs/com.cognifide.aet.rest.helpers.ReportConfigurationManager.cfg
-      - source: mongodb_cfg_0.8.0
-        target: /configs/com.cognifide.aet.vs.mongodb.MongoDBClient.cfg
+    volumes:
+      - ./configs:/configs
+#      - /osgi-configs/configs:/configs # when using docker-machine, use mounted folder
     ports:
       - "8181:8181"
 #      - "5005:5005" # uncomment to be able to connect Karaf in debug mode
