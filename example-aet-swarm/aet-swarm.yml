@@ -28,23 +28,23 @@ volumes:
   mongo-data:
 
 configs:
-  cleaner_cfg_0.8.0-rc1:
+  cleaner_cfg_0.8.0:
     file: ./configs/com.cognifide.aet.cleaner.CleanerScheduler-main.cfg
-  proxy_cfg_0.8.0-rc1:
+  proxy_cfg_0.8.0:
     file: ./configs/com.cognifide.aet.proxy.RestProxyManager.cfg
-  jms_cfg_0.8.0-rc1:
+  jms_cfg_0.8.0:
     file: ./configs/com.cognifide.aet.queues.DefaultJmsConnection.cfg
-  messages_cfg_0.8.0-rc1:
+  messages_cfg_0.8.0:
     file: ./configs/com.cognifide.aet.runner.MessagesManager.cfg
-  runner_cfg_0.8.0-rc1:
+  runner_cfg_0.8.0:
     file: ./configs/com.cognifide.aet.runner.RunnerConfiguration.cfg
-  webDriver_cfg_0.8.0-rc1:
+  webDriver_cfg_0.8.0:
     file: ./configs/com.cognifide.aet.worker.drivers.chrome.ChromeWebDriverFactory.cfg
-  worker_cfg_0.8.0-rc1:
+  worker_cfg_0.8.0:
     file: ./configs/com.cognifide.aet.worker.listeners.WorkersListenersService.cfg
-  report_cfg_0.8.0-rc1:
+  report_cfg_0.8.0:
     file: ./configs/com.cognifide.aet.rest.helpers.ReportConfigurationManager.cfg
-  mongodb_cfg_0.8.0-rc1:
+  mongodb_cfg_0.8.0:
     file: ./configs/com.cognifide.aet.vs.mongodb.MongoDBClient.cfg
 
 services:
@@ -97,14 +97,14 @@ services:
       - private
 
   activemq:
-    image: skejven/aet_activemq:0.8.0-rc1
+    image: skejven/aet_activemq:0.8.0
     ports:
       - "8161:8161"
     networks:
       - private
 
   browsermob:
-   image: skejven/aet_browsermob:0.8.0-rc1
+   image: skejven/aet_browsermob:0.8.0
    ports:
     - "8080:8080"
     - "8281-8681:8281-8681"
@@ -112,7 +112,7 @@ services:
      - private
 
   karaf:
-    image: skejven/aet_karaf:0.8.0-rc1
+    image: skejven/aet_karaf:0.8.0
     healthcheck:
       test: curl -v --silent http://karaf:karaf@localhost:8181/system/console/bundles 2>&1 | grep -Fq "204 bundles in total - all 204 bundles active" || exit 1
       interval: 1m
@@ -123,34 +123,34 @@ services:
       - hub
       - activemq
     configs:
-      - source: cleaner_cfg_0.8.0-rc1
+      - source: cleaner_cfg_0.8.0
         target: /configs/com.cognifide.aet.cleaner.CleanerScheduler-main.cfg
-      - source: proxy_cfg_0.8.0-rc1
+      - source: proxy_cfg_0.8.0
         target: /configs/com.cognifide.aet.proxy.RestProxyManager.cfg
-      - source: jms_cfg_0.8.0-rc1
+      - source: jms_cfg_0.8.0
         target: /configs/com.cognifide.aet.queues.DefaultJmsConnection.cfg
-      - source: messages_cfg_0.8.0-rc1
+      - source: messages_cfg_0.8.0
         target: /configs/com.cognifide.aet.runner.MessagesManager.cfg
-      - source: runner_cfg_0.8.0-rc1
+      - source: runner_cfg_0.8.0
         target: /configs/com.cognifide.aet.runner.RunnerConfiguration.cfg
-      - source: webDriver_cfg_0.8.0-rc1
+      - source: webDriver_cfg_0.8.0
         target: /configs/com.cognifide.aet.worker.drivers.chrome.ChromeWebDriverFactory.cfg
-      - source: worker_cfg_0.8.0-rc1
+      - source: worker_cfg_0.8.0
         target: /configs/com.cognifide.aet.worker.listeners.WorkersListenersService.cfg
-      - source: report_cfg_0.8.0-rc1
+      - source: report_cfg_0.8.0
         target: /configs/com.cognifide.aet.rest.helpers.ReportConfigurationManager.cfg
-      - source: mongodb_cfg_0.8.0-rc1
+      - source: mongodb_cfg_0.8.0
         target: /configs/com.cognifide.aet.vs.mongodb.MongoDBClient.cfg
     ports:
       - "8181:8181"
 #      - "5005:5005" # uncomment to be able to connect Karaf in debug mode
-    environment:
-#      - KARAF_DEBUG=true # uncomment to start Karaf in debug mode
+#    environment:
+#      - KARAF_DEBUG=true # uncomment (with section above) to start Karaf in debug mode
     networks:
       - private
 
   report:
-    image: skejven/aet_report:0.8.0-rc1
+    image: skejven/aet_report:0.8.0
     ports:
       - "80:80"
     networks:
