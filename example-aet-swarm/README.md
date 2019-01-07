@@ -69,19 +69,20 @@ read more [here](https://github.com/Cognifide/aet/wiki/Cleaner)
 
 ### Updating example instance
 1. Update `aet-swarm.yml` and/or configuration files in the `AET_ROOT`.
-2a. If you updated any of configs, you need to do one of following actions in order to apply changes on running swarm:
- - Redeploy whole stack by `docker stack rm aet` and bring it back after 1-2 minutes again with `docker stack deploy -c aet-swarm.yml aet`.
- - Update `aet-swarm.yml` `configs` section at the top of a file and in the `karaf` service definition.
+2. Configs
+  - If you updated any of configs, you need to do one of following actions in order to apply changes on running swarm:
+    - Redeploy whole stack by `docker stack rm aet` and bring it back after 1-2 minutes again with `docker stack deploy -c aet-swarm.yml aet`.
+    - Update `aet-swarm.yml` `configs` section at the top of a file and in the `karaf` service definition.
    e.g. to update `WorkersListenersService.cfg` modify `worker_cfg_${XYZ}` to `worker_cfg_${XYZ}-v2` in both places.
    Run `docker stack deploy -c aet-swarm.yml aet` to apply config.
- - Alternatively you may do [config rotation](https://docs.docker.com/engine/swarm/configs/#example-rotate-a-config).
+    - Alternatively you may do [config rotation](https://docs.docker.com/engine/swarm/configs/#example-rotate-a-config).
    e.g. to update `WorkersListenersService.cfg` run:
-   - register new config: `docker config create worker_cfg-v2 configs/com.cognifide.aet.worker.listeners.WorkersListenersService.cfg`
-   - update karaf service to use new config instead old one: 
+      - register new config: `docker config create worker_cfg-v2 configs/com.cognifide.aet.worker.listeners.WorkersListenersService.cfg`
+      - update karaf service to use new config instead old one: 
    `docker service update --config-rm aet_worker_cfg_${XYZ} --config-add source=worker_cfg-v2,target=/configs/com.cognifide.aet.worker.listeners.WorkersListenersService.cfg aet_karaf`
    where `${XYZ}` is current version of configuration
-   - cleanup old config `docker config rm aet_worker_cfg_${XYZ}`
-2b. If you didn't update any configs simply run `docker stack deploy -c aet-swarm.yml aet`.
+       - cleanup old config `docker config rm aet_worker_cfg_${XYZ}`-
+  - If you didn't update any configs simply run `docker stack deploy -c aet-swarm.yml aet`.
 
 ---
 
@@ -119,7 +120,7 @@ Set `report-domain` property in the `com.cognifide.aet.rest.helpers.ReportConfig
 ### How to enable AET instance to run more tests simultaneously
 > Notice: those changes will impact your machine resources, be sure to extend number of CPUs and memory
 > if you scale up number of browsers.
-1. Spawn more browsers by increasing number of Selenim Grid nodes or adding sessions to existing nodes.
+1. Spawn more browsers by increasing number of Selenium Grid nodes or adding sessions to existing nodes.
 Calculate new [`TOTAL_NUMBER_OF_BROWSERS`](#AET-throughput)
 2. Set `maxMessagesInCollectorQueue` in `configs/com.cognifide.aet.runner.RunnerConfiguration.cfg` to new `TOTAL_NUMBER_OF_BROWSERS`.
 3. Set `collectorInstancesNo` in `configs/com.cognifide.aet.worker.listeners.WorkersListenersService.cfg` to new `TOTAL_NUMBER_OF_BROWSERS`.
