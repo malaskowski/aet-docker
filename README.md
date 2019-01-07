@@ -40,6 +40,32 @@ See this [swarm-tutorial: create swarm](https://docs.docker.com/engine/swarm/swa
     - *Docker Tools*: Run `docker swarm init --advertise-addr <manager-ip>` where `<manager-ip>` 
 is the IP of your docker-machine (usually `192.168.99.100`).
 
+***
+If you are using ["Docker Tools"](https://docs.docker.com/toolbox/overview/) and docker-machine please
+create and mount your `AET_ROOT` directory to the Virtual Machine first. One of the ways to do this using VM GUI:
+  1. Start "Oracle VM VirtualBox Manager"
+  2. Right-Click `<machine name>` (*default*)
+  3. Settings...
+  4. Shared Folders
+  5. The Folder+ Icon on the Right (Add Share)
+  6. Folder Path: `<host dir>` (path to `AET_ROOT` on your host, e.g. `c:/Workspace/example-aet-swarm`)
+  7. Folder Name: `<mount name>` (e.g. `osgi-configs`)
+  8. Check on "Auto-mount" and "Make Permanent"
+  9. Restart `<machine name>` (*default*) to apply changes.
+Now you should see `osgi-configs` on your docker-machine VM.
+You may check it by invoking:
+`docker-machine ssh default "ls /osgi-configs"` it should list:
+```
+aet-swarm.yml
+configs
+```
+Now you should change `aet-swarm.yml` `volumes` section for the `karaf` service to:
+```yaml
+    volumes:
+      - /osgi-configs/configs:/configs # when using docker-machine, use mounted folder
+```
+***
+
 ### Running example instance
 > Notice - this instruction guides you how to setup AET instance using single-node swarm cluster. 
 > *This is not production recommended setup!*
@@ -91,7 +117,7 @@ Read more about running AET suite [here](https://github.com/Cognifide/aet/wiki/R
 3. Provide at least [minimum requirements](#minimum-requirements) machine for your docker cluster.
 
 ## Instance configuration
-Thanks to the [Docker Configs](https://docs.docker.com/engine/swarm/configs/) you may now configure
+Thanks to the mounted OSGi configs you may now configure
 instance via `AET_ROOT/configs` configuration files. Read more about possible configurations
 in the [example swarm config section](https://github.com/Skejven/aet-docker/tree/master/example-aet-swarm#configs).
 
