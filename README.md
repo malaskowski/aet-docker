@@ -89,7 +89,7 @@ Contents of the `AET_ROOT` directory should look like:
 3. From the `AET_ROOT` run `docker stack deploy -c aet-swarm.yml aet`.
 4. Wait about 1-2 minutes until Karaf start finishes.
 
-When it is ready, you should see the information in the [Karaf console](https://github.com/Skejven/aet-docker#available-consoles):
+When it is ready, you should see the information in the [Karaf console](http://localhost:8181/system/console/bundles) (credentials: `karaf/karaf`):
 
   > Bundle information: 204 bundles in total - all 204 bundles active
 
