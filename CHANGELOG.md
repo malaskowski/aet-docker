@@ -5,6 +5,23 @@
 - AET OSGi configs managed by mounted config volume in the stack file
 - `example-aet-swarm` module with example cluster setup and configs
 
+### how to migrate to 0.8.0 from 0.7.1
+Because of [PR-6](https://github.com/Skejven/aet-docker/pull/6) now OSGI configs are mounted as separate
+volume for Karaf image. If you upgrade your AET instance from the previous version please do following steps:
+1. As usual, update images version in your `aet-swarm.yml` file (to `0.8.0`).
+2. Add `volumes` section to the `karaf` service with following volume definition:
+```
+    volumes:
+      - ./configs:/configs
+```
+  - See [example swarm config file](https://github.com/Skejven/aet-docker/blob/master/example-aet-swarm/aet-swarm.yml#L105)
+for the reference.
+3. Download `example-aet-swarm.zip` from the [release](https://github.com/Skejven/aet-docker/releases/tag/0.8.0)
+and unzip it. Copy `configs` folder to the same place, where you placed `aet-swarm.yml`.
+4. If needed, update any configuration files in the `configs` directory (e.g. to set external 
+MongoDB address, or report domain).
+5. As usual run `docker stack deploy -c aet-swarm.yml aet` to update your AET stack.
+
 # 0.7.1
 - [PR-4](https://github.com/Skejven/aet-docker/pull/4) - fixed incorrect format of ChromeWebDriverFactory config
 
