@@ -70,7 +70,8 @@ COPY --from=build /opt/karaf /opt/karaf
 COPY bundles.zip /tmp/
 RUN unzip -o /tmp/bundles.zip -d /opt/karaf/deploy && rm /tmp/bundles.zip
 
-COPY configs/ /opt/karaf/etc
+# Copy Karaf config to watch for OSGi configs
+COPY etc/org.apache.felix.fileinstall-docker.cfg /opt/karaf/etc/org.apache.felix.fileinstall-docker.cfg
 
 RUN chown -R ${KARAF_USER}.${KARAF_USER} /opt/karaf \
     && echo org.ops4j.pax.url.mvn.defaultRepositories = file:///opt/maven/repository@id=local.app@snapshots  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg

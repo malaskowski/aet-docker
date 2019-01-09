@@ -1,5 +1,9 @@
 # Unreleased
-- Unreleased version of AET with [re-run](https://github.com/Cognifide/aet/pull/412) feature.
+
+# 0.8.0
+- AET Version upgraded to [`3.2.0`](https://github.com/Cognifide/aet/releases/tag/3.2.0) release
+- AET OSGi configs managed by mounted config volume in the stack file
+- `example-aet-swarm` module with example cluster setup and configs
 
 # 0.7.1
 - [PR-4](https://github.com/Skejven/aet-docker/pull/4) - fixed incorrect format of ChromeWebDriverFactory config

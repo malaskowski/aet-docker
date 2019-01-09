@@ -22,5 +22,3 @@ kubernetes
 atlassian-ide-plugin.xml
 .DS_Store
 **/generated/
-
-aet-swarm.yml
