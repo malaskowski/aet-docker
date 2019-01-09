@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # AET
 #
@@ -16,7 +17,6 @@
 # limitations under the License.
 #
 # You need to `docker login` before running this script
-#!/usr/bin/env bash
 
 AET_DOCKER_VERSION="$1"
 

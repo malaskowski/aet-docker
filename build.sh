@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # AET
 #
@@ -15,7 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-#!/usr/bin/env bash
 
 AET_DOCKER_VERSION="$1"
 
