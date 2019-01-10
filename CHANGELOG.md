@@ -12,14 +12,14 @@ volume for Karaf image. If you upgrade your AET instance from the previous versi
 2. Add `volumes` section to the `karaf` service with following volume definition:
 ```
     volumes:
-      - ./configs:/configs
+      - ./configs:/configsp
 ```
   - See [example swarm config file](https://github.com/Skejven/aet-docker/blob/master/example-aet-swarm/aet-swarm.yml#L105)
 for the reference.
 3. Download `example-aet-swarm.zip` from the [release](https://github.com/Skejven/aet-docker/releases/tag/0.8.0)
 and unzip it. Copy `configs` folder to the same place, where you placed `aet-swarm.yml`.
-4. If needed, update any configuration files in the `configs` directory (e.g. to set external 
-MongoDB address, or report domain).
+4. Remove `environment` section from the `karaf` service. You may now configure `REPORT_DOMAIN` and 
+`REPORT_DOMAIN` OSGi configs in the `configs` directory.
 5. As usual run `docker stack deploy -c aet-swarm.yml aet` to update your AET stack.
 
 # 0.7.1
