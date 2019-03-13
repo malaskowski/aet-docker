@@ -1,4 +1,5 @@
 # Unreleased
+- [Fixed](https://github.com/Skejven/aet-docker/commit/881f0ac6c7e115ca3d1c830f76384a586a1cb660) ActiveMQ not working jmx interface
 
 # 0.8.0
 - AET Version upgraded to [`3.2.0`](https://github.com/Cognifide/aet/releases/tag/3.2.0) release
