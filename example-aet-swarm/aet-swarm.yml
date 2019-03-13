@@ -77,7 +77,7 @@ services:
       - private
 
   activemq:
-    image: skejven/aet_activemq:0.8.0
+    image: skejven/aet_activemq:0.8.1
     ports:
       - "8161:8161"
     networks:
