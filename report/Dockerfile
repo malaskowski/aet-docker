@@ -1,7 +1,7 @@
 #
-# AET
+# AET Docker
 #
-# Copyright (C) 2013 Cognifide Limited
+# Copyright (C) 2018 Maciej Laskowski
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,8 +24,13 @@ ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
 ENV APACHE_LOG_DIR /var/log/apache2
 
+# Set the build params
+ARG AET_VERSION="3.2.1"
+ARG AET_ARTIFACT="report.zip"
+ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/Cognifide/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
+
 # make sure system is up-to-date and install apache2
-RUN apt-get update && apt-get install -y apache2 unzip && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y apache2 unzip curl && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # configure apache
 RUN rm -rf /etc/apache2/sites-available/*
@@ -35,10 +40,9 @@ RUN a2enmod headers && a2enmod proxy && a2enmod proxy_http
 
 RUN rm -rf /var/www/html/*
 
-# deploy AET reports app
-COPY report.zip /tmp/
-RUN unzip -o /tmp/report.zip -d /var/www/html && rm /tmp/report.zip
-
+# download and deploy AET reports app
+RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
+  && unzip -o /tmp/${AET_ARTIFACT} -d /var/www/html && rm /tmp/${AET_ARTIFACT}
 
 # deploy AET suite generator
 COPY suite-generator-beta.zip /tmp

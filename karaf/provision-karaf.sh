@@ -1,7 +1,7 @@
 #
-# AET
+# AET Docker
 #
-# Copyright (C) 2013 Cognifide Limited
+# Copyright (C) 2018 Maciej Laskowski
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,14 +27,14 @@ get_bundles_status() {
   curl -s ${KARAF_URL} | grep -o '{"status".*}]}' | jq '.status'
 }
 
-echo "Start waiting for Karaf to load features - up to 200 seconds, waiting for 188 active bundles"
+echo "Start waiting for Karaf to load features - up to 200 seconds, waiting for 187 active bundles"
 
 /opt/karaf/bin/karaf run &
 
 for i in $(seq 0 60);
 do
   sec=$((5 * $i))
-  if curl -v -s ${KARAF_URL} 2>&1 | grep -Fq "188 bundles active";
+  if curl -v -s ${KARAF_URL} 2>&1 | grep -Fq "187 bundles active";
   then
     echo "Karaf loading finished after $sec seconds";
     get_bundles_status

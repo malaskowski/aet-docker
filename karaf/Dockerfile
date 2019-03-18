@@ -1,7 +1,7 @@
 #
-# AET
+# AET Docker
 #
-# Copyright (C) 2013 Cognifide Limited
+# Copyright (C) 2018 Maciej Laskowski
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,11 +27,16 @@ ENV KARAF_EXEC exec
 # Set the build params
 ARG KARAF_VERSION="4.2.0"
 ARG KARAF_DOWNLOAD_SHA512="431ca85af2cc230ffb6ab996cb12034a940e21ac4d03ac04936a4ab5e902c7a4e767f06ad32796d250a30ce090aa1b39d927d84955400803e3ee4e3f5116fea4"
-ARG DOWNLOAD_URL="http://archive.apache.org/dist/karaf/${KARAF_VERSION}/apache-karaf-${KARAF_VERSION}.tar.gz"
+ARG KARAF_DOWNLOAD_URL="http://archive.apache.org/dist/karaf/${KARAF_VERSION}/apache-karaf-${KARAF_VERSION}.tar.gz"
+
+ARG AET_VERSION="3.2.1"
+ARG AET_ARTIFACT="features.zip"
+ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/Cognifide/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
+
 
 RUN apk add --update bash tar jq curl && rm -rf /var/cache/apk/*
 
-RUN curl -fSL -o /tmp/apache-karaf.tar.gz ${DOWNLOAD_URL} \
+RUN curl -fSL -o /tmp/apache-karaf.tar.gz ${KARAF_DOWNLOAD_URL} \
     && echo "${KARAF_DOWNLOAD_SHA512}  /tmp/apache-karaf.tar.gz" | sha512sum -c - \
     && mkdir -p /opt/karaf \
     && tar --strip-components=1 -C /opt/karaf -xzf /tmp/apache-karaf.tar.gz \
@@ -39,9 +44,9 @@ RUN curl -fSL -o /tmp/apache-karaf.tar.gz ${DOWNLOAD_URL} \
     && mkdir -p /opt/karaf/data /opt/karaf/data/log \
     && echo org.ops4j.pax.url.mvn.defaultRepositories = file:///opt/maven/repository@id=local.app@snapshots  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg
 
-# Copy and unzip AET features
-COPY features.zip /tmp/
-RUN unzip -o /tmp/features.zip -d /opt/karaf/deploy && rm /tmp/features.zip
+# download and unzip AET features
+RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
+  && unzip -o /tmp/${AET_ARTIFACT} -d /opt/karaf/deploy && rm /tmp/${AET_ARTIFACT}
 
 # Run karaf and wait until it downloads all features
 COPY provision-karaf.sh /tmp/provision-karaf.sh
@@ -59,6 +64,11 @@ ENV JAVA_MAX_MEM 1024m
 ENV JAVA_MIN_MEM 256m
 ENV KARAF_EXEC exec
 
+# Set the build params
+ARG AET_VERSION="3.2.1"
+ARG AET_ARTIFACT="bundles.zip"
+ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/Cognifide/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
+
 RUN addgroup -S -g ${KARAF_UID} ${KARAF_USER}; \
     adduser -S -u ${KARAF_UID} -g ${KARAF_USER} ${KARAF_USER}
 
@@ -66,9 +76,9 @@ RUN apk add --update bash curl tar && rm -rf /var/cache/apk/*
 
 COPY --from=build /opt/karaf /opt/karaf
 
-# Copy and unzip AET bundles
-COPY bundles.zip /tmp/
-RUN unzip -o /tmp/bundles.zip -d /opt/karaf/deploy && rm /tmp/bundles.zip
+# Download and unzip AET bundles
+RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
+  && unzip -o /tmp/${AET_ARTIFACT} -d /opt/karaf/deploy && rm /tmp/${AET_ARTIFACT}
 
 # Copy Karaf config to watch for OSGi configs
 COPY etc/org.apache.felix.fileinstall-docker.cfg /opt/karaf/etc/org.apache.felix.fileinstall-docker.cfg

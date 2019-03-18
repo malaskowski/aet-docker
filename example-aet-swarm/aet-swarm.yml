@@ -1,7 +1,7 @@
 #
-# AET
+# AET Docker
 #
-# Copyright (C) 2013 Cognifide Limited
+# Copyright (C) 2018 Maciej Laskowski
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -77,14 +77,14 @@ services:
       - private
 
   activemq:
-    image: skejven/aet_activemq:0.8.1
+    image: skejven/aet_activemq:0.9.0
     ports:
       - "8161:8161"
     networks:
       - private
 
   browsermob:
-   image: skejven/aet_browsermob:0.8.0
+   image: skejven/aet_browsermob:0.9.0
    ports:
     - "8080:8080"
     - "8281-8681:8281-8681"
@@ -92,9 +92,9 @@ services:
      - private
 
   karaf:
-    image: skejven/aet_karaf:0.8.0
+    image: skejven/aet_karaf:0.9.0
     healthcheck:
-      test: curl -v --silent http://karaf:karaf@localhost:8181/system/console/bundles 2>&1 | grep -Fq "204 bundles in total - all 204 bundles active" || exit 1
+      test: curl -v --silent http://karaf:karaf@localhost:8181/system/console/bundles 2>&1 | grep -Fq "203 bundles in total - all 203 bundles active" || exit 1
       interval: 1m
       timeout: 10s
       retries: 3
@@ -114,7 +114,7 @@ services:
       - private
 
   report:
-    image: skejven/aet_report:0.8.0
+    image: skejven/aet_report:0.9.0
     ports:
       - "80:80"
     networks:
