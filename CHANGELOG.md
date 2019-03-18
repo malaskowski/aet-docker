@@ -4,6 +4,11 @@ Not releaset yet changes
 # 0.9.0
 - [Fixed](https://github.com/Skejven/aet-docker/commit/881f0ac6c7e115ca3d1c830f76384a586a1cb660) ActiveMQ not working jmx interface
 - AET Version upgraded to [`3.2.1`](https://github.com/Cognifide/aet/releases/tag/3.2.1) release
+- AET artifacts are no longer stored in the repo but downloaded
+- Important change: since [AET-463](https://github.com/Cognifide/aet/pull/463) there are one less bundles.
+That caused:
+  - `aet_karaf` provision healthcheck looks for `187` instead of `188` bundles active
+  - healthcheck for the `karaf` container looks for `203` active bundles instead of `204`
 
 # 0.8.0
 - AET Version upgraded to [`3.2.0`](https://github.com/Cognifide/aet/releases/tag/3.2.0) release
