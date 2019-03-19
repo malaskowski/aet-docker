@@ -1,6 +1,6 @@
 # AET Docker support
 <p align="center">
-  <img src="misc/img/aet-docker.png?raw=true" alt="AET Docker Logo"/>
+  <img src="https://raw.githubusercontent.com/Skejven/aet-docker/master/misc/aet-docker.png" alt="AET Docker Logo"/>
 </p>
 
 Contains Dockerfiles and example docker swarm configuration to setup AET instance.
