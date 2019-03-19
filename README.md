@@ -1,6 +1,6 @@
 # AET Docker support
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Cognifide/aet/master/misc/img/aet-logo-black.png?raw=true" alt="AET Logo"/>
+  <img src="misc/img/aet-docker.png?raw=true" alt="AET Docker Logo"/>
 </p>
 
 Contains Dockerfiles and example docker swarm configuration to setup AET instance.
