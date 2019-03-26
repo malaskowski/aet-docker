@@ -33,7 +33,6 @@ ARG AET_VERSION="3.2.1"
 ARG AET_ARTIFACT="features.zip"
 ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/Cognifide/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
 
-
 RUN apk add --update bash tar jq curl && rm -rf /var/cache/apk/*
 
 RUN curl -fSL -o /tmp/apache-karaf.tar.gz ${KARAF_DOWNLOAD_URL} \
