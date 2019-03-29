@@ -1,5 +1,18 @@
 # Not released yet
 Not releaset yet changes
+- Support for AET application developers
+
+## Upgrade notes
+All Karaf AET artifacts (`bundles`, `features` and `configs`) are now stored in the Karaf Container in
+the `/aet` location:
+```
+├── aet
+│   ├── bundles
+│   ├── configs
+│   └── features
+```
+The main change concerns `configs` which were previously stored directly under root `/configs` inside
+the Karaf container. Remember to adjust your instance deployment config to that change.
 
 # 0.9.0
 - [Fixed](https://github.com/Skejven/aet-docker/commit/881f0ac6c7e115ca3d1c830f76384a586a1cb660) ActiveMQ not working jmx interface

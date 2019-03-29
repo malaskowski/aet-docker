@@ -22,3 +22,8 @@ kubernetes
 atlassian-ide-plugin.xml
 .DS_Store
 **/generated/
+
+# Dev environment
+example-aet-swarm/bundles/*
+example-aet-swarm/features/*
+example-aet-swarm/report/*

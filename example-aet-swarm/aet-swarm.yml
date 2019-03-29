@@ -77,14 +77,14 @@ services:
       - private
 
   activemq:
-    image: skejven/aet_activemq:0.9.0
+    image: skejven/aet_activemq:0.10.0
     ports:
       - "8161:8161"
     networks:
       - private
 
   browsermob:
-   image: skejven/aet_browsermob:0.9.0
+   image: skejven/aet_browsermob:0.10.0
    ports:
     - "8080:8080"
     - "8281-8681:8281-8681"
@@ -92,7 +92,7 @@ services:
      - private
 
   karaf:
-    image: skejven/aet_karaf:0.9.0
+    image: skejven/aet_karaf:0.10.0
     healthcheck:
       test: curl -v --silent http://karaf:karaf@localhost:8181/system/console/bundles 2>&1 | grep -Fq "203 bundles in total - all 203 bundles active" || exit 1
       interval: 1m
@@ -103,8 +103,9 @@ services:
       - hub
       - activemq
     volumes:
-      - ./configs:/configs
-#      - /osgi-configs/configs:/configs # when using docker-machine, use mounted folder
+      - ./configs:/aet/configs
+#      - ./bundles:/aet/bundles
+#      - ./features:/aet/features
     ports:
       - "8181:8181"
 #      - "5005:5005" # uncomment to be able to connect Karaf in debug mode
@@ -114,8 +115,10 @@ services:
       - private
 
   report:
-    image: skejven/aet_report:0.9.0
+    image: skejven/aet_report:0.10.0
     ports:
       - "80:80"
+#    volumes:
+#      - ./report:/var/www/html
     networks:
       - private
