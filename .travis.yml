@@ -1,0 +1,11 @@
+# Just to check if images are building correctly
+sudo: required
+
+services:
+  - docker
+
+before_script:
+  - chmod u+x build.sh
+
+script:
+  - ./build.sh travis

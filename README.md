@@ -34,6 +34,7 @@ You may find released versions of AET Docker images at [Docker Hub](https://clou
   * [Is there other way to run AET than with Docker Swarm cluster](#is-there-other-way-to-run-aet-than-with-docker-swarm-cluster)
 - [Building](#building)
   * [Prerequisites](#prerequisites-1)
+- [Developer environment](#developer-environment)
 
 
 ## Docker Images
@@ -114,7 +115,7 @@ Contents of the `AET_ROOT` directory should look like:
    you should change `aet-swarm.yml` `volumes` section for the `karaf` service to:
     ```yaml
         volumes:
-          - /osgi-configs/configs:/configs # when using docker-machine, use mounted folder
+          - /osgi-configs/configs:/aet/configs # when using docker-machine, use mounted folder
     ```
 3. From the `AET_ROOT` run `docker stack deploy -c aet-swarm.yml aet`.
 4. Wait about 1-2 minutes until Karaf start finishes.
@@ -314,3 +315,50 @@ You should see following images:
     skejven/aet_browsermob:{tag}
     skejven/aet_activemq:{tag}
 ```
+
+## Developer environment
+Since version `v0.10.0` [example swarm instance](#running-aet-instance-with-docker-swarm)
+supports AET developers.
+In order to be able to easily deploy AET artifacts on your docker instance follow these steps:
+
+> Notice, this example shows how to configure full-stack AET dev environemnt.
+  If you want to e.g. work only over AET bundles, you don't have to configure feature files
+  or report application. Just configure `bundles` volume and skip adjustments for other parts of AET stack.
+
+
+1. Download `example-aet-swarm.zip` 
+from the [release](https://github.com/Skejven/aet-docker/releases) and unzip the files to the 
+folder from where docker stack will be deployed (from now on we will call it `AET_ROOT`).
+
+2. Edit `aet-swarm.yml` and uncomment `karaf` and `report` services volumes:
+  ```yaml
+    karaf:
+      ...
+      volumes:
+        - ./configs:/aet/configs
+        - ./bundles:/aet/bundles
+        - ./features:/aet/features
+        
+     ...
+        
+     report:
+       ...
+       volumes:
+         - ./report:/var/www/html
+  ```
+3. Adjust structure of the `AET_ROOT` to:
+  ```
+  ├── aet-swarm.yml
+  ├── bundles
+  ├── configs
+  ├── features
+  └── report
+  ```
+4. Build [AET application](https://github.com/Cognifide/aet) and move all artifacts tho the right places:
+- AET bundles to the `bundles` directory
+- OSGi feature files into the `features`
+- `configs` directory already contains setup configs
+- report files into the `report` directory
+
+5. Now like in [instance setup](#instance-setup) steps,
+ run `docker stack deploy -c aet-swarm.yml aet` to enoy your AET dev stack. 

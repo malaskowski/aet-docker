@@ -75,12 +75,23 @@ RUN apk add --update bash curl tar && rm -rf /var/cache/apk/*
 
 COPY --from=build /opt/karaf /opt/karaf
 
+# Copy Karaf config to watch for AET artifacts
+COPY etc/org.apache.felix.fileinstall-bundles.cfg /opt/karaf/etc/org.apache.felix.fileinstall-bundles.cfg
+COPY etc/org.apache.felix.fileinstall-configs.cfg /opt/karaf/etc/org.apache.felix.fileinstall-configs.cfg
+COPY etc/org.apache.felix.fileinstall-features.cfg /opt/karaf/etc/org.apache.felix.fileinstall-features.cfg
+
+# Create AET artifacts deployment structure
+RUN mkdir -p /aet/bundles /aet/configs /aet/features \
+  && chown -R ${KARAF_USER}.${KARAF_USER} /aet
+
 # Download and unzip AET bundles
 RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
-  && unzip -o /tmp/${AET_ARTIFACT} -d /opt/karaf/deploy && rm /tmp/${AET_ARTIFACT}
+  && unzip -o /tmp/${AET_ARTIFACT} -d /aet/bundles && rm /tmp/${AET_ARTIFACT} \
+  && chown -R ${KARAF_USER}.${KARAF_USER} /aet/bundles
 
-# Copy Karaf config to watch for OSGi configs
-COPY etc/org.apache.felix.fileinstall-docker.cfg /opt/karaf/etc/org.apache.felix.fileinstall-docker.cfg
+# Move AET features files into the right place
+RUN mv /opt/karaf/deploy/aet-*.xml /aet/features \
+  && chown -R ${KARAF_USER}.${KARAF_USER} /aet/features
 
 RUN chown -R ${KARAF_USER}.${KARAF_USER} /opt/karaf \
     && echo org.ops4j.pax.url.mvn.defaultRepositories = file:///opt/maven/repository@id=local.app@snapshots  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg
