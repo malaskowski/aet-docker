@@ -34,6 +34,7 @@ You may find released versions of AET Docker images at [Docker Hub](https://clou
   * [Is there other way to run AET than with Docker Swarm cluster](#is-there-other-way-to-run-aet-than-with-docker-swarm-cluster)
 - [Building](#building)
   * [Prerequisites](#prerequisites-1)
+- [Developer environment](#developer-environment)
 
 
 ## Docker Images
