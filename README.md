@@ -1,9 +1,40 @@
-# AET Docker support
+# AET Docker
 <p align="center">
   <img src="https://raw.githubusercontent.com/Skejven/aet-docker/master/misc/aet-docker.png" alt="AET Docker Logo"/>
 </p>
 
-Contains Dockerfiles and example docker swarm configuration to setup AET instance.
+This repository contains Dockerfiles and example docker swarm configuration to setup AET instance.
+You may find released versions of AET Docker images at [Docker Hub](https://cloud.docker.com/u/skejven/). 
+
+- [Docker Images](#docker-images)
+  * [AET ActiveMq](#aet-activemq)
+  * [AET Browsermob](#aet-browsermob)
+  * [AET Apache Karaf](#aet-apache-karaf)
+  * [AET Apache Server](#aet-apache-server)
+- [Running AET instance with Docker Swarm](#running-aet-instance-with-docker-swarm)
+  * [Prerequisites](#prerequisites)
+  * [Instance setup](#instance-setup)
+    + [Minimum requirements](#minimum-requirements)
+  * [Configuration](#configuration)
+    + [OSGi configs](#osgi-configs)
+    + [Throughput and scaling](#throughput-and-scaling)
+  * [Updating instance](#updating-instance)
+  * [Executing AET Suite](#executing-aet-suite)
+  * [Best practices](#best-practices)
+  * [Available consoles](#available-consoles)
+  * [Troubleshooting](#troubleshooting)
+    + [Example visualiser](#example-visualiser)
+    + [Debugging](#debugging)
+    + [Logs](#logs)
+- [FAQ](#faq)
+  * [How to use external MongoDB](#how-to-use-external-mongodb)
+  * [How to set report domain](#how-to-set-report-domain)
+  * [How to enable AET instance to run more tests simultaneously](#how-to-enable-aet-instance-to-run-more-tests-simultaneously)
+  * [How to use external Selenium Grid nodes](#how-to-use-external-selenium-grid-nodes)
+  * [Is there other way to run AET than with Docker Swarm cluster](#is-there-other-way-to-run-aet-than-with-docker-swarm-cluster)
+- [Building](#building)
+  * [Prerequisites](#prerequisites-1)
+
 
 ## Docker Images
 
@@ -18,9 +49,9 @@ It contains all AET modules (bundles): Runner, Workers, Web-API, Datastorage, Ex
 Runs [Apache Server](https://httpd.apache.org/) that hosts [AET Report](https://github.com/Cognifide/aet/wiki/SuiteReport)
 and [AET suite generator](https://github.com/m-suchorski/suite-generator/tree/feature/suite)
 
-## Example AET instance with docker swarm
-Example Docker Swarm cluster that consists of only 1 node/manager.
-It enables to run fully functional AET instance that consists of:
+## Running AET instance with Docker Swarm
+This chapter shows how to setup fully functional AET instance with [Docker Swarm](https://docs.docker.com/engine/swarm/).
+Example single-node AET cluster consists of:
 - MongoDB container with mounted volume (for persistency)
 - Selenium Grid with Hub and 3 Nodes (2 Chrome instances each, totally 6 browsers)
 - AET ActiveMq container
@@ -28,7 +59,8 @@ It enables to run fully functional AET instance that consists of:
 - AET Apache Karaf container with AET core installed (Runner, Workers, Web-API, Datastorage, Executor)
 - AET Apache Server container with AET Report and [AET suite generator](https://github.com/m-suchorski/suite-generator/tree/feature/suite)
 
-Read more about that example setup in the [Example Swarm Readme](https://github.com/Skejven/aet-docker/tree/master/example-aet-swarm).
+> **Notice - this instruction guides you how to setup AET instance using single-node swarm cluster.** 
+> **This setup is not recommended for production use!**
 
 ### Prerequisites
 - Docker installed on your host (either ["Docker"](https://docs.docker.com/install/) (e.g. Docker for Windows) 
@@ -61,9 +93,7 @@ configs
 ```
 ***
 
-### Running example instance
-> Notice - this instruction guides you how to setup AET instance using single-node swarm cluster. 
-> *This is not production recommended setup!*
+### Instance setup
 1. Download `example-aet-swarm.zip` from the [release](https://github.com/Skejven/aet-docker/releases).
 2. Unzip the files to the folder from where docker stack will be deployed (from now on we will call it `AET_ROOT`).
 Contents of the `AET_ROOT` directory should look like:
@@ -89,9 +119,10 @@ Contents of the `AET_ROOT` directory should look like:
 3. From the `AET_ROOT` run `docker stack deploy -c aet-swarm.yml aet`.
 4. Wait about 1-2 minutes until Karaf start finishes.
 
-When it is ready, you should see the information in the [Karaf console](http://localhost:8181/system/console/bundles) (credentials: `karaf/karaf`):
+When it is ready, you should see the information in the [Karaf console](http://localhost:8181/system/console/bundles) 
+(credentials: `karaf/karaf`):
 
-  > Bundle information: 204 bundles in total - all 204 bundles active
+  > Bundle information: 203 bundles in total - all 203 bundles active
 
 You may also check the status of Karaf by executing
 
@@ -104,7 +135,82 @@ When you see status `healthy` it means Karaf is running correctly
 > IMAGE                     STATUS
 > skejven/aet_karaf:0.4.0   Up 20 minutes (healthy)
 
-### Running AET Suite
+
+#### Minimum requirements
+To run example AET instance make sure that machine you run it at has at least enabled:
+
+- `2 vCPU`
+- `6 GB of memory`
+
+### Configuration
+
+#### OSGi configs
+Thanks to the mounted OSGi configs you may now configure instance via `AET_ROOT/configs` configuration files.
+
+**com.cognifide.aet.cleaner.CleanerScheduler-main.cfg**
+- read more [here](https://github.com/Cognifide/aet/wiki/Cleaner)
+
+**com.cognifide.aet.proxy.RestProxyManager.cfg**
+- ToDo
+
+**com.cognifide.aet.queues.DefaultJmsConnection.cfg**
+- ToDo
+
+**com.cognifide.aet.rest.helpers.ReportConfigurationManager.cfg**
+- ToDo
+
+**com.cognifide.aet.runner.MessagesManager.cfg**
+- ToDo
+
+**com.cognifide.aet.runner.RunnerConfiguration.cfg**
+- ToDo
+
+**com.cognifide.aet.vs.mongodb.MongoDBClient.cfg**
+- ToDo
+
+**com.cognifide.aet.worker.drivers.chrome.ChromeWebDriverFactory.cfg**
+- ToDo
+
+**com.cognifide.aet.worker.listeners.WorkersListenersService.cfg**
+- ToDo
+
+#### Throughput and scaling
+AET instance speed depends on direct number of browsers in the system and its configuration.
+Lets define `TOTAL_NUMBER_OF_BROWSERS` which will be the number of selenium grid node instances
+multiplied by `NODE_MAX_SESSION` set for each node. For this default configuration we have `3`
+Selenium Grid instances (`replicas`) with `2` instances of browser available:
+```yaml
+  chrome:
+...
+    environment:
+...
+      - NODE_MAX_SESSION=2
+...
+    deploy:
+      replicas: 3
+...
+```
+So, the `TOTAL_NUMBER_OF_BROWSERS` is `6` (`3 replicas x 2 sessions`).
+That number should be set for following configs:
+- `maxMessagesInCollectorQueue` in `com.cognifide.aet.runner.RunnerConfiguration.cfg`
+- `collectorInstancesNo` in `com.cognifide.aet.worker.listeners.WorkersListenersService.cfg`
+
+### Updating instance
+You may update configuration files directly from your host 
+(unless you use docker-machine, see workaround below).
+Karaf should automatically notice changes in the config files.
+
+To update instance to the newer version
+1. Update `aet-swarm.yml` and/or configuration files in the `AET_ROOT`.
+2. Simply run `docker stack deploy -c aet-swarm.yml aet`
+
+**docker-machine config changes detection workaround**
+> Please notice that when you are using docker-machine and Docker Tools, Karaf does not
+detect automatic changes in the config. You will need to restart Karaf service after applying
+changes in the configuration files (e.g. by removing `aet_karaf` service and running stack deploy).
+
+
+### Executing AET Suite
 To run AET Suite simply define `endpointDomain` to AET Karaf IP with `8181` port, e.g.:
 > `./aet.sh http://localhost:8181`
 or
@@ -112,15 +218,88 @@ or
 
 Read more about running AET suite [here](https://github.com/Cognifide/aet/wiki/RunningSuite).
 
-## Best practice when setting up AET instance
-1. Control changes in `aet-swarm.yml` and config files over time! Use version control system (e.g. [GIT](https://git-scm.com/)) to keep tracking changes of `AET_ROOT` contents.
-2. If you value your data - reports results and history of running suites, remember about **backing up MongoDB volume**. If you use external MongoDB, also back up its `/data/db` regularly!
+### Best practices
+1. Control changes in `aet-swarm.yml` and config files over time! Use version control system 
+(e.g. [GIT](https://git-scm.com/)) to keep tracking changes of `AET_ROOT` contents.
+2. If you value your data - reports results and history of running suites, remember about 
+**backing up MongoDB volume**. If you use external MongoDB, also back up its `/data/db` regularly!
 3. Provide at least [minimum requirements](#minimum-requirements) machine for your docker cluster.
 
-## Instance configuration
-Thanks to the mounted OSGi configs you may now configure
-instance via `AET_ROOT/configs` configuration files. Read more about possible configurations
-in the [example swarm config section](https://github.com/Skejven/aet-docker/tree/master/example-aet-swarm#configs).
+### Available consoles
+- Selenium grid console: http://localhost:4444/grid/console
+- ActiveMQ console: http://localhost:8161/admin/queues.jsp (credentials: `admin/admin`)
+- Karaf console: http://localhost:8181/system/console/bundles (credentials: `karaf/karaf`)
+- Suite generator: http://localhost/suite-generator
+- AET Report: `http://localhost/report.html?params...`
+> Note, that if you are using *Docker Tools* there will be your docker-machine ip instead of `localhost`
+
+### Troubleshooting
+#### Example visualiser
+If you want to see what's deployed on your instance, you may use `dockersamples/visualizer` by running:
+
+```
+docker service create \
+  --name=viz \
+  --publish=8090:8080/tcp \
+  --constraint=node.role==manager \
+  --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+  dockersamples/visualizer
+ ```
+
+- Visualiser console: `http://localhost:8090`
+> Note, that if you are using *Docker Tools* there will be your docker-machine ip instead of `localhost`
+
+#### Debugging
+To debug bundles on Karaf set environment vairable `KARAF_DEBUG=true` and expose port `5005` on karaf service.
+
+#### Logs
+You may preview AET logs with `docker service logs aet_karaf -f`.
+
+---
+
+## FAQ
+### How to use external MongoDB
+Set `mongoURI` property in the `com.cognifide.aet.vs.mongodb.MongoDBClient.cfg` to point your mongodb instance uri.
+
+### How to set report domain
+Set `report-domain` property in the `com.cognifide.aet.rest.helpers.ReportConfigurationManager.cfg` to point the domain.
+
+### How to enable AET instance to run more tests simultaneously
+> Notice: those changes will impact your machine resources, be sure to extend number of CPUs and memory
+> if you scale up number of browsers.
+1. Spawn more browsers by increasing number of Selenium Grid nodes or adding sessions to existing nodes.
+Calculate new [`TOTAL_NUMBER_OF_BROWSERS`](#AET-throughput)
+2. Set `maxMessagesInCollectorQueue` in `configs/com.cognifide.aet.runner.RunnerConfiguration.cfg` to new `TOTAL_NUMBER_OF_BROWSERS`.
+3. Set `collectorInstancesNo` in `configs/com.cognifide.aet.worker.listeners.WorkersListenersService.cfg` to new `TOTAL_NUMBER_OF_BROWSERS`.
+4. Update instance (see [how to do it](#updating-example-instance).
+
+### How to use external Selenium Grid nodes
+External Selenium Grid node instance should have:
+   * [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed
+   * [Chrome browser](https://www.google.com/chrome/browser/desktop/) installed
+   * [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) (at least version 2.40)
+   * [Selenium Standalone Server](http://www.seleniumhq.org/download/) (at least version 3.41)
+
+Check the address of the machine, where AET stack is running. By default, Selenium Grid HUB should be
+available on the `4444` port. Use this IP address when you run node, with command 
+(replace `{SGRID_IP}` with this IP address): 
+
+```bash
+java -Dwebdriver.chrome.driver="<path/to/chromedriver>" -jar <path/to/selenium-server-standalone.jar> -role node -hub http://{SGRID_IP}:4444/grid/register -browser "browserName=chrome,maxInstances=10" -maxSession 10
+```
+
+You should see the message that node joins selenium grid.
+Check it via selenium grid console: `http://{SGRID_IP}:4444/grid/console`
+
+### Is there other way to run AET than with Docker Swarm cluster
+Yes, AET system is a group of containers that form an instance together.
+You need a way to organize them and make visible to each other in order to have functional AET instance.
+This repository contains **example** instance setup with Docker Swarm, which is the most basic
+containers cluster manager that comes OOTB with Docker.
+For more advanced setups of AET instance I'd recommend to look at [Kubernetes](https://kubernetes.io/) 
+or [OpenShift](https://www.openshift.com/) systems (including services provided by cloud vendors).
+
+---
 
 ## Building
 ### Prerequisites
@@ -135,7 +314,3 @@ You should see following images:
     skejven/aet_browsermob:{tag}
     skejven/aet_activemq:{tag}
 ```
-
-## ToDo:
-- integration-pages docker
-- use maven plugin to build images with current code, version etc.
