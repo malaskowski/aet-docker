@@ -1,6 +1,6 @@
 # Not released yet
 Not releaset yet changes
-- Support for AET application developers
+- [Support for AET application developers](https://github.com/Skejven/aet-docker/pull/10)
 
 ## Upgrade notes
 All Karaf AET artifacts (`bundles`, `features` and `configs`) are now stored in the Karaf Container in

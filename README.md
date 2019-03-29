@@ -317,7 +317,7 @@ You should see following images:
 
 ## Developer environment
 Since version `v0.10.0` [example swarm instance](#running-aet-instance-with-docker-swarm)
-supports for AET developers.
+supports AET developers.
 In order to be able to easily deploy AET artifacts on your docker instance follow these steps:
 
 > Notice, this example shows how to configure full-stack AET dev environemnt.
