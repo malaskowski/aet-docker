@@ -16,6 +16,8 @@ target
 test-output
 kubernetes
 
+release.sh
+
 .metadata
 ~*
 ~*.*

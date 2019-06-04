@@ -1,4 +1,9 @@
 # Not released yet
+
+# 0.11.0
+- AET Version upgraded to [`3.2.2`](https://github.com/Cognifide/aet/releases/tag/3.2.2) release
+
+# 0.10.0
 Not releaset yet changes
 - [Support for AET application developers](https://github.com/Skejven/aet-docker/pull/10)
 
