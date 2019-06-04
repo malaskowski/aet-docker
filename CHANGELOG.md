@@ -4,10 +4,6 @@
 - AET Version upgraded to [`3.2.2`](https://github.com/Cognifide/aet/releases/tag/3.2.2) release
 
 # 0.10.0
-Not releaset yet changes
-
-
-# 0.10.0
 - [Support for AET application developers](https://github.com/Skejven/aet-docker/pull/10)
 
 ## Upgrade notes
