@@ -25,7 +25,7 @@ ENV APACHE_RUN_GROUP www-data
 ENV APACHE_LOG_DIR /var/log/apache2
 
 # Set the build params
-ARG AET_VERSION="3.2.1"
+ARG AET_VERSION="3.2.2"
 ARG AET_ARTIFACT="report.zip"
 ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/Cognifide/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
 
