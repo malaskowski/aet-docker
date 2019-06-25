@@ -52,16 +52,16 @@ Runs [Apache Server](https://httpd.apache.org/) that hosts [AET Report](https://
 and [AET suite generator](https://github.com/m-suchorski/suite-generator/tree/feature/suite)
 
 ## Running AET instance with Docker Swarm
-This chapter shows how to setup fully functional AET instance with [Docker Swarm](https://docs.docker.com/engine/swarm/).
+This chapter shows how to setup a fully functional AET instance with [Docker Swarm](https://docs.docker.com/engine/swarm/).
 Example single-node AET cluster consists of:
-- MongoDB container with mounted volume (for persistency)
+- MongoDB container with a mounted volume (for persistence)
 - Selenium Grid with Hub and 3 Nodes (2 Chrome instances each, totally 6 browsers)
 - AET ActiveMq container
 - AET Browsermob container
 - AET Apache Karaf container with AET core installed (Runner, Workers, Web-API, Datastorage, Executor)
 - AET Apache Server container with AET Report and [AET suite generator](https://github.com/m-suchorski/suite-generator/tree/feature/suite)
 
-> **Notice - this instruction guides you how to setup AET instance using single-node swarm cluster.** 
+> **Notice - this instruction guides you on how to setup AET instance using single-node swarm cluster.** 
 > **This setup is not recommended for production use!**
 
 ### Prerequisites
@@ -177,9 +177,9 @@ Thanks to the mounted OSGi configs you may now configure instance via `AET_ROOT/
 - ToDo
 
 #### Throughput and scaling
-AET instance speed depends on direct number of browsers in the system and its configuration.
-Lets define `TOTAL_NUMBER_OF_BROWSERS` which will be the number of selenium grid node instances
-multiplied by `NODE_MAX_SESSION` set for each node. For this default configuration we have `3`
+AET instance speed depends on the direct number of browsers in the system and its configuration.
+Let's define a `TOTAL_NUMBER_OF_BROWSERS` which will be the number of selenium grid node instances
+multiplied by `NODE_MAX_SESSION` set for each node. For this default configuration, we have `3`
 Selenium Grid instances (`replicas`) with `2` instances of browser available:
 ```yaml
   chrome:
@@ -199,7 +199,7 @@ That number should be set for following configs:
 
 ### Updating instance
 You may update configuration files directly from your host 
-(unless you use docker-machine, see workaround below).
+(unless you use docker-machine, see the workaround below).
 Karaf should automatically notice changes in the config files.
 
 To update instance to the newer version
@@ -248,7 +248,7 @@ docker service create \
   dockersamples/visualizer
  ```
 
-- Visualiser console: `http://localhost:8090`
+- Visualizer console: `http://localhost:8090`
 > Note, that if you are using *Docker Tools* there will be your docker-machine ip instead of `localhost`
 
 #### Debugging
@@ -270,8 +270,8 @@ After you setup external Selenium Grid, update the `seleniumGridUrl` property in
 Set `report-domain` property in the `com.cognifide.aet.rest.helpers.ReportConfigurationManager.cfg` to point the domain.
 
 ### How to enable AET instance to run more tests simultaneously
-> Notice: those changes will impact your machine resources, be sure to extend number of CPUs and memory
-> if you scale up number of browsers.
+> Notice: those changes will impact your machine resources, be sure to extend the number of CPUs and memory
+> if you scale up a number of browsers.
 1. Spawn more browsers by increasing number of Selenium Grid nodes or adding sessions to existing nodes.
 Calculate new [`TOTAL_NUMBER_OF_BROWSERS`](#AET-throughput)
 2. Set `maxMessagesInCollectorQueue` in `configs/com.cognifide.aet.runner.RunnerConfiguration.cfg` to new `TOTAL_NUMBER_OF_BROWSERS`.
