@@ -28,6 +28,7 @@ You may find released versions of AET Docker images at [Docker Hub](https://clou
     + [Logs](#logs)
 - [FAQ](#faq)
   * [How to use external MongoDB](#how-to-use-external-mongodb)
+  * [How to use external Selenium Grid](#how-to-use-external-selenium-grid)
   * [How to set report domain](#how-to-set-report-domain)
   * [How to enable AET instance to run more tests simultaneously](#how-to-enable-aet-instance-to-run-more-tests-simultaneously)
   * [How to use external Selenium Grid nodes](#how-to-use-external-selenium-grid-nodes)
@@ -260,7 +261,10 @@ You may preview AET logs with `docker service logs aet_karaf -f`.
 
 ## FAQ
 ### How to use external MongoDB
-Set `mongoURI` property in the `com.cognifide.aet.vs.mongodb.MongoDBClient.cfg` to point your mongodb instance uri.
+Set the `mongoURI` property in the `configs/com.cognifide.aet.vs.mongodb.MongoDBClient.cfg` to point your mongodb instance uri.
+
+### How to use external Selenium Grid
+After you setup external Selenium Grid, update the `seleniumGridUrl` property in the `configs/com.cognifide.aet.worker.drivers.chrome.ChromeWebDriverFactory.cfg` to Grid address.
 
 ### How to set report domain
 Set `report-domain` property in the `com.cognifide.aet.rest.helpers.ReportConfigurationManager.cfg` to point the domain.
