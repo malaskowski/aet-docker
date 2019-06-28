@@ -16,7 +16,7 @@ AET stack defined in this example runs:
 
 ### How to run
 0. Make sure you meet all [prerequisites](https://github.com/Skejven/aet-docker#prerequisites).
-1. Download and unzip [aet-lighthouse-edition](ToDo).
+1. Download and unzip [aet-lighthouse-edition](https://bintray.com/skejven/AET/download_file?file_path=lighthouse-aet-swarm.zip).
 2. Run `./run.sh` to run AET Stack and Lighthouse Docker Container.
 
 ### Example usage
