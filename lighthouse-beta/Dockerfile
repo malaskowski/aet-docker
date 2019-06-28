@@ -1,7 +1,7 @@
 #
 # AET Docker
 #
-# Copyright (C) 2018 Maciej Laskowski
+# Copyright (C) 2019 Maciej Laskowski
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,14 +42,14 @@ ARG CACHEBUST=1
 RUN npm i lighthouse -g
 
 # Install express.
-COPY misc/package.json .
+COPY config/package.json .
 RUN npm i --production
 
 # Add the simple server.
-COPY misc/server.js /
+COPY config/server.js /
 RUN chmod +x /server.js
 
-COPY misc/entrypoint.sh /
+COPY config/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 # Add a chrome user and setup home dir.
@@ -58,10 +58,7 @@ RUN groupadd --system chrome && \
     mkdir --parents /home/chrome/reports && \
     chown --recursive chrome:chrome /home/chrome
 
-#USER chrome
-
-#VOLUME /home/chrome/reports
-#WORKDIR /home/chrome/reports
+USER chrome
 
 # Disable Lighthouse error reporting to prevent prompt.
 ENV CI=true
@@ -69,4 +66,3 @@ ENV CI=true
 EXPOSE 8080
 
 ENTRYPOINT ["dumb-init", "--", "/entrypoint.sh"]
-#CMD ["lighthouse", "--help"]

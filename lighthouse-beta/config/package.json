@@ -1,7 +1,7 @@
 {
-  "name": "aet_lighthouse",
-  "description": "Lighthouse in Docker 4 AET",
-  "author": "Maciej Laskowski <skejven@gmail.com>",
+  "name": "lighthouse_ci",
+  "description": "Lighthouse in Docker",
+  "author": "Eric Bidelman <ebidel@>, Cedric Bellet",
   "license": "Apache-2.0",
   "main": "server.js",
   "dependencies": {

@@ -123,11 +123,13 @@ services:
     networks:
       - private
 
+# FixMe it is currently not possible to run lighthouse without SYS_ADMIN capabilities which is not supported in swarm mode
 #  lighthouse:
-#    image: skejven/aet_lighthouse:0.12.0-lighthouse
+#    image: skejven/aet_lighthouse:0.11.1-lighthouse
+#    user: root
 #    ports:
 #      - "9080:8080"
-#    volumes:
-#      - ./lighthouse-reports:/home/chrome/reports
+##    volumes:
+##      - ./lighthouse-reports:/home/chrome/reports
 #    networks:
 #      - private

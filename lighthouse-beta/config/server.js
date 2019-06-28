@@ -33,7 +33,7 @@ function getDefaultArgs(outputPath, format) {
     // '--port=9222',
     '--port=0', // choose random port every time so we launch a new instance of Chrome.
     // Note: this is a noop when using Dockerfile.nonheadless b/c Chrome is already launched.
-    '--chrome-flags="--headless  --no-sandbox"'
+    '--chrome-flags="--headless"'
   ];
 }
 

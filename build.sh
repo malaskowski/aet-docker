@@ -23,4 +23,4 @@ docker build -t skejven/aet_activemq:${AET_DOCKER_VERSION} activemq/
 docker build -t skejven/aet_browsermob:${AET_DOCKER_VERSION} browsermob/
 docker build -t skejven/aet_karaf:${AET_DOCKER_VERSION} karaf/
 docker build -t skejven/aet_report:${AET_DOCKER_VERSION} report/
-#docker build -t skejven/aet_lighthouse:${AET_DOCKER_VERSION} lighthouse/ --build-arg CACHEBUST=$(date +%d)
+docker build -t skejven/aet_lighthouse:${AET_DOCKER_VERSION} lighthouse-beta/ --build-arg CACHEBUST=$(date +%d)

@@ -2,7 +2,7 @@
 #
 # AET Docker
 #
-# Copyright (C) 2018 Maciej Laskowski
+# Copyright (C) 2019 Maciej Laskowski
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-#docker stack deploy -c aet-swarm.yml aet
+
+docker stack deploy -c aet-swarm.yml aet
 
 docker rm -f lighthouse_aet
-docker run -dit -p 9980:8080 --rm --name lighthouse_aet --cap-add=SYS_ADMIN skejven/aet_lighthouse:0.12.0-lighthouse
+docker run -dit -p 9980:8080 --rm --name lighthouse_aet --cap-add=SYS_ADMIN skejven/aet_lighthouse:0.11.1-lighthouse
