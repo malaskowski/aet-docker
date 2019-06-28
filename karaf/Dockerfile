@@ -89,6 +89,9 @@ RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
   && unzip -o /tmp/${AET_ARTIFACT} -d /aet/bundles && rm /tmp/${AET_ARTIFACT} \
   && chown -R ${KARAF_USER}.${KARAF_USER} /aet/bundles
 
+# Add all extra bundles
+COPY extra /aet/bundles
+
 # Move AET features files into the right place
 RUN mv /opt/karaf/deploy/aet-*.xml /aet/features \
   && chown -R ${KARAF_USER}.${KARAF_USER} /aet/features

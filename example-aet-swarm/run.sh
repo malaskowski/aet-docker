@@ -16,11 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+#docker stack deploy -c aet-swarm.yml aet
 
-AET_DOCKER_VERSION="$1"
-
-docker build -t skejven/aet_activemq:${AET_DOCKER_VERSION} activemq/
-docker build -t skejven/aet_browsermob:${AET_DOCKER_VERSION} browsermob/
-docker build -t skejven/aet_karaf:${AET_DOCKER_VERSION} karaf/
-docker build -t skejven/aet_report:${AET_DOCKER_VERSION} report/
-#docker build -t skejven/aet_lighthouse:${AET_DOCKER_VERSION} lighthouse/ --build-arg CACHEBUST=$(date +%d)
+docker rm -f lighthouse_aet
+docker run -dit -p 9980:8080 --rm --name lighthouse_aet --cap-add=SYS_ADMIN skejven/aet_lighthouse:0.12.0-lighthouse

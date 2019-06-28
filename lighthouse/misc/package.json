@@ -1,0 +1,11 @@
+{
+  "name": "aet_lighthouse",
+  "description": "Lighthouse in Docker 4 AET",
+  "author": "Maciej Laskowski <skejven@gmail.com>",
+  "license": "Apache-2.0",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3"
+  }
+}

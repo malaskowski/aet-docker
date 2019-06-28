@@ -44,6 +44,9 @@ RUN rm -rf /var/www/html/*
 RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
   && unzip -o /tmp/${AET_ARTIFACT} -d /var/www/html && rm /tmp/${AET_ARTIFACT}
 
+# Add all extra files
+COPY extra /var/www/html
+
 # deploy AET suite generator
 COPY suite-generator-beta.zip /tmp
 RUN unzip -o /tmp/suite-generator-beta.zip -d /var/www/html/suite-generator && rm /tmp/suite-generator-beta.zip
