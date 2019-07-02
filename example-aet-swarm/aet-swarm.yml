@@ -77,14 +77,14 @@ services:
       - private
 
   activemq:
-    image: skejven/aet_activemq:0.11.1-lighthouse
+    image: skejven/aet_activemq:0.11.0
     ports:
       - "8161:8161"
     networks:
       - private
 
   browsermob:
-   image: skejven/aet_browsermob:0.11.1-lighthouse
+   image: skejven/aet_browsermob:0.11.0
    ports:
     - "8080:8080"
     - "8281-8681:8281-8681"
@@ -92,7 +92,7 @@ services:
      - private
 
   karaf:
-    image: skejven/aet_karaf:0.11.1-lighthouse
+    image: skejven/aet_karaf:lighthouse-beta-1
     healthcheck:
       test: curl -v --silent http://karaf:karaf@localhost:8181/system/console/bundles 2>&1 | grep -Fq "204 bundles in total - all 204 bundles active" || exit 1
       interval: 1m
@@ -115,21 +115,10 @@ services:
       - private
 
   report:
-    image: skejven/aet_report:0.11.1-lighthouse
+    image: skejven/aet_report:lighthouse-beta-1
     ports:
-      - "8999:80"
+      - "80:80"
 #    volumes:
 #      - ./report:/var/www/html
     networks:
       - private
-
-# FixMe it is currently not possible to run lighthouse without SYS_ADMIN capabilities which is not supported in swarm mode
-#  lighthouse:
-#    image: skejven/aet_lighthouse:0.11.1-lighthouse
-#    user: root
-#    ports:
-#      - "9080:8080"
-##    volumes:
-##      - ./lighthouse-reports:/home/chrome/reports
-#    networks:
-#      - private

@@ -1,10 +1,28 @@
+/*
+ * aet-extensions: lighthouse
+ *
+ * Copyright (C) 2019 Maciej Laskowski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
 'use strict';
 
 const express = require('express');
-const app = express();
+const bodyParser = require('body-parser');
+
 const spawn = require('child_process').spawn;
 const fs = require('fs');
-const WORK_DIR = `/home/chrome/reports`;
+
+const WORK_DIR = `reports`;
 
 function validURL(url, res) {
   if (!url) {
@@ -58,7 +76,9 @@ function callLighthouseAndRespond(args, url, res, start, fileName) {
 })
 }
 
-function runLighthouse(url, res, next, order) {
+function runLighthouse(body, res, next, order) {
+  const url = body.url;
+  //ToDo rest of the params
   const start = Date.now();
   if (!validURL(url, res)) {
     return;
@@ -74,10 +94,17 @@ function runLighthouse(url, res, next, order) {
   callLighthouseAndRespond(args, url, res, start, fileName, order);
 }
 
-app.get('/api/v1/inspect', (req, res, next) => {
+/*
+ * Server initialization
+ */
+const app = express();
+app.use(bodyParser.json());
+
+app.post('/api/v1/inspect', (req, res, next) => {
   console.log(`processing ${req.query.url}`);
-runLighthouse(req.query.url, res, next);
+runLighthouse(req.body, res, next);
 });
+
 const PORT = 5000;
 
 app.listen(PORT, () => {
