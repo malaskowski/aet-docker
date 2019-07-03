@@ -22,7 +22,6 @@ installed.
     - use instructions from the [AET Lighthouse plugin](https://github.com/Skejven/aet-lighthouse-extension/tree/master/lighthouse-server#lighthouse-server-for-aet-collector)
     to run server locally. You may find the zipped server [here](https://github.com/Skejven/aet-lighthouse-extension/releases/download/0.1.0/aet-lighthouse-server.zip).
   b) Build [AET Lighthouse Docker image](https://github.com/Skejven/aet-docker/tree/feature/lighthouse-support/lighthouse-beta) and run it as a container.
-2. Download and unzip [aet-lighthouse-edition](https://bintray.com/skejven/AET/download_file?file_path=lighthouse-aet-swarm.zip).
 3. Configure `lighthouseInstanceUri` property in the `configs/com.github.skejven.collector.LighthouseCollectorFactory.cfg`.
 (It should work OOTB with AET Lighthouse Server running locally)
 4. Run `docker stack deploy -c aet-swarm.yml aet` to run AET Stack with Lighthouse plugin.
