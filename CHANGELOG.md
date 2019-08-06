@@ -1,5 +1,9 @@
 # Not released yet
 
+# 0.12.0
+- Dockerfile base image for reports changed from Ubuntu to Alpine
+- Reports path changed to reflect default paths for Apache Web Server on Alpine
+
 # 0.11.0
 - AET Version upgraded to [`3.2.2`](https://github.com/Cognifide/aet/releases/tag/3.2.2) release
 
