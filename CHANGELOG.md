@@ -1,6 +1,4 @@
 # Not released yet
-
-# 0.12.0
 - Dockerfile base image for reports changed from Ubuntu to Alpine
 - Reports path changed to reflect default paths for Apache Web Server on Alpine
 

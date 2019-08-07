@@ -17,7 +17,8 @@
 #
 
 FROM httpd:alpine
-LABEL maintainer="Jan Helak <https://github.com/heljan>"
+LABEL maintainers="Jan Helak <https://github.com/heljan>, Maciej Laskowski <skejven@gmail.com>"
+
 
 # set the build params
 ARG AET_VERSION="3.2.2" 
