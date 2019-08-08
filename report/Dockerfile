@@ -16,38 +16,46 @@
 # limitations under the License.
 #
 
-FROM ubuntu:16.04
-LABEL maintainer="Maciej Laskowski <skejven@gmail.com>"
+FROM httpd:alpine
+LABEL maintainers="Jan Helak <https://github.com/heljan>, Maciej Laskowski <skejven@gmail.com>"
 
-# Set the env params
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
-ENV APACHE_LOG_DIR /var/log/apache2
 
-# Set the build params
-ARG AET_VERSION="3.2.2"
+# set the build params
+ARG AET_VERSION="3.2.2" 
 ARG AET_ARTIFACT="report.zip"
 ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/Cognifide/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
 
-# make sure system is up-to-date and install apache2
-RUN apt-get update && apt-get install -y apache2 unzip curl && apt-get clean && rm -rf /var/lib/apt/lists/*
+# set the env params
+ENV APACHE_USER         www-data
+ENV APACHE_WWW_DIR      /usr/local/apache2/htdocs
+ENV APACHE_LOG_DIR      /usr/local/apache2/logs
+ENV APACHE_CONFIG_DIR   /usr/local/apache2/conf
+ENV APACHE_MODULES      "deflate proxy proxy_http"
 
-# configure apache
-RUN rm -rf /etc/apache2/sites-available/*
-COPY aet.conf /etc/apache2/sites-available/aet.conf
-RUN ln -s /etc/apache2/sites-available/aet.conf /etc/apache2/sites-enabled/aet.conf
-RUN a2enmod headers && a2enmod proxy && a2enmod proxy_http
+# clear default content
+RUN rm -rf ${APACHE_WWW_DIR}}/*
 
-RUN rm -rf /var/www/html/*
+# enable required modules
+RUN for m in $APACHE_MODULES ; do \
+  sed -Ei "s~^(#)(LoadModule ${m}_module modules/mod_${m}\.so)~\2~" \
+  ${APACHE_CONFIG_DIR}/httpd.conf ;\
+  done
+
+# copy aet vhost
+COPY aet.conf ${APACHE_CONFIG_DIR}/aet.conf
+
+# append aet vhost into main configuration.
+RUN echo "Include conf/aet.conf" >> ${APACHE_CONFIG_DIR}/httpd.conf
 
 # download and deploy AET reports app
-RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
-  && unzip -o /tmp/${AET_ARTIFACT} -d /var/www/html && rm /tmp/${AET_ARTIFACT}
+RUN wget -O /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
+  && unzip -o /tmp/${AET_ARTIFACT} -d ${APACHE_WWW_DIR} \
+  && rm /tmp/${AET_ARTIFACT}
 
 # deploy AET suite generator
 COPY suite-generator-beta.zip /tmp
-RUN unzip -o /tmp/suite-generator-beta.zip -d /var/www/html/suite-generator && rm /tmp/suite-generator-beta.zip
+RUN mkdir -p ${APACHE_WWW_DIR}/suite-generator 
 
-EXPOSE 80
+RUN chown -R ${APACHE_USER}:${APACHE_USER} ${APACHE_WWW_DIR}
 
-CMD ["apachectl", "-D", "FOREGROUND"]
+RUN httpd -k restart

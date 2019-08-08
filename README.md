@@ -348,7 +348,7 @@ folder from where docker stack will be deployed (from now on we will call it `AE
      report:
        ...
        volumes:
-         - ./report:/var/www/html
+         - ./report:/usr/local/apache2/htdocs
   ```
 3. Adjust structure of the `AET_ROOT` to:
   ```
