@@ -119,6 +119,6 @@ services:
     ports:
       - "80:80"
 #    volumes:
-#      - ./report:/var/www/html
+#      - ./report:/usr/local/apache2/htdocs
     networks:
       - private
