@@ -48,8 +48,7 @@ Hosts BrowserMob proxy that is used by AET to collect status codes and inject he
 Hosts [Apache Karaf](https://karaf.apache.org/) OSGi applications container.
 It contains all AET modules (bundles): Runner, Workers, Web-API, Datastorage, Executor, Cleaner and runs them within OSGi context.
 ### AET Apache Server 
-Runs [Apache Server](https://httpd.apache.org/) that hosts [AET Report](https://github.com/Cognifide/aet/wiki/SuiteReport)
-and [AET suite generator](https://github.com/m-suchorski/suite-generator/tree/feature/suite)
+Runs [Apache Server](https://httpd.apache.org/) that hosts [AET Report](https://github.com/Cognifide/aet/wiki/SuiteReport).
 
 ## Running AET instance with Docker Swarm
 This chapter shows how to setup a fully functional AET instance with [Docker Swarm](https://docs.docker.com/engine/swarm/).
@@ -59,7 +58,7 @@ Example single-node AET cluster consists of:
 - AET ActiveMq container
 - AET Browsermob container
 - AET Apache Karaf container with AET core installed (Runner, Workers, Web-API, Datastorage, Executor)
-- AET Apache Server container with AET Report and [AET suite generator](https://github.com/m-suchorski/suite-generator/tree/feature/suite)
+- AET Apache Server container with AET Report
 
 > **Notice - this instruction guides you on how to setup AET instance using single-node swarm cluster.** 
 > **This setup is not recommended for production use!**
@@ -231,7 +230,6 @@ Read more about running AET suite [here](https://github.com/Cognifide/aet/wiki/R
 - Selenium grid console: http://localhost:4444/grid/console
 - ActiveMQ console: http://localhost:8161/admin/queues.jsp (credentials: `admin/admin`)
 - Karaf console: http://localhost:8181/system/console/bundles (credentials: `karaf/karaf`)
-- Suite generator: http://localhost/suite-generator
 - AET Report: `http://localhost/report.html?params...`
 > Note, that if you are using *Docker Tools* there will be your docker-machine ip instead of `localhost`
 

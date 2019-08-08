@@ -1,6 +1,6 @@
 # Not released yet
-- Dockerfile base image for reports changed from Ubuntu to Alpine
-- Reports path changed to reflect default paths for Apache Web Server on Alpine
+- [PR-11](https://github.com/Skejven/aet-docker/pull/11) Report docker image base changed from Ubuntu to `httpd` Alpine (`386 MB` to `150 MB`)
+- Removed suite generator from the report image (it lacks Open Source license)
 
 # 0.11.0
 - AET Version upgraded to [`3.2.2`](https://github.com/Cognifide/aet/releases/tag/3.2.2) release

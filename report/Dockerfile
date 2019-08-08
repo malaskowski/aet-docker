@@ -52,8 +52,4 @@ RUN wget -O /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
   && unzip -o /tmp/${AET_ARTIFACT} -d ${APACHE_WWW_DIR} \
   && rm /tmp/${AET_ARTIFACT}
 
-# deploy AET suite generator
-COPY suite-generator-beta.zip /tmp
-RUN mkdir -p ${APACHE_WWW_DIR}/suite-generator 
-
 RUN chown -R ${APACHE_USER}:${APACHE_USER} ${APACHE_WWW_DIR}
