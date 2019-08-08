@@ -57,5 +57,3 @@ COPY suite-generator-beta.zip /tmp
 RUN mkdir -p ${APACHE_WWW_DIR}/suite-generator 
 
 RUN chown -R ${APACHE_USER}:${APACHE_USER} ${APACHE_WWW_DIR}
-
-RUN httpd -k restart
