@@ -72,6 +72,7 @@ See this [swarm-tutorial: create swarm](https://docs.docker.com/engine/swarm/swa
     - *Docker*: Run command: `docker swarm init`.
     - *Docker Tools*: Run `docker swarm init --advertise-addr <manager-ip>` where `<manager-ip>` 
 is the IP of your docker-machine (usually `192.168.99.100`).
+- Make sure your swarm have at least **`2 vCPU` and `6 GB of memory` available**. Read more in [Minimum requirements](#minimum-requirements) section.
 
 ***
 If you are using ["Docker Tools"](https://docs.docker.com/toolbox/overview/) and docker-machine please
@@ -142,6 +143,16 @@ To run example AET instance make sure that machine you run it at has at least en
 
 - `2 vCPU`
 - `6 GB of memory`
+
+- For Docker for Windows use [Advanced settings](https://docs.docker.com/docker-for-windows/#advanced)
+- For Docker for Mac use [Advanced settings](https://docs.docker.com/docker-for-mac/#advanced)
+- For Docker Toolbox modify your `docker-machine` with:
+```bash
+docker-machine stop
+VBoxManage modifyvm default --cpus 2
+VBoxManage modifyvm default --memory 6144
+docker-machine start
+```
 
 ### Configuration
 
