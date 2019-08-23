@@ -144,9 +144,10 @@ To run example AET instance make sure that machine you run it at has at least en
 - `2 vCPU`
 - `6 GB of memory`
 
-- For Docker for Windows use [Advanced settings](https://docs.docker.com/docker-for-windows/#advanced)
-- For Docker for Mac use [Advanced settings](https://docs.docker.com/docker-for-mac/#advanced)
-- For Docker Toolbox modify your `docker-machine` with:
+**How to modify Docker resources**:
+- For *Docker for Windows* use [Advanced settings](https://docs.docker.com/docker-for-windows/#advanced)
+- For *Docker for Mac* use [Advanced settings](https://docs.docker.com/docker-for-mac/#advanced)
+- For *Docker Toolbox* modify your `docker-machine` with:
 ```bash
 docker-machine stop
 VBoxManage modifyvm default --cpus 2
