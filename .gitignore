@@ -29,3 +29,4 @@ atlassian-ide-plugin.xml
 example-aet-swarm/bundles/*
 example-aet-swarm/features/*
 example-aet-swarm/report/*
+**/extra/*
