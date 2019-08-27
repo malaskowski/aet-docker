@@ -29,7 +29,7 @@ ARG KARAF_VERSION="4.2.0"
 ARG KARAF_DOWNLOAD_SHA512="431ca85af2cc230ffb6ab996cb12034a940e21ac4d03ac04936a4ab5e902c7a4e767f06ad32796d250a30ce090aa1b39d927d84955400803e3ee4e3f5116fea4"
 ARG KARAF_DOWNLOAD_URL="http://archive.apache.org/dist/karaf/${KARAF_VERSION}/apache-karaf-${KARAF_VERSION}.tar.gz"
 
-ARG AET_VERSION="3.2.2"
+ARG AET_VERSION="3.3.0"
 ARG AET_ARTIFACT="features.zip"
 ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/Cognifide/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
 
@@ -64,7 +64,7 @@ ENV JAVA_MIN_MEM 256m
 ENV KARAF_EXEC exec
 
 # Set the build params
-ARG AET_VERSION="3.2.2"
+ARG AET_VERSION="3.3.0"
 ARG AET_ARTIFACT="bundles.zip"
 ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/Cognifide/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
 

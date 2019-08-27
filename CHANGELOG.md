@@ -1,7 +1,11 @@
 # Not released yet
+Nothing now :)
+
+# 0.12.0
 - [PR-11](https://github.com/Skejven/aet-docker/pull/11) Report docker image base changed from Ubuntu to `httpd` Alpine (`386 MB` to `150 MB`)
 - Removed suite generator from the report image (it lacks Open Source license)
 - [PR-12](https://github.com/Skejven/aet-docker/pull/12) introduces [AET Lighthouse Extension](https://github.com/Skejven/aet-lighthouse-extension) to the aet example swarm stack
+- AET Version upgraded to [`3.3.0`](https://github.com/Cognifide/aet/releases/tag/3.3.0) release
 
 # 0.11.0
 - AET Version upgraded to [`3.2.2`](https://github.com/Cognifide/aet/releases/tag/3.2.2) release

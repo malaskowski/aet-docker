@@ -21,7 +21,7 @@ LABEL maintainers="Jan Helak <https://github.com/heljan>, Maciej Laskowski <skej
 
 
 # set the build params
-ARG AET_VERSION="3.2.2"
+ARG AET_VERSION="3.3.0"
 ARG AET_ARTIFACT="report.zip"
 ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/Cognifide/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
 
@@ -53,6 +53,6 @@ RUN wget -O /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
   && rm /tmp/${AET_ARTIFACT}
 
 # Add all extra files
-COPY extra /var/www/html
+COPY extra ${APACHE_WWW_DIR}
 
 RUN chown -R ${APACHE_USER}:${APACHE_USER} ${APACHE_WWW_DIR}

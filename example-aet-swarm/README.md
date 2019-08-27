@@ -8,7 +8,7 @@ AET stack defined in this example runs:
 - AET ActiveMq container
 - AET Browsermob container
 - AET Apache Karaf container with AET core installed (Runner, Workers, Web-API, Datastorage, Executor)
-- AET Apache Server container with AET Report and [AET suite generator](https://github.com/m-suchorski/suite-generator/tree/feature/suite)
+- AET Apache Server container with AET Report.
 
 ## Lighthouse
 You may configure this AET instance to run Lighthouse reports with [AET Lighthouse Extension](https://github.com/Skejven/aet-lighthouse-extension).
