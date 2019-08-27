@@ -92,7 +92,7 @@ services:
      - private
 
   karaf:
-    image: skejven/aet_karaf:lighthouse-beta-1
+    image: skejven/aet_karaf:0.11.0
     healthcheck:
       test: curl -v --silent http://karaf:karaf@localhost:8181/system/console/bundles 2>&1 | grep -Fq "204 bundles in total - all 204 bundles active" || exit 1
       interval: 1m
@@ -115,7 +115,7 @@ services:
       - private
 
   report:
-    image: skejven/aet_report:lighthouse-beta-1
+    image: skejven/aet_report:0.11.0
     ports:
       - "80:80"
 #    volumes:
