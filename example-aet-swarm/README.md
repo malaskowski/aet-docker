@@ -10,6 +10,9 @@ AET stack defined in this example runs:
 - AET Apache Karaf container with AET core installed (Runner, Workers, Web-API, Datastorage, Executor)
 - AET Apache Server container with AET Report.
 
+## Karaf healthcheck
+Karaf's service in this sample docker instance have [healthcheck](https://docs.docker.com/compose/compose-file/#healthcheck). It simply checks if the number of active OSGi bundles is equal to the expected. If the healthcheck fails, swarm will automatically restart the service.
+
 ## Lighthouse
 You may configure this AET instance to run Lighthouse reports with [AET Lighthouse Extension](https://github.com/Skejven/aet-lighthouse-extension).
 In order to be able to use `<lighthouse/>` extension, you need to provide working Lighthouse Server instance. Use instructions from the [AET Lighthouse plugin](https://github.com/Skejven/aet-lighthouse-extension/tree/master/lighthouse-server#lighthouse-server-for-aet-collector)

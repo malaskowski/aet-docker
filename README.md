@@ -374,5 +374,7 @@ folder from where docker stack will be deployed (from now on we will call it `AE
 - `configs` directory already contains setup configs
 - report files into the `report` directory
 
+> You may want to temporarily disable [Karaf's service healtcheck](https://github.com/Skejven/aet-docker/tree/master/example-aet-swarm#karaf-healthcheck) because there might be a different number of bundles when you use swarm as dev environment.  
+
 5. Now like in [instance setup](#instance-setup) steps,
  run `docker stack deploy -c aet-swarm.yml aet` to enoy your AET dev stack. 
