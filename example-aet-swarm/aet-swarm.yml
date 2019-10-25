@@ -94,7 +94,7 @@ services:
   karaf:
     image: skejven/aet_karaf:0.12.0
     healthcheck:
-      test: curl -v --silent http://karaf:karaf@localhost:8181/system/console/bundles 2>&1 | grep -Fq "204 bundles in total - all 204 bundles active" || exit 1
+      test: curl --silent http://karaf:karaf@localhost:8181/system/console/bundles.json 2>&1 | jq '.status' | grep -Fq "204 bundles in total - all 204 bundles active" || exit 1
       interval: 1m
       timeout: 10s
       retries: 3
