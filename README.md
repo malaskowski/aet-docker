@@ -374,6 +374,8 @@ folder from where docker stack will be deployed (from now on we will call it `AE
 - `configs` directory already contains setup configs
 - report files into the `report` directory
 
+> If you use build command with `-Pzip` parameter, all needed artifacts will be placed in `YOUR_AET_REPOSITORY/zip/target/packages-X.X.X-SNAPSHOT/`. You only need to unpack needed zip archives into proper catalogs described in step 3.
+
 > You may want to temporarily disable [Karaf's service healtcheck](https://github.com/Skejven/aet-docker/tree/master/example-aet-swarm#karaf-healthcheck) because there might be a different number of bundles when you use swarm as dev environment.  
 
 5. Now like in [instance setup](#instance-setup) steps,
