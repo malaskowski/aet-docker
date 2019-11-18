@@ -17,14 +17,14 @@
 #
 #!/bin/sh
 
-KARAF_URL=http://karaf:karaf@localhost:8181/system/console/bundles
+KARAF_URL=http://karaf:karaf@localhost:8181/system/console/bundles.json
 
 get_status_code() {
   curl -s -o /dev/null -w "%{http_code}" ${KARAF_URL}
 }
 
 get_bundles_status() {
-  curl -s ${KARAF_URL} | grep -o '{"status".*}]}' | jq '.status'
+  curl -s ${KARAF_URL} | jq '.status'
 }
 
 echo "Start waiting for Karaf to load features - up to 200 seconds, waiting for 187 active bundles"
@@ -34,7 +34,7 @@ echo "Start waiting for Karaf to load features - up to 200 seconds, waiting for 
 for i in $(seq 0 60);
 do
   sec=$((5 * $i))
-  if curl -v -s ${KARAF_URL} 2>&1 | grep -Fq "187 bundles active";
+  if curl -s ${KARAF_URL} 2>&1 | jq '.status' | grep -Fq "187 bundles active";
   then
     echo "Karaf loading finished after $sec seconds";
     get_bundles_status

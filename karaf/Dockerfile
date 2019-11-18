@@ -71,7 +71,7 @@ ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/Cognifide/aet/releases/downloa
 RUN addgroup -S -g ${KARAF_UID} ${KARAF_USER}; \
     adduser -S -u ${KARAF_UID} -g ${KARAF_USER} ${KARAF_USER}
 
-RUN apk add --update bash curl tar && rm -rf /var/cache/apk/*
+RUN apk add --update bash jq curl tar && rm -rf /var/cache/apk/*
 
 COPY --from=build /opt/karaf /opt/karaf
 
