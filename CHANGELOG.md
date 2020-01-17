@@ -1,6 +1,9 @@
 # Not released yet
 Nothing now :)
 
+# 0.12.1
+- [PR-17](https://github.com/Skejven/aet-docker/pull/17) Update maven repositories to use https over http. Fixes '501-https-required' error while downloading karaf dependecies. More info about the issue [here](https://support.sonatype.com/hc/en-us/articles/360041287334).
+
 # 0.12.0
 - [PR-11](https://github.com/Skejven/aet-docker/pull/11) Report docker image base changed from Ubuntu to `httpd` Alpine (`386 MB` to `150 MB`)
 - Removed suite generator from the report image (it lacks Open Source license)
