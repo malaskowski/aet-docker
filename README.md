@@ -302,9 +302,11 @@ available on the `4444` port. Use this IP address when you run node, with comman
 ```bash
 java -Dwebdriver.chrome.driver="<path/to/chromedriver>" -jar <path/to/selenium-server-standalone.jar> -role node -hub http://{SGRID_IP}:4444/grid/register -browser "browserName=chrome,maxInstances=10" -maxSession 10
 ```
-
 You should see the message that node joins selenium grid.
 Check it via selenium grid console: `http://{SGRID_IP}:4444/grid/console`
+
+Read more about setting up your own Grid here:
+- https://selenium.dev/documentation/en/grid/setting_up_your_own_grid/#step-2-start-the-nodes
 
 ### Is there other way to run AET than with Docker Swarm cluster
 Yes, AET system is a group of containers that form an instance together.
