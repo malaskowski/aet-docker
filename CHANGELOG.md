@@ -1,6 +1,6 @@
 # Not released yet
 Nothing now :)
-- [PR-18](https://github.com/Skejven/aet-docker/pull/18] - Add env variable for karaf hostname
+- [PR-19](https://github.com/Skejven/aet-docker/pull/19) - Enable exposing AET WebAPI via Report server
 
 # 0.12.1
 - [PR-17](https://github.com/Skejven/aet-docker/pull/17) Update maven repositories to use https over http. Fixes '501-https-required' error while downloading karaf dependecies. More info about the issue [here](https://support.sonatype.com/hc/en-us/articles/360041287334).
