@@ -1,5 +1,7 @@
 # Not released yet
 Nothing now :)
+
+# 0.12.2
 - [PR-19](https://github.com/Skejven/aet-docker/pull/19) - Enable exposing AET WebAPI via Report server
 
 # 0.12.1
