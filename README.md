@@ -30,6 +30,7 @@ You may find released versions of AET Docker images at [Docker Hub](https://clou
   * [How to use external MongoDB](#how-to-use-external-mongodb)
   * [How to use external Selenium Grid](#how-to-use-external-selenium-grid)
   * [How to set report domain](#how-to-set-report-domain)
+  * [How to expose AET Web API](#how-to-expose-aet-web-api)
   * [How to enable AET instance to run more tests simultaneously](#how-to-enable-aet-instance-to-run-more-tests-simultaneously)
   * [How to use external Selenium Grid nodes](#how-to-use-external-selenium-grid-nodes)
   * [Is there other way to run AET than with Docker Swarm cluster](#is-there-other-way-to-run-aet-than-with-docker-swarm-cluster)
@@ -44,10 +45,10 @@ You may find released versions of AET Docker images at [Docker Hub](https://clou
 Hosts [Apache ActiveMQ](http://activemq.apache.org/) that is used as the communication bus by the AET components.
 ### AET Browsermob
 Hosts BrowserMob proxy that is used by AET to collect status codes and inject headers to requests.
-### AET Apache Karaf 
+### AET Karaf
 Hosts [Apache Karaf](https://karaf.apache.org/) OSGi applications container.
 It contains all AET modules (bundles): Runner, Workers, Web-API, Datastorage, Executor, Cleaner and runs them within OSGi context.
-### AET Apache Server 
+### AET Report 
 Runs [Apache Server](https://httpd.apache.org/) that hosts [AET Report](https://github.com/Cognifide/aet/wiki/SuiteReport).
 
 ## Running AET instance with Docker Swarm
@@ -278,6 +279,12 @@ After you setup external Selenium Grid, update the `seleniumGridUrl` property in
 
 ### How to set report domain
 Set `report-domain` property in the `com.cognifide.aet.rest.helpers.ReportConfigurationManager.cfg` to point the domain.
+
+### How to expose AET Web API
+[AET Web API](https://github.com/Cognifide/aet/wiki/WebAPI) is hosed by the AET Karaf instance. 
+In order to avoid CORS errors from the Report Application, AET Web API is exposed by the AET Report Apache Server (`ProxyPass`).
+By default it is set to work with Docker cluster managers such as Swarm or Kubernetes and points to `http://karaf:8181/api`.
+Use `AET_WEB_API` environment variable to change the URL of the AET Web API.
 
 ### How to enable AET instance to run more tests simultaneously
 > Notice: those changes will impact your machine resources, be sure to extend the number of CPUs and memory

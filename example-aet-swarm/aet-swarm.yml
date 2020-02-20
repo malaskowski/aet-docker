@@ -120,5 +120,7 @@ services:
       - "80:80"
 #    volumes:
 #      - ./report:/usr/local/apache2/htdocs
+#    environment:
+#      - AET_WEB_API=http://my.karaf.com/api # uncomment to configure custom AET Web API endpoint
     networks:
       - private
