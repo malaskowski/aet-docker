@@ -97,7 +97,7 @@ configs
 ***
 
 ### Instance setup
-1. Download `example-aet-swarm.zip` from the [release](https://github.com/Skejven/aet-docker/releases).
+1. Download latest [`example-aet-swarm.zip`](https://github.com/Skejven/aet-docker/releases/latest/download/example-aet-swarm.zip) from the [release](https://github.com/Skejven/aet-docker/releases).
 2. Unzip the files to the folder from where docker stack will be deployed (from now on we will call it `AET_ROOT`).
 Contents of the `AET_ROOT` directory should look like:
 ```
