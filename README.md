@@ -97,8 +97,14 @@ configs
 ***
 
 ### Instance setup
-1. Download latest [`example-aet-swarm.zip`](https://github.com/Skejven/aet-docker/releases/latest/download/example-aet-swarm.zip) from the [release](https://github.com/Skejven/aet-docker/releases).
-2. Unzip the files to the folder from where docker stack will be deployed (from now on we will call it `AET_ROOT`).
+1. Download the latest [`example-aet-swarm.zip`](https://github.com/Skejven/aet-docker/releases/latest/download/example-aet-swarm.zip) and unzip the files to the folder from where docker stack will be deployed (from now on we will call it `AET_ROOT`).
+
+```bash
+curl -sS `curl -Ls -o /dev/null -w %{url_effective} https://github.com/Skejven/aet-docker/releases/latest/download/example-aet-swarm.zip` > aet-swarm.zip \
+&& unzip -q aet-swarm.zip && mv example-aet-swarm/* . \
+&& rm -d example-aet-swarm && rm aet-swarm.zip
+```
+
 Contents of the `AET_ROOT` directory should look like:
 ```
 ├── aet-swarm.yml
@@ -119,8 +125,9 @@ Contents of the `AET_ROOT` directory should look like:
         volumes:
           - /osgi-configs/configs:/aet/configs # when using docker-machine, use mounted folder
     ```
-3. From the `AET_ROOT` run `docker stack deploy -c aet-swarm.yml aet`.
-4. Wait about 1-2 minutes until Karaf start finishes.
+    > You can find older versions in the [release](https://github.com/Skejven/aet-docker/releases) section.
+2. From the `AET_ROOT` run `docker stack deploy -c aet-swarm.yml aet`.
+3. Wait about 1-2 minutes until Karaf start finishes.
 
 When it is ready, you should see the information in the [Karaf console](http://localhost:8181/system/console/bundles) 
 (credentials: `karaf/karaf`):
