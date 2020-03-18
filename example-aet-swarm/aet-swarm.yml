@@ -77,14 +77,14 @@ services:
       - private
 
   activemq:
-    image: skejven/aet_activemq:0.12.2
+    image: skejven/aet_activemq:0.13.0
     ports:
       - "8161:8161"
     networks:
       - private
 
   browsermob:
-   image: skejven/aet_browsermob:0.12.2
+   image: skejven/aet_browsermob:0.13.0
    ports:
     - "8080:8080"
     - "8281-8681:8281-8681"
@@ -92,7 +92,7 @@ services:
      - private
 
   karaf:
-    image: skejven/aet_karaf:0.12.2
+    image: skejven/aet_karaf:0.13.0
     healthcheck:
       test: curl --fail http://karaf:karaf@localhost:8181/health-check
       interval: 1m
@@ -115,7 +115,7 @@ services:
       - private
 
   report:
-    image: skejven/aet_report:0.12.2
+    image: skejven/aet_report:0.13.0
     ports:
       - "80:80"
 #    volumes:

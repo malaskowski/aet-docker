@@ -1,5 +1,7 @@
 # Not released yet
 Nothing now :)
+
+# 0.13.0
 - [PR-20](https://github.com/Skejven/aet-docker/pull/20) - `core` and `custom` AET artifacts in the Karaf image and healthcheck basing on the [fabric8 healthchecks](https://fabric8.io/guide/karaf.html#add-custom-heath-checks).
 
 # 0.12.2
