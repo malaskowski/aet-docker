@@ -77,25 +77,22 @@ RUN apk add --update bash jq curl tar && rm -rf /var/cache/apk/*
 COPY --from=build /opt/karaf /opt/karaf
 
 # Copy Karaf config to watch for AET artifacts
-COPY etc/org.apache.felix.fileinstall-bundles.cfg /opt/karaf/etc/org.apache.felix.fileinstall-bundles.cfg
-COPY etc/org.apache.felix.fileinstall-configs.cfg /opt/karaf/etc/org.apache.felix.fileinstall-configs.cfg
-COPY etc/org.apache.felix.fileinstall-features.cfg /opt/karaf/etc/org.apache.felix.fileinstall-features.cfg
+COPY etc/*.cfg /opt/karaf/etc/
 
 # Create AET artifacts deployment structure
-RUN mkdir -p /aet/bundles /aet/configs /aet/features \
+RUN mkdir -p /aet/core /aet/core/bundles /aet/core/features /aet/extra /aet/extra/bundles /aet/extra/configs /aet/extra/features \
   && chown -R ${KARAF_USER}.${KARAF_USER} /aet
 
 # Download and unzip AET bundles
 RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
-  && unzip -o /tmp/${AET_ARTIFACT} -d /aet/bundles && rm /tmp/${AET_ARTIFACT} \
-  && chown -R ${KARAF_USER}.${KARAF_USER} /aet/bundles
-
-# Add all extra bundles
-COPY extra /aet/bundles
+  && unzip -o /tmp/${AET_ARTIFACT} -d /aet/core/bundles && rm /tmp/${AET_ARTIFACT} \
+  && chown -R ${KARAF_USER}.${KARAF_USER} /aet/core/bundles \
+  && chown -R ${KARAF_USER}.${KARAF_USER} /aet/extra/bundles
 
 # Move AET features files into the right place
-RUN mv /opt/karaf/deploy/aet-*.xml /aet/features \
-  && chown -R ${KARAF_USER}.${KARAF_USER} /aet/features
+RUN mv /opt/karaf/deploy/aet-*.xml /aet/core/features \
+  && chown -R ${KARAF_USER}.${KARAF_USER} /aet/core/features \
+  && chown -R ${KARAF_USER}.${KARAF_USER} /aet/extra/features
 
 RUN chown -R ${KARAF_USER}.${KARAF_USER} /opt/karaf \
     && echo org.ops4j.pax.url.mvn.defaultRepositories = file:///opt/maven/repository@id=local.app@snapshots  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg \
