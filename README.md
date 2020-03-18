@@ -48,8 +48,12 @@ Hosts BrowserMob proxy that is used by AET to collect status codes and inject he
 ### AET Karaf
 Hosts [Apache Karaf](https://karaf.apache.org/) OSGi applications container.
 It contains all AET modules (bundles): Runner, Workers, Web-API, Datastorage, Executor, Cleaner and runs them within OSGi context.
+This container contains [AET application core](https://github.com/Cognifide/aet) in the `/aet/core` directory.
+All custom AET extensions are kept in the `/aet/custom` directory.
 ### AET Report 
 Runs [Apache Server](https://httpd.apache.org/) that hosts [AET Report](https://github.com/Cognifide/aet/wiki/SuiteReport).
+The [AET report application](https://github.com/Cognifide/aet/tree/master/report) is placed under `/usr/local/apache2/htdocs`.
+Defines very basic `VirtualHost` (see [aet.conf](https://github.com/Skejven/aet-docker/blob/master/report/aet.conf)).
 
 ## Running AET instance with Docker Swarm
 This chapter shows how to setup a fully functional AET instance with [Docker Swarm](https://docs.docker.com/engine/swarm/).
@@ -108,6 +112,8 @@ curl -sS `curl -Ls -o /dev/null -w %{url_effective} https://github.com/Skejven/a
 Contents of the `AET_ROOT` directory should look like:
 ```
 ├── aet-swarm.yml
+├── bundles
+│   └── aet-lighthouse-extension.jar
 ├── configs
 │   ├── com.cognifide.aet.cleaner.CleanerScheduler-main.cfg
 │   ├── com.cognifide.aet.proxy.RestProxyManager.cfg
@@ -118,6 +124,9 @@ Contents of the `AET_ROOT` directory should look like:
 │   ├── com.cognifide.aet.vs.mongodb.MongoDBClient.cfg
 │   ├── com.cognifide.aet.worker.drivers.chrome.ChromeWebDriverFactory.cfg
 │   └── com.cognifide.aet.worker.listeners.WorkersListenersService.cfg
+├── features
+│   └── healthcheck-features.xml
+└── report
 ```
   - If you are using docker-machine (otherwise ignore this point)
    you should change `aet-swarm.yml` `volumes` section for the `karaf` service to:
@@ -129,7 +138,7 @@ Contents of the `AET_ROOT` directory should look like:
 2. From the `AET_ROOT` run `docker stack deploy -c aet-swarm.yml aet`.
 3. Wait about 1-2 minutes until Karaf start finishes.
 
-When it is ready, you should see the information in the [Karaf console](http://localhost:8181/system/console/bundles) 
+When it is ready, you should see the information in the [Karaf health check](http://localhost:8181/health-check) 
 (credentials: `karaf/karaf`):
 
   > Bundle information: 203 bundles in total - all 203 bundles active
@@ -347,52 +356,43 @@ You should see following images:
 ```
 
 ## Developer environment
-Since version `v0.10.0` [example swarm instance](#running-aet-instance-with-docker-swarm)
-supports AET developers.
 In order to be able to easily deploy AET artifacts on your docker instance follow these steps:
 
-> Notice, this example shows how to configure full-stack AET dev environemnt.
-  If you want to e.g. work only over AET bundles, you don't have to configure feature files
-  or report application. Just configure `bundles` volume and skip adjustments for other parts of AET stack.
-
-
-1. Download `example-aet-swarm.zip` 
-from the [release](https://github.com/Skejven/aet-docker/releases) and unzip the files to the 
-folder from where docker stack will be deployed (from now on we will call it `AET_ROOT`).
-
-2. Edit `aet-swarm.yml` and uncomment `karaf` and `report` services volumes:
+1. Follow the [Instance setup](#instance-setup) guide (check the [prerequisites](#prerequisites) first).
+2. In the `aet-swarm.yml` under `karaf` and `report` services there are volumes defined:
   ```yaml
     karaf:
       ...
       volumes:
-        - ./configs:/aet/configs
-        - ./bundles:/aet/bundles
-        - ./features:/aet/features
+        - ./configs:/aet/custom/configs
+        - ./bundles:/aet/custom/bundles
+        - ./features:/aet/custom/features
         
      ...
         
      report:
        ...
-       volumes:
-         - ./report:/usr/local/apache2/htdocs
+       # volumes: <- volumes not active by default, to develop the report, uncomment it before deploying
+       #  - ./report:/usr/local/apache2/htdocs
   ```
-3. Adjust structure of the `AET_ROOT` to:
-  ```
-  ├── aet-swarm.yml
-  ├── bundles
-  ├── configs
-  ├── features
-  └── report
-  ```
-4. Build [AET application](https://github.com/Cognifide/aet) and move all artifacts tho the right places:
-- AET bundles to the `bundles` directory
+3. In order to add custom extensions, add proper artifacts to the volumes you need.
+- bundles (jar files) to the `bundles` directory
 - OSGi feature files into the `features`
 - `configs` directory already contains setup configs
 - report files into the `report` directory
 
+To develop [AET application core](https://github.com/Cognifide/aet), add additional volumes to the `karaf` service:
+  ```yaml
+    karaf:
+      ...
+      volumes:
+        ...
+        - ./core-configs:/aet/core/configs
+        - ./core-bundles:/aet/core/bundles
+        - ./core-features:/aet/core/features
+  ```
+and place proper AET artifacts accordingly to the `core-` directories.
+
 > If you use build command with `-Pzip` parameter, all needed artifacts will be placed in `YOUR_AET_REPOSITORY/zip/target/packages-X.X.X-SNAPSHOT/`. You only need to unpack needed zip archives into proper catalogs described in step 3.
 
-> You may want to temporarily disable [Karaf's service healtcheck](https://github.com/Skejven/aet-docker/tree/master/example-aet-swarm#karaf-healthcheck) because there might be a different number of bundles when you use swarm as dev environment.  
-
-5. Now like in [instance setup](#instance-setup) steps,
- run `docker stack deploy -c aet-swarm.yml aet` to enoy your AET dev stack. 
+4. To start the instance, just run `docker stack deploy -c aet-swarm.yml aet`.
