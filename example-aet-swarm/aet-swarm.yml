@@ -31,7 +31,7 @@ services:
   hub:
     image: selenium/hub:3.14.0-arsenic
     ports:
-      - "4444:4444"
+      - '4444:4444'
     deploy:
       mode: global
       placement:
@@ -72,24 +72,24 @@ services:
     volumes:
       - mongo-data:/data/db
     ports:
-      - "27017:27017"
+      - '27017:27017'
     networks:
       - private
 
   activemq:
     image: skejven/aet_activemq:0.13.0
     ports:
-      - "8161:8161"
+      - '8161:8161'
     networks:
       - private
 
   browsermob:
-   image: skejven/aet_browsermob:0.13.0
-   ports:
-    - "8080:8080"
-    - "8281-8681:8281-8681"
-   networks:
-     - private
+    image: skejven/aet_browsermob:0.13.0
+    ports:
+      - '8080:8080'
+      - '8281-8681:8281-8681'
+    networks:
+      - private
 
   karaf:
     image: skejven/aet_karaf:0.13.0
@@ -107,20 +107,20 @@ services:
       - ./bundles:/aet/custom/bundles
       - ./features:/aet/custom/features
     ports:
-      - "8181:8181"
-#      - "5005:5005" # uncomment to be able to connect Karaf in debug mode
-#    environment:
-#      - KARAF_DEBUG=true # uncomment (with section above) to start Karaf in debug mode
+      - '8181:8181'
+    #      - "5005:5005" # uncomment to be able to connect Karaf in debug mode
+    #    environment:
+    #      - KARAF_DEBUG=true # uncomment (with section above) to start Karaf in debug mode
     networks:
       - private
 
   report:
     image: skejven/aet_report:0.13.0
     ports:
-      - "80:80"
-#    volumes:
-#      - ./report:/usr/local/apache2/htdocs
-#    environment:
-#      - AET_WEB_API=http://my.karaf.com/api # uncomment to configure custom AET Web API endpoint
+      - '80:80'
+    #    volumes:
+    #      - ./report:/usr/local/apache2/htdocs
+    #    environment:
+    #      - AET_WEB_API=http://my.karaf.com # uncomment to configure custom AET Web API endpoint
     networks:
       - private

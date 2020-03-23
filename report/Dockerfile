@@ -31,7 +31,7 @@ ENV APACHE_WWW_DIR      /usr/local/apache2/htdocs
 ENV APACHE_LOG_DIR      /usr/local/apache2/logs
 ENV APACHE_CONFIG_DIR   /usr/local/apache2/conf
 ENV APACHE_MODULES      "deflate proxy proxy_http"
-ENV AET_WEB_API         http://karaf:8181/api
+ENV AET_WEB_API         http://karaf:8181
 
 # clear default content
 RUN rm -rf ${APACHE_WWW_DIR}}/*
