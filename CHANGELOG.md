@@ -1,7 +1,12 @@
 # Not released yet
 Nothing now :)
 
+# 0.13.1
 - [PR-21](https://github.com/Skejven/aet-docker/pull/21) Proxy all API endpoints via report app: /api, /suite, /xunit
+Upgrade notes:
+#### Upgrade notes
+If you were using `AET_WEB_API` env for the `aet-report` service, please note, that it now points to the Karaf instance, not directly to the `/api` endpoint.
+Simply remove `/api` from `AET_WEB_API` env property value.
 
 # 0.13.0
 - [PR-20](https://github.com/Skejven/aet-docker/pull/20) - `core` and `custom` AET artifacts in the Karaf image and healthcheck basing on the [fabric8 healthchecks](https://fabric8.io/guide/karaf.html#add-custom-heath-checks).
