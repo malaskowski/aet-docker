@@ -11,7 +11,8 @@ AET stack defined in this example runs:
 - AET Apache Server container with AET Report.
 
 ## Karaf healthcheck
-Karaf's service in this sample docker instance have [healthcheck](https://docs.docker.com/compose/compose-file/#healthcheck). It simply checks if the number of active OSGi bundles is equal to the expected. If the healthcheck fails, swarm will automatically restart the service.
+Karaf's service in this sample docker instance have [healthcheck](https://docs.docker.com/compose/compose-file/#healthcheck). It simply checks the dedicated service's endpoint `/health-check` that responses with `200` when everything is ready, with error code otherwise. If the healthcheck fails, swarm will automatically restart the service.
+Read more about this endpoint here: https://fabric8.io/guide/karaf.html#fabric8-karaf-health-checks
 
 ## Lighthouse
 You may configure this AET instance to run Lighthouse reports with [AET Lighthouse Extension](https://github.com/Skejven/aet-lighthouse-extension).
