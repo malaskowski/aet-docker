@@ -1,0 +1,11 @@
+<features
+  name="AET healthcheck features"
+  xmlns="http://karaf.apache.org/xmlns/features/v1.3.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.3.0 http://karaf.apache.org/xmlns/features/v1.3.0">
+
+  <feature name="aet-healthcheck" version="0.6.0" description="AET healthcheck" install="auto">
+    <bundle>mvn:io.fabric8/fabric8-karaf-checks/3.0.12</bundle>
+  </feature>
+
+</features>

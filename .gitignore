@@ -26,7 +26,6 @@ atlassian-ide-plugin.xml
 **/generated/
 
 # Dev environment
-example-aet-swarm/bundles/*
-example-aet-swarm/features/*
-example-aet-swarm/report/*
 **/extra/*
+example-aet-swarm.zip
+example-aet-swarm/bundles/*.jar
