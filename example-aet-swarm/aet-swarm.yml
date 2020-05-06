@@ -49,11 +49,11 @@ services:
     environment:
       - HUB_HOST=hub
       - HUB_PORT=4444
-      - NODE_MAX_INSTANCES=2
-      - NODE_MAX_SESSION=2
+      - NODE_MAX_INSTANCES=1
+      - NODE_MAX_SESSION=1
     entrypoint: bash -c 'SE_OPTS="-host $$HOSTNAME -port 5556" /opt/bin/entry_point.sh'
     deploy:
-      replicas: 3
+      replicas: 6
     networks:
       - private
 
