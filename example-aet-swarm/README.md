@@ -4,7 +4,7 @@ Note that this is *not production recommended setup*.
 
 AET stack defined in this example runs:
 - MongoDB container with mounted volume (for persistency)
-- Selenium Grid with Hub and 3 Nodes (2 Chrome instances each, totally 6 browsers)
+- Selenium Grid with Hub and 6 Nodes (1 Chrome instances each, totally 6 browsers)
 - AET ActiveMq container
 - AET Browsermob container
 - AET Apache Karaf container with AET core installed (Runner, Workers, Web-API, Datastorage, Executor)
