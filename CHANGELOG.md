@@ -1,5 +1,5 @@
 # Not released yet
-Nothing now :)
+- [PR-22](https://github.com/Skejven/aet-docker/pull/22) - changed no of Selenium Grid Nodes replicas in order to improve tests results stability.
 
 # 0.13.1
 - [PR-21](https://github.com/Skejven/aet-docker/pull/21) Proxy all API endpoints via report app: /api, /suite, /xunit
