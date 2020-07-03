@@ -1,5 +1,32 @@
 # Not released yet
 - [PR-22](https://github.com/Skejven/aet-docker/pull/22) - changed no of Selenium Grid Nodes replicas in order to improve tests results stability.
+- [PR-23](https://github.com/Skejven/aet-docker/pull/23) - updated mongodb image version to `3.6`. **Important**: if you are upgrading AET from the version that used mongo 3.2, please read carefully upgrade notes before migrating. Updated docker swarm schema to `3.7`.
+
+#### Upgrade notes
+0. Backup your data!
+1. Upgrade to mongo image `3.4` first (set `image: mongo:3.4` in aet-swarm.yml and deploy - `docker stack deploy -c aet-swarm.yml aet`). Wait until AET stack will be up.
+2. Assuming you have open port `27017` for mongo run: 
+    ```
+    docker exec -it `docker ps --filter expose=27017/tcp -q` bash -c 'mongo --eval "db.adminCommand( { getParameter: 1, featureCompatibilityVersion: 1 } )"'
+    ```
+    This should say `{ "featureCompatibilityVersion" : "3.2", "ok" : 1 }`.
+    
+3. Set `setFeatureCompatibilityVersion` flag to `3.4` (read more in [MongoDB upgrade notes](https://docs.mongodb.com/manual/release-notes/3.6-upgrade-standalone/#prerequisites)), run:
+    ```
+    docker exec -it `docker ps --filter expose=27017/tcp -q` bash -c 'mongo --eval "db.adminCommand( { setFeatureCompatibilityVersion: \"3.4\" } )"'
+    ```
+    You should see:
+    `{ "ok" : 1 }`
+    
+4. Upgrade to mongo image `3.6` (set `image: mongo:3.6` in aet-swarm.yml and deploy - `docker stack deploy -c aet-swarm.yml aet`). Wait until AET stack will be up. 
+5. Set `setFeatureCompatibilityVersion` flag to `3.6` (read more in [MongoDB upgrade notes](https://docs.mongodb.com/manual/release-notes/3.6-upgrade-standalone/#prerequisites)), run:
+    ```
+    docker exec -it `docker ps --filter expose=27017/tcp -q` bash -c 'mongo --eval "db.adminCommand( { setFeatureCompatibilityVersion: \"3.6\" } )"'
+    ```
+    You should see:
+    `{ "ok" : 1 }`
+    
+6. You are good to go :).
 
 # 0.13.1
 - [PR-21](https://github.com/Skejven/aet-docker/pull/21) Proxy all API endpoints via report app: /api, /suite, /xunit
