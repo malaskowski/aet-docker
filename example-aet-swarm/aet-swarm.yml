@@ -18,7 +18,7 @@
 #
 # To execute this docker-swarm yml file use `docker stack deploy -c aet-swarm.yml aet`
 
-version: '3.6'
+version: '3.7'
 
 networks:
   private:
@@ -58,7 +58,7 @@ services:
       - private
 
   mongo:
-    image: mongo:3.2
+    image: mongo:3.6
     command: mongod --enableMajorityReadConcern
     deploy:
       placement:
