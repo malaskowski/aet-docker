@@ -1,4 +1,5 @@
 # Not released yet
+- [PR-26](https://github.com/Skejven/aet-docker/pull/26) - AET Docker client for running AET suites with no dependencies but Docker
 - [PR-22](https://github.com/Skejven/aet-docker/pull/22) - changed no of Selenium Grid Nodes replicas in order to improve tests results stability.
 - [PR-23](https://github.com/Skejven/aet-docker/pull/23) - updated mongodb image version to `3.6`. **Important**: if you are upgrading AET from the version that used mongo 3.2, please read carefully upgrade notes before migrating. Updated docker swarm schema to `3.7`.
 
