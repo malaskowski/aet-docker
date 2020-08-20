@@ -23,7 +23,7 @@ AET stack defined in this example runs:
 │   ├── ...
 │   └── com.github.skejven.collector.LighthouseCollectorFactory.cfg
 ├── features
-│   └── healthcheck-features.xml
+│   └── custom-features.xml
 └── report
 ```
 

@@ -27,19 +27,24 @@ get_bundles_status() {
   curl -s ${KARAF_URL} | jq '.status'
 }
 
-echo "Start waiting for Karaf to load features - up to 200 seconds, waiting for 187 active bundles"
+echo "Start waiting for Karaf to load features - up to 200 seconds, waiting for 189 active bundles"
 
 /opt/karaf/bin/karaf run &
 
 for i in $(seq 0 60);
 do
   sec=$((5 * $i))
-  if curl -s ${KARAF_URL} 2>&1 | jq '.status' | grep -Fq "187 bundles active";
+  if curl -s ${KARAF_URL} 2>&1 | jq '.status' | grep -Fq "189 bundles active";
   then
     echo "Karaf loading finished after $sec seconds";
     get_bundles_status
     /opt/karaf/bin/karaf stop
     echo "Status: $(/opt/karaf/bin/karaf status)"
+
+    echo "*****  /home/karaf/.m2/repository  ****"
+    tree /home/karaf/.m2/repository
+    echo "***************************************"
+
     exit 0;
   else
     status_code=$(get_status_code)

@@ -50,8 +50,9 @@ Hosts [Apache ActiveMQ](http://activemq.apache.org/) that is used as the communi
 Hosts BrowserMob proxy that is used by AET to collect status codes and inject headers to requests.
 ### AET Karaf
 Hosts [Apache Karaf](https://karaf.apache.org/) OSGi applications container.
-It contains all AET modules (bundles): Runner, Workers, Web-API, Datastorage, Executor, Cleaner and runs them within OSGi context.
-This container contains [AET application core](https://github.com/Cognifide/aet) in the `/aet/core` directory.
+It contains all AET modules (bundles): Runner, Workers, Web-API, Datastorage, Executor, Cleaner and runs them within OSGi context
+with all their dependencies required (no internet access required to provision).
+[AET application core](https://github.com/Cognifide/aet) is located in the `/aet/core` directory.
 All custom AET extensions are kept in the `/aet/custom` directory.
 ### AET Report 
 Runs [Apache Server](https://httpd.apache.org/) that hosts [AET Report](https://github.com/Cognifide/aet/wiki/SuiteReport).
