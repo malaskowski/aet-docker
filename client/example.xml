@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="example" company="example" project="example">
+  <test name="layout-test">
+    <collect>
+      <open/>
+      <wait-for-page-loaded />
+      <resolution width="1280" height="1024"/>
+      <sleep duration="2000"/>
+      <screen name="desktop"/>
+    </collect>
+    <compare>
+      <screen comparator="layout"/>
+    </compare>
+    <urls>
+      <url href="https://www.google.com"/>
+    </urls>
+  </test>
+</suite>

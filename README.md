@@ -9,8 +9,9 @@ You may find released versions of AET Docker images at [Docker Hub](https://clou
 - [Docker Images](#docker-images)
   * [AET ActiveMq](#aet-activemq)
   * [AET Browsermob](#aet-browsermob)
-  * [AET Apache Karaf](#aet-apache-karaf)
-  * [AET Apache Server](#aet-apache-server)
+  * [AET Karaf](#aet-karaf)
+  * [AET Report](#aet-report)
+  * [AET Docker Client](#aet-docker-client)
 - [Running AET instance with Docker Swarm](#running-aet-instance-with-docker-swarm)
   * [Prerequisites](#prerequisites)
   * [Instance setup](#instance-setup)
@@ -19,7 +20,9 @@ You may find released versions of AET Docker images at [Docker Hub](https://clou
     + [OSGi configs](#osgi-configs)
     + [Throughput and scaling](#throughput-and-scaling)
   * [Updating instance](#updating-instance)
-  * [Executing AET Suite](#executing-aet-suite)
+  * [Running AET Suite](#running-aet-suite)
+    + [Docker Client](#docker-client)
+    + [Other Clients](#other-clients)
   * [Best practices](#best-practices)
   * [Available consoles](#available-consoles)
   * [Troubleshooting](#troubleshooting)
@@ -54,6 +57,8 @@ All custom AET extensions are kept in the `/aet/custom` directory.
 Runs [Apache Server](https://httpd.apache.org/) that hosts [AET Report](https://github.com/Cognifide/aet/wiki/SuiteReport).
 The [AET report application](https://github.com/Cognifide/aet/tree/master/report) is placed under `/usr/local/apache2/htdocs`.
 Defines very basic `VirtualHost` (see [aet.conf](https://github.com/Skejven/aet-docker/blob/master/report/aet.conf)).
+### AET Docker Client
+[AET bash client](https://github.com/Cognifide/aet/tree/master/client/client-scripts) embedded into Docker image with all its dependencies (`jq`, `curl`, `xmllint`).
 
 ## Running AET instance with Docker Swarm
 This chapter shows how to setup a fully functional AET instance with [Docker Swarm](https://docs.docker.com/engine/swarm/).
@@ -154,6 +159,10 @@ When you see status `healthy` it means Karaf is running correctly
 > IMAGE                     STATUS
 > skejven/aet_karaf:0.4.0   Up 20 minutes (healthy)
 
+Now you may want to run a sample suite by executing:
+```
+docker run skejven/aet_client
+```
 
 #### Minimum requirements
 To run example AET instance make sure that machine you run it at has at least enabled:
@@ -240,7 +249,33 @@ detect automatic changes in the config. You will need to restart Karaf service a
 changes in the configuration files (e.g. by removing `aet_karaf` service and running stack deploy).
 
 
-### Executing AET Suite
+### Running AET Suite
+There are couple of ways to start AET Suite.
+
+#### Docker Client
+You may use an image that embeds AET Bash client together with its dependencies by running:
+> `docker run --rm -v "$(pwd)/suite:/aet/suite" -v "$(pwd)/report:/aet/report" skejven/aet_client AET_INSTANCE_IP /aet/suite/SUITE_YOU_WANT_TO_RUN`
+
+E.g. when you run AET on Docker for Mac/Win and have following setup:
+```
+.
+├── custom
+│   └── my-suite.xml
+```
+and want to run `my-suite.xml` file, simply run:
+`docker run --rm -v "$(pwd)/custom:/aet/suite" -v "$(pwd)/report:/aet/report" skejven/aet_client http://host.docker.internal /aet/suite/my-suite.xml`
+
+The results will be saved to the `report` directory:
+```
+.
+├── report
+│   ├── redirect.html
+│   └── xUnit.xml
+```
+
+> Notice that we are using here `host.docker.internal` as the address of AET instance - that works only for Docker for Mac/Win with local AET setup. In other cases, use the AET server's IP/domain.
+
+#### Other Clients
 To run AET Suite simply define `endpointDomain` to AET Karaf IP with `8181` port, e.g.:
 > `./aet.sh http://localhost:8181`
 or
