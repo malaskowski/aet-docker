@@ -33,7 +33,7 @@ ARG AET_VERSION="3.3.0"
 ARG AET_ARTIFACT="features.zip"
 ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/Cognifide/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
 
-RUN apk add --update bash tar jq curl && rm -rf /var/cache/apk/*
+RUN apk add --update bash tar jq curl tree && rm -rf /var/cache/apk/*
 
 RUN curl -fSL -o /tmp/apache-karaf.tar.gz ${KARAF_DOWNLOAD_URL} \
     && echo "${KARAF_DOWNLOAD_SHA512}  /tmp/apache-karaf.tar.gz" | sha512sum -c - \
@@ -42,11 +42,14 @@ RUN curl -fSL -o /tmp/apache-karaf.tar.gz ${KARAF_DOWNLOAD_URL} \
     && rm /tmp/apache-karaf.tar.gz \
     && mkdir -p /opt/karaf/data /opt/karaf/data/log \
     && echo org.ops4j.pax.url.mvn.defaultRepositories = file:///opt/maven/repository@id=local.app@snapshots  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg \
-    && sed -i "s+http://+https://+g" /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg
+    && sed -i "s+http://+https://+g" /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg \
+    && echo org.ops4j.pax.url.mvn.localRepository = file:///home/karaf/.m2/repository  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg
 
 # download and unzip AET features
 RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
   && unzip -o /tmp/${AET_ARTIFACT} -d /opt/karaf/deploy && rm /tmp/${AET_ARTIFACT}
+
+COPY features/aet-healthcheck-features.xml /opt/karaf/deploy/aet-healthcheck-features.xml
 
 # Run karaf and wait until it downloads all features
 COPY provision-karaf.sh /tmp/provision-karaf.sh
@@ -76,6 +79,9 @@ RUN apk add --update bash jq curl tar && rm -rf /var/cache/apk/*
 
 COPY --from=build /opt/karaf /opt/karaf
 
+COPY --from=build /home/karaf/.m2/repository /home/karaf/.m2/repository
+RUN chown -R ${KARAF_USER}.${KARAF_USER} /home/karaf/.m2
+
 # Copy Karaf config to watch for AET artifacts
 COPY etc/*.cfg /opt/karaf/etc/
 
@@ -94,9 +100,7 @@ RUN mv /opt/karaf/deploy/aet-*.xml /aet/core/features \
   && chown -R ${KARAF_USER}.${KARAF_USER} /aet/core/features \
   && chown -R ${KARAF_USER}.${KARAF_USER} /aet/extra/features
 
-RUN chown -R ${KARAF_USER}.${KARAF_USER} /opt/karaf \
-    && echo org.ops4j.pax.url.mvn.defaultRepositories = file:///opt/maven/repository@id=local.app@snapshots  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg \
-    && sed -i "s+http://+https://+g" /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg
+RUN chown -R ${KARAF_USER}.${KARAF_USER} /opt/karaf
 
 EXPOSE 1099 8101 8181 44444
 
