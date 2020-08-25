@@ -274,7 +274,8 @@ The results will be saved to the `report` directory:
 │   └── xUnit.xml
 ```
 
-> Notice that we are using here `host.docker.internal` as the address of AET instance - that works only for Docker for Mac/Win with local AET setup. In other cases, use the AET server's IP/domain.
+> Notice that we are using here `host.docker.internal` as the address of AET instance - that works only for Docker for Mac/Win 
+> with local AET setup (this is also the default value for this property). In other cases, use the AET server's IP/domain.
 
 #### Other Clients
 To run AET Suite simply define `endpointDomain` to AET Karaf IP with `8181` port, e.g.:
