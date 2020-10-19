@@ -19,6 +19,7 @@ You may find released versions of AET Docker images at [Docker Hub](https://clou
   * [Configuration](#configuration)
     + [OSGi configs](#osgi-configs)
     + [Throughput and scaling](#throughput-and-scaling)
+    + [Docker secrets](#docker-secrets)
   * [Updating instance](#updating-instance)
   * [Running AET Suite](#running-aet-suite)
     + [Docker Client](#docker-client)
@@ -54,6 +55,7 @@ It contains all AET modules (bundles): Runner, Workers, Web-API, Datastorage, Ex
 with all their dependencies required (no internet access required to provision).
 [AET application core](https://github.com/Cognifide/aet) is located in the `/aet/core` directory.
 All custom AET extensions are kept in the `/aet/custom` directory.
+Before the start of a Karaf service, Docker secrets are exported to environment variables. Read more in [secrets](#docker-secrets) section.
 ### AET Report 
 Runs [Apache Server](https://httpd.apache.org/) that hosts [AET Report](https://github.com/Cognifide/aet/wiki/SuiteReport).
 The [AET report application](https://github.com/Cognifide/aet/tree/master/report) is placed under `/usr/local/apache2/htdocs`.
@@ -234,6 +236,13 @@ So, the `TOTAL_NUMBER_OF_BROWSERS` is `6` (`3 replicas x 2 sessions`).
 That number should be set for following configs:
 - `maxMessagesInCollectorQueue` in `com.cognifide.aet.runner.RunnerConfiguration.cfg`
 - `collectorInstancesNo` in `com.cognifide.aet.worker.listeners.WorkersListenersService.cfg`
+
+#### Docker secrets
+AET Karaf image reads all files in the `/run/secrets/` directory matching `KARAF_*` pattern export them as environment variable.
+See the [Karaf entrypoint][/blob/master/karaf/entrypoint.sh] for details.
+
+E.g.
+If the file `/run/secrets/KARAF_MY_SECRET` is found, its content will be exported to `MY_SECRET` environment variable.
 
 ### Updating instance
 You may update configuration files directly from your host 

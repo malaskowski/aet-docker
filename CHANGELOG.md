@@ -1,5 +1,5 @@
 # Not released yet
-No new features so far...
+- [PR-28](https://github.com/Skejven/aet-docker/pull/28) - Before the start of a Karaf service, Docker secrets are exported to environment variables.
 
 # 0.14.0
 - [PR-27](https://github.com/Skejven/aet-docker/pull/27) - Karaf provisioned with all dependencies - offline mode provisioning support.
