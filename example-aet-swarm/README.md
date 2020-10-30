@@ -24,7 +24,9 @@ AET stack defined in this example runs:
 │   └── com.github.skejven.collector.LighthouseCollectorFactory.cfg
 ├── features
 │   └── custom-features.xml
-└── report
+├── report
+└── secrets
+    └── KARAF_EXAMPLE_SECRET
 ```
 
 - `aet-swarm.yml` - this file contains configuration file to run AET [single-node swarm cluster](https://docs.docker.com/engine/swarm/key-concepts/)
@@ -32,6 +34,7 @@ AET stack defined in this example runs:
 - `configs` - directory mounted to the `/aet/custom/configs` in the Karaf service, contains OSGi components in form of `.cfg` files
 - `features` - directory mounted to the `/aet/custom/features in the Karaf service`, contains [Karaf provisioning](https://karaf.apache.org/manual/latest/provisioning) configuration files - called features
 - `report` - directory that may contain custom AET report application, if mounted to `/usr/local/apache2/htdocs` volume in the Report service, it will override default [AET Report application](https://github.com/Cognifide/aet/tree/master/report)
+- `secrets` - directory contains example [Docker secret](https://docs.docker.com/engine/swarm/secrets/) files. They are scanned before Karaf starts and exported as environment variables. Read more in the [secrets configuration](https://github.com/Skejven/aet-docker#docker-secrets).
 
 ## Karaf healthcheck
 Karaf's service in this sample docker instance have [healthcheck](https://docs.docker.com/compose/compose-file/#healthcheck). It simply checks the dedicated service's endpoint `/health-check` that responses with `200` when everything is ready, with error code otherwise. If the healthcheck fails, swarm will automatically restart the service.

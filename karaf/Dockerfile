@@ -102,8 +102,12 @@ RUN mv /opt/karaf/deploy/aet-*.xml /aet/core/features \
 
 RUN chown -R ${KARAF_USER}.${KARAF_USER} /opt/karaf
 
+COPY entrypoint.sh /opt/karaf/entrypoint.sh
+RUN chmod a+x /opt/karaf/entrypoint.sh && chown -R ${KARAF_USER}.${KARAF_USER} /opt/karaf/entrypoint.sh
+
 EXPOSE 1099 8101 8181 44444
 
 USER ${KARAF_USER}
 
-CMD ["/opt/karaf/bin/karaf", "run"]
+ENTRYPOINT ["/opt/karaf/entrypoint.sh"]
+CMD ["run"]
