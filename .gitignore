@@ -29,3 +29,5 @@ atlassian-ide-plugin.xml
 **/extra/*
 example-aet-swarm.zip
 example-aet-swarm/bundles/*.jar
+
+.gradle

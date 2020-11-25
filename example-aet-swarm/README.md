@@ -10,29 +10,48 @@ AET stack defined in this example runs:
 - AET Apache Karaf container with AET core installed (Runner, Workers, Web-API, Datastorage, Executor)
 - AET Apache Server container with AET Report.
 
+## Running by Gradle
+
+To simplify AET setup and mitigate issues related to Docker distribution types (Docker Desktop vs Docker Toolbox on Windows) and few other OS-specific issues, Gradle Environment Plugin is introduced to manage deployment using Docker Swarm.
+
+Turning on AET:
+
+```shell script
+sh gradlew
+```
+
+Turning off AET:
+
+```shell script
+sh gradlew down
+```
+
 ## Directory structure
+
+Under `src/environment`:
+
 ```
 .
-├── aet-swarm.yml
-├── bundles
-│   ├── aet-lighthouse-extension.jar
-│   ├── ...
-│   └── aet-custom-extension.jar
-├── configs
-│   ├── com.cognifide.aet.cleaner.CleanerScheduler-main.cfg
-│   ├── ...
-│   └── com.github.skejven.collector.LighthouseCollectorFactory.cfg
-├── features
-│   └── custom-features.xml
+├── docker-compose.yml.peb
+├── karaf
+│   ├── bundles
+│   │   └── aet-lighthouse-extension.jar 
+│   │   ├── ...
+│   │   └── aet-custom-extension.jar
+│   ├── configs
+│   │   ├── com.cognifide.aet.cleaner.CleanerScheduler-main.cfg
+│   │   ├── ...
+│   └── features
+│       └── custom-features.xml
 ├── report
 └── secrets
     └── KARAF_EXAMPLE_SECRET
 ```
 
-- `aet-swarm.yml` - this file contains configuration file to run AET [single-node swarm cluster](https://docs.docker.com/engine/swarm/key-concepts/)
-- `bundles` - directory mounted to the `/aet/custom/bundles` in the Karaf service, where Karaf search for custom [OSGi bundles](https://en.wikipedia.org/wiki/OSGi#Bundles), that's the place to put any extra AET extensions
-- `configs` - directory mounted to the `/aet/custom/configs` in the Karaf service, contains OSGi components in form of `.cfg` files
-- `features` - directory mounted to the `/aet/custom/features in the Karaf service`, contains [Karaf provisioning](https://karaf.apache.org/manual/latest/provisioning) configuration files - called features
+- `docker-compose.yml.peb` - this file contains configuration file to run AET [single-node swarm cluster](https://docs.docker.com/engine/swarm/key-concepts/)
+- `karaf/bundles` - directory mounted to the `/aet/custom/bundles` in the Karaf service, where Karaf search for custom [OSGi bundles](https://en.wikipedia.org/wiki/OSGi#Bundles), that's the place to put any extra AET extensions
+- `karaf/configs` - directory mounted to the `/aet/custom/configs` in the Karaf service, contains OSGi components in form of `.cfg` files
+- `karaf/features` - directory mounted to the `/aet/custom/features in the Karaf service`, contains [Karaf provisioning](https://karaf.apache.org/manual/latest/provisioning) configuration files - called features
 - `report` - directory that may contain custom AET report application, if mounted to `/usr/local/apache2/htdocs` volume in the Report service, it will override default [AET Report application](https://github.com/Cognifide/aet/tree/master/report)
 - `secrets` - directory contains example [Docker secret](https://docs.docker.com/engine/swarm/secrets/) files. They are scanned before Karaf starts and exported as environment variables. Read more in the [secrets configuration](https://github.com/Skejven/aet-docker#docker-secrets).
 

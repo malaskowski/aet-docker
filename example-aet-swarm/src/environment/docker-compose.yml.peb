@@ -21,7 +21,7 @@
 version: '3.7'
 
 networks:
-  private:
+  docker-net:
     driver: overlay
 
 volumes:
@@ -38,7 +38,7 @@ services:
         constraints:
           - node.role == manager
     networks:
-      - private
+      - docker-net
 
   chrome:
     image: selenium/node-chrome:3.14.0-arsenic
@@ -55,7 +55,7 @@ services:
     deploy:
       replicas: 6
     networks:
-      - private
+      - docker-net
 
   mongo:
     image: mongo:3.6
@@ -70,18 +70,18 @@ services:
         max_attempts: 3
         window: 120s
     volumes:
-      - mongo-data:/data/db
+      - {{ docker.workPath }}/mongo/data:/data/db
     ports:
       - '27017:27017'
     networks:
-      - private
+      - docker-net
 
   activemq:
     image: skejven/aet_activemq:0.14.0
     ports:
       - '8161:8161'
     networks:
-      - private
+      - docker-net
 
   browsermob:
     image: skejven/aet_browsermob:0.14.0
@@ -89,7 +89,7 @@ services:
       - '8080:8080'
       - '8281-8681:8281-8681'
     networks:
-      - private
+      - docker-net
 
   karaf:
     image: skejven/aet_karaf:0.14.0
@@ -103,9 +103,9 @@ services:
       - hub
       - activemq
     volumes:
-      - ./configs:/aet/custom/configs
-      - ./bundles:/aet/custom/bundles
-      - ./features:/aet/custom/features
+      - {{ docker.configPath }}/karaf/configs:/aet/custom/configs
+      - {{ docker.configPath }}/karaf/bundles:/aet/custom/bundles
+      - {{ docker.configPath }}/karaf/features:/aet/custom/features
     secrets:
       - KARAF_EXAMPLE_SECRET
     ports:
@@ -114,19 +114,19 @@ services:
     #    environment:
     #      - KARAF_DEBUG=true # uncomment (with section above) to start Karaf in debug mode
     networks:
-      - private
+      - docker-net
 
   report:
     image: skejven/aet_report:0.14.0
     ports:
       - '80:80'
     #    volumes:
-    #      - ./report:/usr/local/apache2/htdocs
+    #      - {{ docker.configPath }}/report:/usr/local/apache2/htdocs
     #    environment:
     #      - AET_WEB_API=http://my.karaf.com # uncomment to configure custom AET Web API endpoint
     networks:
-      - private
+      - docker-net
 
 secrets:
   KARAF_EXAMPLE_SECRET:
-    file: secrets/KARAF_EXAMPLE_SECRET
+    file: {{ docker.configPath }}/secrets/KARAF_EXAMPLE_SECRET
