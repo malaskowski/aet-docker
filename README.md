@@ -180,7 +180,7 @@ To run example AET instance make sure that machine you run it at has at least en
 ```bash
 docker-machine stop
 VBoxManage modifyvm default --cpus 2
-VBoxManage modifyvm default --memory 6144
+VBoxManage modifyvm default --memory 8192
 docker-machine start
 ```
 
