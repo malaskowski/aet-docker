@@ -179,7 +179,7 @@ To run example AET instance make sure that machine you run it at has at least en
 - For *Docker Toolbox* modify your `docker-machine` with:
 ```bash
 docker-machine stop
-VBoxManage modifyvm default --cpus 2
+VBoxManage modifyvm default --cpus 4
 VBoxManage modifyvm default --memory 8192
 docker-machine start
 ```
