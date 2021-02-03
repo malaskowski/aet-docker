@@ -58,6 +58,8 @@ Follow these instructions to set up local AET instance:
 2. From the `AET_ROOT` run `docker stack deploy -c aet-swarm.yml aet`.
 3. Wait about 1-2 minutes until instance is ready to work.
 
+> Note, that you can always stop the instance by running 'docker stack rm aet' without loosing the data (volumes).
+
 <details><summary>See details</summary>
 <p>
 
