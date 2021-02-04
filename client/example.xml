@@ -12,7 +12,7 @@
       <screen comparator="layout"/>
     </compare>
     <urls>
-      <url href="https://www.google.com"/>
+      <url href="https://github.com/malaskowski/aet-docker"/>
     </urls>
   </test>
 </suite>
