@@ -126,6 +126,7 @@ Read more on how to run your custom suite in the [Running AET Suite](#running-ae
     + [Example visualiser](#example-visualiser)
     + [Debugging](#debugging)
     + [Logs](#logs)
+- [Common issues](#common-issues)
 - [FAQ](#faq)
   * [How to use external MongoDB](#how-to-use-external-mongodb)
   * [How to use external Selenium Grid](#how-to-use-external-selenium-grid)
@@ -350,6 +351,12 @@ To debug bundles on Karaf set environment vairable `KARAF_DEBUG=true` and expose
 
 #### Logs
 You may preview AET logs with `docker service logs aet_karaf -f`.
+
+---
+## Common issues
+
+### Error response 500 after sending suite to AET
+Make sure you have installed all [prerequisites](https://github.com/wttech/aet/tree/master/client/client-scripts#prerequisites) for the script client.
 
 ---
 
