@@ -6,6 +6,8 @@
 This repository contains Dockerfiles of AET images and example Docker Swarm manifest that enables setting up simple AET instance.
 You may find released versions of AET Docker images at [Docker Hub](https://cloud.docker.com/u/skejven/). 
 ## Try AET
+Following section describes how to run AET using Docker Swarm. Alternative to this is installing AET using Helm. See [AET Helm chart](https://github.com/malaskowski/aet-helm) repository for more deails.
+
 ### Run local instance using Docker Swarm
 Make sure you have running Docker Swarm instance that has at least **`4 vCPU` and `8 GB of memory` available**. Read more in [Prerequisites](#prerequisites).
 
