@@ -1,10 +1,10 @@
 # AET Docker
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Skejven/aet-docker/master/misc/aet-docker.png" alt="AET Docker Logo"/>
+  <img src="https://raw.githubusercontent.com/malaskowski/aet-docker/master/misc/aet-docker.png" alt="AET Docker Logo"/>
 </p>
 
 This repository contains Dockerfiles of AET images and example Docker Swarm manifest that enables setting up simple AET instance.
-You may find released versions of AET Docker images at [Docker Hub](https://cloud.docker.com/u/skejven/). 
+You may find released versions of AET Docker images at [Docker Hub](https://cloud.docker.com/u/malaskowski/). 
 ## Try AET
 Following section describes how to run AET using Docker Swarm. Alternative to this is installing AET using Helm. See [AET Helm chart](https://github.com/malaskowski/aet-helm) repository for more deails.
 
@@ -12,14 +12,14 @@ Following section describes how to run AET using Docker Swarm. Alternative to th
 Make sure you have running Docker Swarm instance that has at least **`4 vCPU` and `8 GB of memory` available**. Read more in [Prerequisites](#prerequisites).
 
 Follow these instructions to set up local AET instance:
-1. Download the latest [`example-aet-swarm.zip`](https://github.com/Skejven/aet-docker/releases/latest/download/example-aet-swarm.zip) and unzip the files to the folder from where docker stack will be deployed (from now on we will call it `AET_ROOT`).
+1. Download the latest [`example-aet-swarm.zip`](https://github.com/malaskowski/aet-docker/releases/latest/download/example-aet-swarm.zip) and unzip the files to the folder from where docker stack will be deployed (from now on we will call it `AET_ROOT`).
 
 <details><summary>See details</summary>
 <p>
 
 > You may run following script to automate this step:
 > ```bash
-> curl -sS `curl -Ls -o /dev/null -w %{url_effective} https://github.com/Skejven/aet-docker/releases/latest/download/example-aet-swarm.zip` > aet-swarm.zip \
+> curl -sS `curl -Ls -o /dev/null -w %{url_effective} https://github.com/malaskowski/aet-docker/releases/latest/download/example-aet-swarm.zip` > aet-swarm.zip \
 > && unzip -q aet-swarm.zip && mv example-aet-swarm/* . \
 > && rm -d example-aet-swarm && rm aet-swarm.zip
 > ```
@@ -52,7 +52,7 @@ Follow these instructions to set up local AET instance:
 >           - /osgi-configs/configs:/aet/configs # when using docker-machine, use mounted folder
 >     ```
 > 
-> You can find older versions in the [release](https://github.com/Skejven/aet-docker/releases) section.
+> You can find older versions in the [release](https://github.com/malaskowski/aet-docker/releases) section.
 
 </p>
 </details>
@@ -77,7 +77,7 @@ Follow these instructions to set up local AET instance:
 > 
 > ```
 > IMAGE                     STATUS
-> skejven/aet_karaf:0.14.0   Up 3 minutes (healthy)
+> malaskowski/aet_karaf:0.14.0   Up 3 minutes (healthy)
 > ```
 
 </p>
@@ -86,7 +86,7 @@ Follow these instructions to set up local AET instance:
 ### Run sample suite
 Simply run:
 ```
-docker run --rm skejven/aet_client
+docker run --rm malaskowski/aet_client
 ```
 
 You should see similar output:
@@ -157,7 +157,7 @@ Before the start of a Karaf service, Docker secrets are exported to environment 
 ### AET Report 
 Runs [Apache Server](https://httpd.apache.org/) that hosts [AET Report](https://github.com/wttech/aet/wiki/SuiteReport).
 The [AET report application](https://github.com/wttech/aet/tree/master/report) is placed under `/usr/local/apache2/htdocs`.
-Defines very basic `VirtualHost` (see [aet.conf](https://github.com/Skejven/aet-docker/blob/master/report/aet.conf)).
+Defines very basic `VirtualHost` (see [aet.conf](https://github.com/malaskowski/aet-docker/blob/master/report/aet.conf)).
 ### AET Docker Client
 [AET bash client](https://github.com/wttech/aet/tree/master/client/client-scripts) embedded into Docker image with all its dependencies (`jq`, `curl`, `xmllint`).
 
@@ -272,14 +272,14 @@ There are couple of ways to start AET Suite.
 #### Docker Client
 You may use an image that embeds AET Bash client together with its dependencies by running:
 
-> `docker run --rm skejven/aet_client`
+> `docker run --rm malaskowski/aet_client`
 
 This will run a [sample AET Suite](https://github.com/malaskowski/aet-docker/blob/master/client/example.xml).
 You should see the results in less than 30s.
 
 To run your custom suite, let's say `my-suite.xml`, located in the current directory, you need to bind mount it as volume.
 
-> `docker run --rm -v "$(pwd)/my-suite.xml:/aet/suite/my-suite.xml" skejven/aet_client http://host.docker.internal:8181 /aet/suite/my-suite.xml`
+> `docker run --rm -v "$(pwd)/my-suite.xml:/aet/suite/my-suite.xml" malaskowski/aet_client http://host.docker.internal:8181 /aet/suite/my-suite.xml`
 
 
 <details><summary>Read more</summary>
@@ -294,7 +294,7 @@ To run your custom suite, let's say `my-suite.xml`, located in the current direc
 > 
 > One more thing you may want to do is to preserve `redirect.html` and `xUnit.xml` files after the AET Client container's run ends its execution. Simply bind mound another volume e.g.:
 > 
-> `docker run --rm -v "$(pwd)/my-suite.xml:/aet/suite/my-suite.xml" -v "$(pwd)/report:/aet/report" skejven/aet_client http://host.docker.internal:8181 /aet/suite/my-suite.xml`
+> `docker run --rm -v "$(pwd)/my-suite.xml:/aet/suite/my-suite.xml" -v "$(pwd)/report:/aet/report" malaskowski/aet_client http://host.docker.internal:8181 /aet/suite/my-suite.xml`
 > 
 > The results will be saved to the `report` directory:
 > 
@@ -425,10 +425,10 @@ or [OpenShift](https://www.openshift.com/) systems (including services provided 
 2. Build all images using `build.sh {tag}`.
 You should see following images:
 ```
-    skejven/aet_report:{tag}
-    skejven/aet_karaf:{tag}
-    skejven/aet_browsermob:{tag}
-    skejven/aet_activemq:{tag}
+    malaskowski/aet_report:{tag}
+    malaskowski/aet_karaf:{tag}
+    malaskowski/aet_browsermob:{tag}
+    malaskowski/aet_activemq:{tag}
 ```
 
 ## Developer environment

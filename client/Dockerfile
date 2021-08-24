@@ -16,8 +16,8 @@
 # limitations under the License.
 #
 
-FROM alpine:3.12.0
-LABEL maintainer="Maciej Laskowski <skejven@gmail.com>"
+FROM alpine:3.14
+LABEL maintainer="Maciej Laskowski <https://github.com/malaskowski>"
 
 RUN apk add --no-cache \
     bash \

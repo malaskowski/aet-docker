@@ -16,8 +16,8 @@
 # limitations under the License.
 #
 
-FROM httpd:alpine
-LABEL maintainers="Jan Helak <https://github.com/heljan>, Maciej Laskowski <skejven@gmail.com>"
+FROM httpd:2.4.48-alpine
+LABEL maintainers="Jan Helak <https://github.com/heljan>, Maciej Laskowski <https://github.com/malaskowski>"
 
 
 # set the build params

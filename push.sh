@@ -20,8 +20,8 @@
 
 AET_DOCKER_VERSION="$1"
 
-docker push skejven/aet_activemq:${AET_DOCKER_VERSION}
-docker push skejven/aet_browsermob:${AET_DOCKER_VERSION}
-docker push skejven/aet_karaf:${AET_DOCKER_VERSION}
-docker push skejven/aet_report:${AET_DOCKER_VERSION}
-docker push skejven/aet_client:${AET_DOCKER_VERSION}
+docker push malaskowski/aet_activemq:${AET_DOCKER_VERSION}
+docker push malaskowski/aet_browsermob:${AET_DOCKER_VERSION}
+docker push malaskowski/aet_karaf:${AET_DOCKER_VERSION}
+docker push malaskowski/aet_report:${AET_DOCKER_VERSION}
+docker push malaskowski/aet_client:${AET_DOCKER_VERSION}

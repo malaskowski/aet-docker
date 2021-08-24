@@ -17,7 +17,7 @@
 #
 
 FROM openjdk:8-alpine
-LABEL maintainer="Maciej Laskowski <skejven@gmail.com>"
+LABEL maintainer="Maciej Laskowski <https://github.com/malaskowski>"
 
 # Set the build params
 ARG BMP_VERSION="2.1.4"

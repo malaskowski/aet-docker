@@ -1,5 +1,14 @@
 # Not released yet
+Nothing new...
+
+# 1.0.0
+### Images moved to my new Docker Hub space: https://hub.docker.com/u/malaskowski
+This means you need to update both image name and tag in you AET instance cluster to be able to fetch the latest version of AET Docker images (rename `skejven/aet_XXX:0.14.0` to `malaskowski/aet_XXX:1.0.0`).
+
 - [PR-28](https://github.com/Skejven/aet-docker/pull/28) - Before the start of a Karaf service, Docker secrets are exported to environment variables.
+- Base images updates:
+    - `aet_client` image base updated to `alpine:3.14`
+    - `aet_report` image base updated to `httpd:2.4.48-alpine`
 
 # 0.14.0
 - [PR-27](https://github.com/Skejven/aet-docker/pull/27) - Karaf provisioned with all dependencies - offline mode provisioning support.

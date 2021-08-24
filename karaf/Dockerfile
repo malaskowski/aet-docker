@@ -17,7 +17,7 @@
 #
 
 FROM openjdk:8-alpine as build
-LABEL maintainer="Maciej Laskowski <skejven@gmail.com>"
+LABEL maintainer="Maciej Laskowski <https://github.com/malaskowski>"
 
 # Set the env params
 ENV JAVA_MAX_MEM 1024m
@@ -58,7 +58,7 @@ RUN chmod a+x /tmp/provision-karaf.sh && sync && /tmp/provision-karaf.sh
 #################################################################################
 
 FROM openjdk:8-alpine as final
-LABEL maintainer="Maciej Laskowski <skejven@gmail.com>"
+LABEL maintainer="Maciej Laskowski <https://github.com/malaskowski>"
 
 # Set the env params
 ENV KARAF_USER karaf
