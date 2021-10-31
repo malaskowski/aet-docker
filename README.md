@@ -5,6 +5,7 @@
 
 This repository contains Dockerfiles of AET images and example Docker Swarm manifest that enables setting up simple AET instance.
 You may find released versions of AET Docker images at [Docker Hub](https://cloud.docker.com/u/malaskowski/). 
+
 ## Try AET
 Following section describes how to run AET using Docker Swarm. Alternative to this is installing AET using Helm. See [AET Helm chart](https://github.com/malaskowski/aet-helm) repository for more deails.
 
@@ -77,7 +78,7 @@ Follow these instructions to set up local AET instance:
 > 
 > ```
 > IMAGE                     STATUS
-> malaskowski/aet_karaf:0.14.0   Up 3 minutes (healthy)
+> malaskowski/aet_karaf:1.0.0   Up 3 minutes (healthy)
 > ```
 
 </p>
@@ -101,7 +102,6 @@ http://localhost/report.html?company=example&project=example&correlationId=examp
 Open the url which will show your first AET report! Find more about the report in the [AET Docs](https://github.com/wttech/aet/wiki/SuiteReport).
 
 Read more on how to run your custom suite in the [Running AET Suite](#running-aet-suite) section.
-
 
 **User Documentation**
 
@@ -162,14 +162,7 @@ Defines very basic `VirtualHost` (see [aet.conf](https://github.com/malaskowski/
 [AET bash client](https://github.com/wttech/aet/tree/master/client/client-scripts) embedded into Docker image with all its dependencies (`jq`, `curl`, `xmllint`).
 
 ## AET instance with Docker Swarm
-This chapter shows how to set up a fully functional AET instance with [Docker Swarm](https://docs.docker.com/engine/swarm/).
-Example single-node AET cluster consists of:
-- MongoDB container with a mounted volume (for persistence)
-- Selenium Grid with Hub and 3 Nodes (2 Chrome instances each, totally 6 browsers)
-- AET ActiveMq container
-- AET Browsermob container
-- AET Apache Karaf container with AET core installed (Runner, Workers, Web-API, Datastorage, Executor)
-- AET Apache Server container with AET Report
+To see the details of what contains sample AET Docker Swarm instance, read the [example-aet-swarm readme](/blob/master/example-aet-swarm/README.md).
 
 > **Notice - this instruction guides you on how to set up AET instance using single-node swarm cluster.** 
 > **This setup is not recommended for production use!**
@@ -223,23 +216,24 @@ Configures Selenium Grid Hub address. Additionally enables configuring [capabili
 
 **com.cognifide.aet.worker.listeners.WorkersListenersService.cfg**
 Configures number of [AET Workers](https://github.com/wttech/aet/wiki/Worker). Use those properties to scale up and down your AET instance's throughput. Read more below.
+
 #### Throughput and scaling
 AET instance speed depends on the direct number of browsers in the system and its configuration.
 Let's define a `TOTAL_NUMBER_OF_BROWSERS` which will be the number of selenium grid node instances
-multiplied by `NODE_MAX_SESSION` set for each node. For this default configuration, we have `3`
-Selenium Grid instances (`replicas`) with `2` instances of browser available:
+multiplied by `NODE_MAX_SESSION` set for each node. For this default configuration, we have `6`
+Selenium Nodee replicast with a single instance of browser available on each node:
 ```yaml
   chrome:
 ...
     environment:
 ...
-      - NODE_MAX_SESSION=2
+      - NODE_MAX_SESSION=1
 ...
     deploy:
-      replicas: 3
+      replicas: 6
 ...
 ```
-So, the `TOTAL_NUMBER_OF_BROWSERS` is `6` (`3 replicas x 2 sessions`).
+So, the `TOTAL_NUMBER_OF_BROWSERS` is `6` (`6 replicas x 1 session`).
 That number should be set for following configs:
 - `maxMessagesInCollectorQueue` in `com.cognifide.aet.runner.RunnerConfiguration.cfg`
 - `collectorInstancesNo` in `com.cognifide.aet.worker.listeners.WorkersListenersService.cfg`
@@ -412,8 +406,10 @@ Yes, AET system is a group of containers that form an instance together.
 You need a way to organize them and make visible to each other in order to have functional AET instance.
 This repository contains **example** instance setup with Docker Swarm, which is the most basic
 containers cluster manager that comes OOTB with Docker.
+
 For more advanced setups of AET instance I'd recommend to look at [Kubernetes](https://kubernetes.io/) 
 or [OpenShift](https://www.openshift.com/) systems (including services provided by cloud vendors).
+In that case you may find [AET Helm chart](https://github.com/malaskowski/aet-helm) helpful.
 
 ---
 
