@@ -25,3 +25,5 @@ docker push malaskowski/aet_browsermob:${AET_DOCKER_VERSION}
 docker push malaskowski/aet_karaf:${AET_DOCKER_VERSION}
 docker push malaskowski/aet_report:${AET_DOCKER_VERSION}
 docker push malaskowski/aet_client:${AET_DOCKER_VERSION}
+docker tag malaskowski/aet_client:${AET_DOCKER_VERSION} malaskowski/aet_client:latest
+docker push malaskowski/aet_client:latest
