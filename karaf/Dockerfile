@@ -25,8 +25,8 @@ ENV JAVA_MIN_MEM 256m
 ENV KARAF_EXEC exec
 
 # Set the build params
-ARG KARAF_VERSION="4.2.0"
-ARG KARAF_DOWNLOAD_SHA512="431ca85af2cc230ffb6ab996cb12034a940e21ac4d03ac04936a4ab5e902c7a4e767f06ad32796d250a30ce090aa1b39d927d84955400803e3ee4e3f5116fea4"
+ARG KARAF_VERSION="4.2.15"
+ARG KARAF_DOWNLOAD_SHA512="0d3516c9b806ae4ef6eafe5b3fc2f63e80714a6a232f347df5c4388dc2ab10c961788e908edcc92c46a5a3b23788f48e3925dad0218b7d948284638855a672f2"
 ARG KARAF_DOWNLOAD_URL="http://archive.apache.org/dist/karaf/${KARAF_VERSION}/apache-karaf-${KARAF_VERSION}.tar.gz"
 
 ARG AET_VERSION="3.3.0"
@@ -49,16 +49,16 @@ RUN curl -fSL -o /tmp/apache-karaf.tar.gz ${KARAF_DOWNLOAD_URL} \
 RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
   && unzip -o /tmp/${AET_ARTIFACT} -d /opt/karaf/deploy && rm /tmp/${AET_ARTIFACT}
 
-COPY features/aet-healthcheck-features.xml /opt/karaf/deploy/aet-healthcheck-features.xml
+# COPY features/aet-healthcheck-features.xml /opt/karaf/deploy/aet-healthcheck-features.xml
 
 # Run karaf and wait until it downloads all features
-COPY provision-karaf.sh /tmp/provision-karaf.sh
-RUN chmod a+x /tmp/provision-karaf.sh && sync && /tmp/provision-karaf.sh
+# COPY provision-karaf.sh /tmp/provision-karaf.sh
+# RUN chmod a+x /tmp/provision-karaf.sh && sync && /tmp/provision-karaf.sh
 
 #################################################################################
 
-FROM openjdk:8-alpine as final
-LABEL maintainer="Maciej Laskowski <https://github.com/malaskowski>"
+# FROM openjdk:8-alpine as final
+# LABEL maintainer="Maciej Laskowski <https://github.com/malaskowski>"
 
 # Set the env params
 ENV KARAF_USER karaf
@@ -67,38 +67,39 @@ ENV JAVA_MAX_MEM 1024m
 ENV JAVA_MIN_MEM 256m
 ENV KARAF_EXEC exec
 
-# Set the build params
-ARG AET_VERSION="3.3.0"
-ARG AET_ARTIFACT="bundles.zip"
-ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/Cognifide/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
+# # Set the build params
+# ARG AET_VERSION="3.3.0"
+# ARG AET_ARTIFACT="bundles.zip"
+# ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/Cognifide/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
 
 RUN addgroup -S -g ${KARAF_UID} ${KARAF_USER}; \
     adduser -S -u ${KARAF_UID} -g ${KARAF_USER} ${KARAF_USER}
 
-RUN apk add --update bash jq curl tar && rm -rf /var/cache/apk/*
+# RUN apk add --update bash jq curl tar && rm -rf /var/cache/apk/*
 
-COPY --from=build /opt/karaf /opt/karaf
+# COPY --from=build /opt/karaf /opt/karaf
 
-COPY --from=build /home/karaf/.m2/repository /home/karaf/.m2/repository
+# COPY --from=build /home/karaf/.m2/repository /home/karaf/.m2/repository
+RUN mkdir -p /home/karaf/.m2
 RUN chown -R ${KARAF_USER}.${KARAF_USER} /home/karaf/.m2
 
 # Copy Karaf config to watch for AET artifacts
 COPY etc/*.cfg /opt/karaf/etc/
 
-# Create AET artifacts deployment structure
-RUN mkdir -p /aet/core /aet/core/bundles /aet/core/features /aet/extra /aet/extra/bundles /aet/extra/configs /aet/extra/features \
+# # Create AET artifacts deployment structure
+RUN mkdir -p /aet/core /aet/core/bundles /aet/core/features /aet/custom /aet/custom/bundles /aet/custom/configs /aet/custom/features \
   && chown -R ${KARAF_USER}.${KARAF_USER} /aet
 
-# Download and unzip AET bundles
-RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
-  && unzip -o /tmp/${AET_ARTIFACT} -d /aet/core/bundles && rm /tmp/${AET_ARTIFACT} \
-  && chown -R ${KARAF_USER}.${KARAF_USER} /aet/core/bundles \
-  && chown -R ${KARAF_USER}.${KARAF_USER} /aet/extra/bundles
+# # Download and unzip AET bundles
+# RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
+#   && unzip -o /tmp/${AET_ARTIFACT} -d /aet/core/bundles && rm /tmp/${AET_ARTIFACT} \
+#   && chown -R ${KARAF_USER}.${KARAF_USER} /aet/core/bundles \
+#   && chown -R ${KARAF_USER}.${KARAF_USER} /aet/custom/bundles
 
 # Move AET features files into the right place
 RUN mv /opt/karaf/deploy/aet-*.xml /aet/core/features \
   && chown -R ${KARAF_USER}.${KARAF_USER} /aet/core/features \
-  && chown -R ${KARAF_USER}.${KARAF_USER} /aet/extra/features
+  && chown -R ${KARAF_USER}.${KARAF_USER} /aet/custom/features
 
 RUN chown -R ${KARAF_USER}.${KARAF_USER} /opt/karaf
 
