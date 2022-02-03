@@ -56,7 +56,7 @@ RUN apk update \
 #     && rm -f /tmp/browsermob-proxy.zip \
 #     && rm -rf /var/cache/apk/*
 
-COPY --from=builder /browsermob-proxy/browsermob-dist/target/browsermob-proxy-2.1.6-SNAPSHOT-bin.zip /home/karaf/.m2/repository /tmp/
+COPY --from=builder /browsermob-proxy/browsermob-dist/target/browsermob-proxy-2.1.6-SNAPSHOT-bin.zip /tmp/
 
 # unzip and install BMP
 RUN unzip /tmp/browsermob-proxy-2.1.6-SNAPSHOT-bin.zip -d / \
