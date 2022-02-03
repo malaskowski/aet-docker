@@ -29,9 +29,9 @@ ARG KARAF_VERSION="4.2.15"
 ARG KARAF_DOWNLOAD_SHA512="0d3516c9b806ae4ef6eafe5b3fc2f63e80714a6a232f347df5c4388dc2ab10c961788e908edcc92c46a5a3b23788f48e3925dad0218b7d948284638855a672f2"
 ARG KARAF_DOWNLOAD_URL="http://archive.apache.org/dist/karaf/${KARAF_VERSION}/apache-karaf-${KARAF_VERSION}.tar.gz"
 
-ARG AET_VERSION="3.3.0"
-ARG AET_ARTIFACT="features.zip"
-ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/Cognifide/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
+# ARG AET_VERSION="3.3.0"
+# ARG AET_ARTIFACT="features.zip"
+# ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/wttech/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
 
 RUN apk add --update bash tar jq curl tree && rm -rf /var/cache/apk/*
 
@@ -46,19 +46,20 @@ RUN curl -fSL -o /tmp/apache-karaf.tar.gz ${KARAF_DOWNLOAD_URL} \
     && echo org.ops4j.pax.url.mvn.localRepository = file:///home/karaf/.m2/repository  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg
 
 # download and unzip AET features
-RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
-  && unzip -o /tmp/${AET_ARTIFACT} -d /opt/karaf/deploy && rm /tmp/${AET_ARTIFACT}
+# RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
+#   && unzip -o /tmp/${AET_ARTIFACT} -d /opt/karaf/deploy && rm /tmp/${AET_ARTIFACT}
 
-# COPY features/aet-healthcheck-features.xml /opt/karaf/deploy/aet-healthcheck-features.xml
+# Temporary, until AET not released
+COPY features/aet-*.xml /opt/karaf/deploy/
 
 # Run karaf and wait until it downloads all features
-# COPY provision-karaf.sh /tmp/provision-karaf.sh
-# RUN chmod a+x /tmp/provision-karaf.sh && sync && /tmp/provision-karaf.sh
+COPY provision-karaf.sh /tmp/provision-karaf.sh
+RUN chmod a+x /tmp/provision-karaf.sh && sync && /tmp/provision-karaf.sh 212
 
 #################################################################################
 
-# FROM openjdk:8-alpine as final
-# LABEL maintainer="Maciej Laskowski <https://github.com/malaskowski>"
+FROM openjdk:8-alpine as final
+LABEL maintainer="Maciej Laskowski <https://github.com/malaskowski>"
 
 # Set the env params
 ENV KARAF_USER karaf
@@ -77,10 +78,9 @@ RUN addgroup -S -g ${KARAF_UID} ${KARAF_USER}; \
 
 # RUN apk add --update bash jq curl tar && rm -rf /var/cache/apk/*
 
-# COPY --from=build /opt/karaf /opt/karaf
+COPY --from=build /opt/karaf /opt/karaf
 
-# COPY --from=build /home/karaf/.m2/repository /home/karaf/.m2/repository
-RUN mkdir -p /home/karaf/.m2
+COPY --from=build /home/karaf/.m2/repository /home/karaf/.m2/repository
 RUN chown -R ${KARAF_USER}.${KARAF_USER} /home/karaf/.m2
 
 # Copy Karaf config to watch for AET artifacts
@@ -110,5 +110,5 @@ EXPOSE 1099 8101 8181 44444
 
 USER ${KARAF_USER}
 
-ENTRYPOINT ["/opt/karaf/entrypoint.sh"]
+ENTRYPOINT ["sh", "/opt/karaf/entrypoint.sh"]
 CMD ["run"]
