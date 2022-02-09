@@ -50,6 +50,8 @@ ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/wttech/aet/releases/download/$
 
 RUN apk add --update bash tar jq curl tree && rm -rf /var/cache/apk/*
 
+COPY --from=builder /root/.m2/repository /home/karaf/.m2/repository
+
 COPY --from=builder /karaf/assemblies/apache-karaf/target/apache-karaf-4.2.0.zip /tmp
 RUN mkdir -p /opt/karaf 
 RUN unzip -o /tmp/apache-karaf-4.2.0.zip -d /tmp && mv /tmp/apache-karaf-4.2.0/* /opt/karaf 
@@ -66,7 +68,7 @@ COPY features/aet-webconsole.xml /opt/karaf/deploy
 
 # Run karaf and wait until it downloads all features
 COPY provision-karaf.sh /tmp/provision-karaf.sh
-RUN chmod a+x /tmp/provision-karaf.sh && sync && /tmp/provision-karaf.sh 93
+RUN chmod a+x /tmp/provision-karaf.sh && sync && /tmp/provision-karaf.sh 91
 
 #################################################################################
 
@@ -92,8 +94,8 @@ RUN addgroup -S -g ${KARAF_UID} ${KARAF_USER}; \
 
 COPY --from=provisioner /opt/karaf /opt/karaf
 
-# COPY --from=provisioner /home/karaf/.m2/repository /home/karaf/.m2/repository
-# RUN chown -R ${KARAF_USER}.${KARAF_USER} /home/karaf/.m2
+COPY --from=provisioner /home/karaf/.m2/repository /home/karaf/.m2/repository
+RUN chown -R ${KARAF_USER}.${KARAF_USER} /home/karaf/.m2
 
 # Copy Karaf config to watch for AET artifacts
 COPY etc/*.cfg /opt/karaf/etc/
