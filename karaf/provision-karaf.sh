@@ -39,6 +39,11 @@ do
   then
     echo "Karaf loading finished after $sec seconds";
     get_bundles_status
+
+    /opt/karaf/bin/client bundle:list -t 0 
+    /opt/karaf/bin/client bundle:uninstall 43
+    /opt/karaf/bin/client bundle:uninstall 42
+
     /opt/karaf/bin/karaf stop
     echo "Status: $(/opt/karaf/bin/karaf status)"
     sleep 10;

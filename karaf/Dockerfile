@@ -16,45 +16,56 @@
 # limitations under the License.
 #
 
-FROM openjdk:8-alpine as build
-LABEL maintainer="Maciej Laskowski <https://github.com/malaskowski>"
+FROM maven:3.8.4-jdk-8 as builder
+RUN apt-get update \
+    && apt-get install git unzip tzdata \
+    && update-ca-certificates
+
+# Clone BMP Proxy fork with log4j fix, see https://github.com/lightbody/browsermob-proxy/pull/891
+RUN mkdir -p ~/.ssh/ && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts \
+ && git clone git://github.com/apache/karaf.git \
+ && cd karaf \
+ && git checkout tags/karaf-4.2.0 -b karaf-4.2.0-aet \
+ && git status
+
+WORKDIR /karaf
+
+RUN sed -i 's/http/https/g' assemblies/features/base/pom.xml \
+ && sed -i 's/1.10.1/1.11.14/g' pom.xml
+
+RUN mvn clean install -DskipTests -Pfastinstall
+
+#################################################################################
+
+FROM openjdk:8-alpine as provisioner
 
 # Set the env params
 ENV JAVA_MAX_MEM 1024m
 ENV JAVA_MIN_MEM 256m
 ENV KARAF_EXEC exec
 
-# Set the build params
-ARG KARAF_VERSION="4.2.15"
-ARG KARAF_DOWNLOAD_SHA512="0d3516c9b806ae4ef6eafe5b3fc2f63e80714a6a232f347df5c4388dc2ab10c961788e908edcc92c46a5a3b23788f48e3925dad0218b7d948284638855a672f2"
-ARG KARAF_DOWNLOAD_URL="http://archive.apache.org/dist/karaf/${KARAF_VERSION}/apache-karaf-${KARAF_VERSION}.tar.gz"
-
-# ARG AET_VERSION="3.3.0"
-# ARG AET_ARTIFACT="features.zip"
-# ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/wttech/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
+ARG AET_VERSION="3.3.0"
+ARG AET_ARTIFACT="features.zip"
+ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/wttech/aet/releases/download/${AET_VERSION}/${AET_ARTIFACT}"
 
 RUN apk add --update bash tar jq curl tree && rm -rf /var/cache/apk/*
 
-RUN curl -fSL -o /tmp/apache-karaf.tar.gz ${KARAF_DOWNLOAD_URL} \
-    && echo "${KARAF_DOWNLOAD_SHA512}  /tmp/apache-karaf.tar.gz" | sha512sum -c - \
-    && mkdir -p /opt/karaf \
-    && tar --strip-components=1 -C /opt/karaf -xzf /tmp/apache-karaf.tar.gz \
-    && rm /tmp/apache-karaf.tar.gz \
-    && mkdir -p /opt/karaf/data /opt/karaf/data/log \
-    && echo org.ops4j.pax.url.mvn.defaultRepositories = file:///opt/maven/repository@id=local.app@snapshots  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg \
-    && sed -i "s+http://+https://+g" /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg \
-    && echo org.ops4j.pax.url.mvn.localRepository = file:///home/karaf/.m2/repository  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg
+COPY --from=builder /karaf/assemblies/apache-karaf/target/apache-karaf-4.2.0.zip /tmp
+RUN mkdir -p /opt/karaf 
+RUN unzip -o /tmp/apache-karaf-4.2.0.zip -d /tmp && mv /tmp/apache-karaf-4.2.0/* /opt/karaf 
+RUN rm /tmp/apache-karaf-4.2.0.zip && rm -rf /tmp/apache-karaf-4.2.0 
+RUN mkdir -p /opt/karaf/data /opt/karaf/data/log \
+ && echo org.ops4j.pax.url.mvn.defaultRepositories = file:///opt/maven/repository@id=local.app@snapshots  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg \
+ && sed -i "s+http://+https://+g" /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg \
+ && echo org.ops4j.pax.url.mvn.localRepository = file:///home/karaf/.m2/repository  >> /opt/karaf/etc/org.ops4j.pax.url.mvn.cfg
 
 # download and unzip AET features
 # RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
 #   && unzip -o /tmp/${AET_ARTIFACT} -d /opt/karaf/deploy && rm /tmp/${AET_ARTIFACT}
 
-# Temporary, until AET not released
-COPY features/aet-*.xml /opt/karaf/deploy/
-
 # Run karaf and wait until it downloads all features
 COPY provision-karaf.sh /tmp/provision-karaf.sh
-RUN chmod a+x /tmp/provision-karaf.sh && sync && /tmp/provision-karaf.sh 212
+RUN chmod a+x /tmp/provision-karaf.sh && sync && /tmp/provision-karaf.sh 95
 
 #################################################################################
 
@@ -78,15 +89,15 @@ RUN addgroup -S -g ${KARAF_UID} ${KARAF_USER}; \
 
 # RUN apk add --update bash jq curl tar && rm -rf /var/cache/apk/*
 
-COPY --from=build /opt/karaf /opt/karaf
+COPY --from=provisioner /opt/karaf /opt/karaf
 
-COPY --from=build /home/karaf/.m2/repository /home/karaf/.m2/repository
-RUN chown -R ${KARAF_USER}.${KARAF_USER} /home/karaf/.m2
+# COPY --from=provisioner /home/karaf/.m2/repository /home/karaf/.m2/repository
+# RUN chown -R ${KARAF_USER}.${KARAF_USER} /home/karaf/.m2
 
 # Copy Karaf config to watch for AET artifacts
 COPY etc/*.cfg /opt/karaf/etc/
 
-# # Create AET artifacts deployment structure
+# Create AET artifacts deployment structure
 RUN mkdir -p /aet/core /aet/core/bundles /aet/core/features /aet/custom /aet/custom/bundles /aet/custom/configs /aet/custom/features \
   && chown -R ${KARAF_USER}.${KARAF_USER} /aet
 
@@ -97,9 +108,9 @@ RUN mkdir -p /aet/core /aet/core/bundles /aet/core/features /aet/custom /aet/cus
 #   && chown -R ${KARAF_USER}.${KARAF_USER} /aet/custom/bundles
 
 # Move AET features files into the right place
-RUN mv /opt/karaf/deploy/aet-*.xml /aet/core/features \
-  && chown -R ${KARAF_USER}.${KARAF_USER} /aet/core/features \
-  && chown -R ${KARAF_USER}.${KARAF_USER} /aet/custom/features
+# RUN mv /opt/karaf/deploy/aet-*.xml /aet/core/features \
+#   && chown -R ${KARAF_USER}.${KARAF_USER} /aet/core/features \
+#   && chown -R ${KARAF_USER}.${KARAF_USER} /aet/custom/features
 
 RUN chown -R ${KARAF_USER}.${KARAF_USER} /opt/karaf
 
