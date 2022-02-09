@@ -62,10 +62,11 @@ RUN mkdir -p /opt/karaf/data /opt/karaf/data/log \
 # download and unzip AET features
 # RUN curl -fSL -o /tmp/${AET_ARTIFACT} ${AET_ARTIFACT_DOWNLOAD_URL} \
 #   && unzip -o /tmp/${AET_ARTIFACT} -d /opt/karaf/deploy && rm /tmp/${AET_ARTIFACT}
+COPY features/aet-webconsole.xml /opt/karaf/deploy
 
 # Run karaf and wait until it downloads all features
 COPY provision-karaf.sh /tmp/provision-karaf.sh
-RUN chmod a+x /tmp/provision-karaf.sh && sync && /tmp/provision-karaf.sh 95
+RUN chmod a+x /tmp/provision-karaf.sh && sync && /tmp/provision-karaf.sh 93
 
 #################################################################################
 
