@@ -21,7 +21,7 @@ RUN apt-get update \
     && apt-get install git unzip tzdata \
     && update-ca-certificates
 
-# Clone BMP Proxy fork with log4j fix, see https://github.com/lightbody/browsermob-proxy/pull/891
+# Clone Karaf on 4.2.0 tag
 RUN mkdir -p ~/.ssh/ && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts \
  && git clone git://github.com/apache/karaf.git \
  && cd karaf \
@@ -33,6 +33,7 @@ WORKDIR /karaf
 RUN sed -i 's/http/https/g' assemblies/features/base/pom.xml \
  && sed -i 's/1.10.1/1.11.14/g' pom.xml
 
+# Build custom Karaf instance with bumped pax.logging to 1.11.14
 RUN mvn clean install -DskipTests -Pfastinstall
 
 #################################################################################
