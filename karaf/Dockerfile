@@ -50,7 +50,8 @@ ARG AET_ARTIFACT_DOWNLOAD_URL="https://github.com/wttech/aet/releases/download/$
 
 RUN apk add --update bash tar jq curl tree && rm -rf /var/cache/apk/*
 
-COPY --from=builder /root/.m2/repository /home/karaf/.m2/repository
+# Copy custom Karaf version from builder to prevent downloading the original one
+COPY --from=builder /root/.m2/repository/org/apache/karaf /home/karaf/.m2/repository/org/apache/karaf
 
 COPY --from=builder /karaf/assemblies/apache-karaf/target/apache-karaf-4.2.0.zip /tmp
 RUN mkdir -p /opt/karaf 
