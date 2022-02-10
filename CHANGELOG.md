@@ -1,5 +1,6 @@
 # Not released yet
 - [PR-33](https://github.com/malaskowski/aet-docker/pull/33) - Update BrowserMob Proxy image to the version without log4jshell vulnerability.
+- [PR-34](https://github.com/malaskowski/aet-docker/pull/34) - build custom version of Apache Karaf 4.2.0 with updated pax.logging dependencies.
 
 # 1.0.0
 ### Images moved to my new Docker Hub space: https://hub.docker.com/u/malaskowski
