@@ -77,14 +77,14 @@ services:
       - private
 
   activemq:
-    image: malaskowski/aet_activemq:1.0.0
+    image: malaskowski/aet_activemq:1.1.0
     ports:
       - '8161:8161'
     networks:
       - private
 
   browsermob:
-    image: malaskowski/aet_browsermob:1.0.0
+    image: malaskowski/aet_browsermob:1.1.0
     ports:
       - '8080:8080'
       - '8281-8681:8281-8681'
@@ -92,7 +92,7 @@ services:
       - private
 
   karaf:
-    image: malaskowski/aet_karaf:1.0.0
+    image: malaskowski/aet_karaf:1.1.0
     healthcheck:
       test: curl --fail http://karaf:karaf@localhost:8181/health-check
       interval: 1m
@@ -117,7 +117,7 @@ services:
       - private
 
   report:
-    image: malaskowski/aet_report:1.0.0
+    image: malaskowski/aet_report:1.1.0
     ports:
       - '80:80'
     #    volumes:
