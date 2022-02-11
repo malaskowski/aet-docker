@@ -1,4 +1,9 @@
 # Not released yet
+Nothing new here
+
+# 1.1.0
+This release fixes security issue, upgrading Browsermob and Karaf dependencies to log4j 2.17.1 fixing CVE-2021-44832 and other Log4jShell vulnerabilies.
+If you migrate from version older than `1.0.0`, please remember to execute all steps in _upgrade notes_ for all the version between this and your current version.
 - [PR-33](https://github.com/malaskowski/aet-docker/pull/33) - Update BrowserMob Proxy image to the version without log4jshell vulnerability.
 - [PR-34](https://github.com/malaskowski/aet-docker/pull/34) - build custom version of Apache Karaf 4.2.0 with updated pax.logging dependencies.
 
