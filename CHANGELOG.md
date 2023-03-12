@@ -1,6 +1,10 @@
 # Not released yet
 Nothing new here
 
+# 1.2.0
+- `KARAF_SECRETS_ON_STARTUP` env triggers Karaf secrets scanning on startup
+- Images support for `linux/arm64` architecture.
+
 # 1.1.0
 This release fixes security issue, upgrading Browsermob and Karaf dependencies to log4j 2.17.1 fixing CVE-2021-44832 and other Log4jShell vulnerabilies.
 If you migrate from version older than `1.0.0`, please remember to execute all steps in _upgrade notes_ for all the version between this and your current version.

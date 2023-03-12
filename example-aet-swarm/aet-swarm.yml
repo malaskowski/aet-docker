@@ -77,14 +77,14 @@ services:
       - private
 
   activemq:
-    image: malaskowski/aet_activemq:1.1.0
+    image: malaskowski/aet_activemq:1.2.0
     ports:
       - '8161:8161'
     networks:
       - private
 
   browsermob:
-    image: malaskowski/aet_browsermob:1.1.0
+    image: malaskowski/aet_browsermob:1.2.0
     ports:
       - '8080:8080'
       - '8281-8681:8281-8681'
@@ -92,7 +92,7 @@ services:
       - private
 
   karaf:
-    image: malaskowski/aet_karaf:1.1.0
+    image: malaskowski/aet_karaf:1.2.0
     healthcheck:
       test: curl --fail http://karaf:karaf@localhost:8181/health-check
       interval: 1m
@@ -106,8 +106,10 @@ services:
       - ./configs:/aet/custom/configs
       - ./bundles:/aet/custom/bundles
       - ./features:/aet/custom/features
-    secrets:
-      - KARAF_EXAMPLE_SECRET
+    # environment:
+    #   - KARAF_SECRETS_ON_STARTUP=true
+    # secrets:
+    #   - KARAF_EXAMPLE_SECRET
     ports:
       - '8181:8181'
     #      - '5005:5005' # uncomment to be able to connect Karaf in debug mode
@@ -117,7 +119,7 @@ services:
       - private
 
   report:
-    image: malaskowski/aet_report:1.1.0
+    image: malaskowski/aet_report:1.2.0
     ports:
       - '80:80'
     #    volumes:
