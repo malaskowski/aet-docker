@@ -21,6 +21,7 @@ KARAF_COMMAND=$1
 
 read_secrets() {
   echo "Exporting secrets to env..."
+  [ -d "/run/secrets" ] echo "Exporting secrets to env..." || exit 0;
   for file in /run/secrets/KARAF_*; do
     envName=$(echo "$file" | awk -F"KARAF_" '{print $2}')
     envVal="$(<"${file}")"
@@ -30,7 +31,7 @@ read_secrets() {
 }
 
 if [ "$KARAF_COMMAND" = 'run' ]; then
-  [ -d "/run/secrets" ] && read_secrets || echo "No secrets configured."
+  [[ ! -z "$KARAF_SECRETS_ON_STARTUP" ]] && read_secrets || echo "Secrets will be not loaded on startup."
   echo "Running karaf"
   exec /opt/karaf/bin/karaf $KARAF_COMMAND "$@"
 fi

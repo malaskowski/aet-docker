@@ -23,7 +23,7 @@ RUN apt-get update \
 
 # Clone BMP Proxy fork with log4j fix, see https://github.com/lightbody/browsermob-proxy/pull/891
 RUN mkdir -p ~/.ssh/ && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts \
- && git clone git://github.com/cyberstormdotmu/browsermob-proxy.git \
+ && git clone https://github.com/cyberstormdotmu/browsermob-proxy.git \
  && cd browsermob-proxy \
  && git reset --hard 6e4afc39c7904f361a712dccff739fa9845cebdc \
  && git status

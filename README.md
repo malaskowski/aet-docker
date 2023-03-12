@@ -105,41 +105,46 @@ Read more on how to run your custom suite in the [Running AET Suite](#running-ae
 
 **User Documentation**
 
-- [Docker Images](#docker-images)
-  * [AET ActiveMq](#aet-activemq)
-  * [AET Browsermob](#aet-browsermob)
-  * [AET Karaf](#aet-karaf)
-  * [AET Report](#aet-report)
-  * [AET Docker Client](#aet-docker-client)
-- [AET instance with Docker Swarm](#aet-instance-with-docker-swarm)
-  * [Prerequisites](#prerequisites)
-    + [Minimum requirements](#minimum-requirements)
-  * [Configuration](#configuration)
-    + [OSGi configs](#osgi-configs)
-    + [Throughput and scaling](#throughput-and-scaling)
-    + [Docker secrets](#docker-secrets)
-  * [Updating instance](#updating-instance)
-  * [Running AET Suite](#running-aet-suite)
-    + [Docker Client](#docker-client)
-    + [Other Clients](#other-clients)
-  * [Best practices](#best-practices)
-  * [Available consoles](#available-consoles)
-  * [Troubleshooting](#troubleshooting)
-    + [Example visualiser](#example-visualiser)
-    + [Debugging](#debugging)
-    + [Logs](#logs)
-- [Common issues](#common-issues)
-- [FAQ](#faq)
-  * [How to use external MongoDB](#how-to-use-external-mongodb)
-  * [How to use external Selenium Grid](#how-to-use-external-selenium-grid)
-  * [How to set report domain](#how-to-set-report-domain)
-  * [How to expose AET Web API](#how-to-expose-aet-web-api)
-  * [How to enable AET instance to run more tests simultaneously](#how-to-enable-aet-instance-to-run-more-tests-simultaneously)
-  * [How to use external Selenium Grid nodes](#how-to-use-external-selenium-grid-nodes)
-  * [Is there other way to run AET than with Docker Swarm cluster](#is-there-other-way-to-run-aet-than-with-docker-swarm-cluster)
-- [Building](#building)
-  * [Prerequisites](#prerequisites-1)
-- [Developer environment](#developer-environment)
+- [AET Docker](#aet-docker)
+  - [Try AET](#try-aet)
+    - [Run local instance using Docker Swarm](#run-local-instance-using-docker-swarm)
+    - [Run sample suite](#run-sample-suite)
+  - [Docker Images](#docker-images)
+    - [AET ActiveMq](#aet-activemq)
+    - [AET Browsermob](#aet-browsermob)
+    - [AET Karaf](#aet-karaf)
+    - [AET Report](#aet-report)
+    - [AET Docker Client](#aet-docker-client)
+  - [AET instance with Docker Swarm](#aet-instance-with-docker-swarm)
+    - [Prerequisites](#prerequisites)
+      - [Minimum requirements](#minimum-requirements)
+    - [Configuration](#configuration)
+      - [OSGi configs](#osgi-configs)
+      - [Throughput and scaling](#throughput-and-scaling)
+      - [Docker secrets](#docker-secrets)
+    - [Updating instance](#updating-instance)
+    - [Running AET Suite](#running-aet-suite)
+      - [Docker Client](#docker-client)
+      - [Other Clients](#other-clients)
+    - [Best practices](#best-practices)
+    - [Available consoles](#available-consoles)
+    - [Troubleshooting](#troubleshooting)
+      - [Example visualiser](#example-visualiser)
+      - [Debugging](#debugging)
+      - [Logs](#logs)
+  - [Common issues](#common-issues)
+    - [Error response 500 after sending suite to AET](#error-response-500-after-sending-suite-to-aet)
+  - [FAQ](#faq)
+    - [How to use external MongoDB](#how-to-use-external-mongodb)
+    - [How to use external Selenium Grid](#how-to-use-external-selenium-grid)
+    - [How to set report domain](#how-to-set-report-domain)
+    - [How to expose AET Web API](#how-to-expose-aet-web-api)
+    - [How to enable AET instance to run more tests simultaneously](#how-to-enable-aet-instance-to-run-more-tests-simultaneously)
+    - [How to use external Selenium Grid nodes](#how-to-use-external-selenium-grid-nodes)
+    - [Is there other way to run AET than with Docker Swarm cluster](#is-there-other-way-to-run-aet-than-with-docker-swarm-cluster)
+  - [Building](#building)
+    - [Prerequisites](#prerequisites-1)
+  - [Developer environment](#developer-environment)
 
 ## Docker Images
 
@@ -239,8 +244,8 @@ That number should be set for following configs:
 - `collectorInstancesNo` in `com.cognifide.aet.worker.listeners.WorkersListenersService.cfg`
 
 #### Docker secrets
-AET Karaf image reads all files in the `/run/secrets/` directory matching `KARAF_*` pattern export them as environment variable.
-See the [Karaf entrypoint][/blob/master/karaf/entrypoint.sh] for details.
+To read secrets from `/run/secrets/` on Karaf startup, configure env `KARAF_SECRETS_ON_STARTUP=true`. This will enable scanning secrets from directory matching `KARAF_*` pattern and export them as environment variable.
+See the [Karaf entrypoint](/blob/master/karaf/entrypoint.sh) for details.
 
 E.g.
 If the file `/run/secrets/KARAF_MY_SECRET` is found, its content will be exported to `MY_SECRET` environment variable.

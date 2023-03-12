@@ -23,7 +23,7 @@ RUN apt-get update \
 
 # Clone Karaf on 4.2.0 tag
 RUN mkdir -p ~/.ssh/ && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts \
- && git clone git://github.com/apache/karaf.git \
+ && git clone https://github.com/apache/karaf.git \
  && cd karaf \
  && git checkout tags/karaf-4.2.0 -b karaf-4.2.0-aet \
  && git status
