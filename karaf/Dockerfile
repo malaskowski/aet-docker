@@ -53,8 +53,10 @@ RUN apk add --update bash tar jq curl tree && rm -rf /var/cache/apk/*
 
 # Copy custom Karaf version from builder to prevent downloading the original one
 COPY --from=builder /root/.m2/repository/org/apache/karaf /home/karaf/.m2/repository/org/apache/karaf
+# COPY tmp-m2/repository/org/apache/karaf /home/karaf/.m2/repository/org/apache/karaf
 
 COPY --from=builder /karaf/assemblies/apache-karaf/target/apache-karaf-4.2.0.zip /tmp
+# COPY tmp-karaf/assemblies/apache-karaf/target/apache-karaf-4.2.0.zip /tmp
 RUN mkdir -p /opt/karaf 
 RUN unzip -o /tmp/apache-karaf-4.2.0.zip -d /tmp && mv /tmp/apache-karaf-4.2.0/* /opt/karaf 
 RUN rm /tmp/apache-karaf-4.2.0.zip && rm -rf /tmp/apache-karaf-4.2.0 

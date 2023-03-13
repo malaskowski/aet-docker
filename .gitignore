@@ -31,3 +31,4 @@ example-aet-swarm.zip
 example-aet-swarm/bundles/*.jar
 
 karaf/bundles/*.jar
+karaf/tmp-*
