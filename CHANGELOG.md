@@ -3,7 +3,7 @@ Nothing new here
 
 # 1.2.0
 - `KARAF_SECRETS_ON_STARTUP` env triggers Karaf secrets scanning on startup
-- Images support for `linux/arm64` architecture.
+- Images support for `linux/arm64` architecture. For Karaf image, please use `1.2.0-arm64` tag when running on Mac Apple Silicon processors.
 
 # 1.1.0
 This release fixes security issue, upgrading Browsermob and Karaf dependencies to log4j 2.17.1 fixing CVE-2021-44832 and other Log4jShell vulnerabilies.
