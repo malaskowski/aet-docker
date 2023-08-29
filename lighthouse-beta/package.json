@@ -1,0 +1,15 @@
+{
+  "name": "aet-lighthouse-server",
+  "version": "1.0.0",
+  "description": "AET Lighthouse Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Maciej Laskowski",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "body-parser": "^1.19.0"
+  }
+}
